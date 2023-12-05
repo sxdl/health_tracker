@@ -1,5 +1,7 @@
-from health_tracker.health_app_tkinter import *
+# from health_tracker.health_app_tkinter import *
+from health_tracker.health_app_pyqt import *
 from health_tracker.tracker import *
+
 
 
 if __name__ == "__main__":
