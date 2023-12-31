@@ -23,14 +23,14 @@
 ```bash
 # 启动应用
 python mian,py run -h           # 查看帮助
-python main.py run tkinter      # 使用tkinter框架启动
-python main.py run pyQt         # 使用pyQt启动
+python main.py run -f tkinter      # 使用tkinter框架启动
+python main.py run -f pyQt         # 使用pyQt启动
 
 # 生成用户数据
 python main.py stimulator -h    # 查看帮助
-python main.py stimulator -a 0  # 生成用户id为0的所有用户数据
-python main.py stimulator -s 0  # 生成用户id为0的步数数据
-python main.py stimulator -a    # 默认用户id为0
+python main.py stimulator -d a 0  # 生成用户id为0的所有用户数据
+python main.py stimulator -d s 0  # 生成用户id为0的步数数据
+python main.py stimulator -d a    # 默认用户id为0
 ```
 
 ### tracker
