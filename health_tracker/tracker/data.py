@@ -27,6 +27,11 @@ class BaseData(ABC):
     def save_data(self):
         pass
 
+    # @abstractmethod
+    # def get_data(self):
+    #     """提供数据请求接口"""
+    #     pass
+
 
 class BaseActivityData(BaseData):
     """活动数据基类"""
@@ -124,6 +129,10 @@ class Profile(BaseData):
     def update_data(self, data_value: list):
         self.data = self._profile(*data_value)
         self.save_data()
+
+    def get_data(self) -> dict:
+        """返回用户的个人资料"""
+        return self.data._asdict()
 
     def __repr__(self):
         return f'Profile({self.data})'

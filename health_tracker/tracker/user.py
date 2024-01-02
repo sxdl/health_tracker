@@ -7,14 +7,14 @@ from . data import *
 __all__ = ["User"]
 
 
-DEFAULT_HEALTH_DATA_TYPES = {
+DEFAULT_HEALTH_DATA_TYPES = {  # 弃用
     'step_count': StepCount,
     'distance': Distance,
     'flights_climbed': FlightsClimbed,
     'active_energy_burned': ActiveEnergyBurned
 }
 
-age_groups = {
+age_groups = {  # 谨慎使用，可能实际用不到这个年龄分组
     'children': (0, 12),
     'teenagers': (13, 18),
     'youth': (19, 40),
@@ -23,28 +23,37 @@ age_groups = {
 }
 
 
-
 class HealthData:
+    """
+    warning: 已弃用，使用data.ActivityDataStatistics替代
+    """
     def __init__(self, user_id, health_data_types: dict):
         self._user_id = user_id
         self._health_data_types = health_data_types
 
 
 class User:
-    """User class"""
+    """
+    用户的接口类，与用户数据的所有交互通过调用这个类的方法来实现。
+    尽量直接使用User中的方法，而不是简介操作成员对象。
+    如果本类中没有提供相关的功能函数，在这个类里新增功能函数，然后在别处调用。
+    """
 
     def __init__(self, user_id: str, name: str):
-        """Constructor"""
-
         self.user_id = user_id
         self.name = name
         self.profile = Profile(user_id)
         self.activity_data = ActivityDataStatistics(user_id)
-        self.health_data = HealthData(user_id, DEFAULT_HEALTH_DATA_TYPES)
-        self.age_group = None
+        # self.health_data = HealthData(user_id, DEFAULT_HEALTH_DATA_TYPES)  # 这个对象应该是用不到，用activity_data
+        self.age_group = None  # 可能用不到这个
 
     def load_profile(self):
         """Load profile"""
         pass
+
+    def get_profile(self):
+        """获取用户的基本信息"""
+        return self.profile.get_data()
+
 
 
