@@ -65,9 +65,9 @@ class HealthTrackingApp:
         # 在“健康”页面显示活动记录
         active_energy_burned_label = ttk.Label(self.health_frame, text=f"活动热量: {self.today_data['active_energy_burned']} /270 千卡")
         active_energy_burned_label.grid(row=0, column=0, pady=10, padx=10, sticky="w")
-        exercise_time_label = ttk.Label(self.health_frame, text=f"运动时间: {self.today_data['exercise_minutes']} /25 分钟")
+        exercise_time_label = ttk.Label(self.health_frame, text=f"锻炼时长: {self.today_data['exercise_minutes']} /25 分钟")
         exercise_time_label.grid(row=1, column=0, pady=10, padx=10, sticky="w")
-        active_hours_label = ttk.Label(self.health_frame, text=f"活动时间: {self.today_data['active_hours']} /12 小时")
+        active_hours_label = ttk.Label(self.health_frame, text=f"活动小时数: {self.today_data['active_hours']} /12 小时")
         active_hours_label.grid(row=2, column=0, pady=10, padx=10, sticky="w")
         steps_label = ttk.Label(self.health_frame, text=f"今日步数: {self.today_data['steps']} /10000 步")
         steps_label.grid(row=3, column=0, pady=10, padx=10, sticky="w")
