@@ -6,50 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1090</width>
-    <height>859</height>
+    <width>999</width>
+    <height>800</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
-   <item row="1" column="0">
-    <layout class="QGridLayout" name="gridLayout">
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <property name="spacing">
-      <number>10</number>
-     </property>
-     <item row="3" column="1">
-      <widget class="SimpleCardWidget" name="SimpleCardWidget"/>
-     </item>
-     <item row="1" column="1">
-      <widget class="CardWidget" name="CardWidget"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="HeaderCardWidget" name="HeaderCardWidget">
-       <widget class="TitleLabel" name="TitleLabel">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>10</y>
-          <width>124</width>
-          <height>38</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Title label</string>
-        </property>
-       </widget>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="ElevatedCardWidget" name="ElevatedCardWidget"/>
-     </item>
-    </layout>
-   </item>
    <item row="0" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
@@ -66,9 +36,504 @@
      </property>
     </spacer>
    </item>
+   <item row="2" column="0">
+    <layout class="QGridLayout" name="gridLayout" rowstretch="0,0" columnstretch="0,0">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="spacing">
+      <number>10</number>
+     </property>
+     <item row="1" column="0">
+      <widget class="CardWidget" name="distanceCard_2">
+       <layout class="QVBoxLayout" name="verticalLayout_8">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_9" stretch="0,0,1,0">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinAndMaxSize</enum>
+          </property>
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_6">
+            <item>
+             <widget class="IconWidget" name="stepsIcon">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>30</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../resource/images/icon/step.png</normaloff>../resource/images/icon/step.png</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="TitleLabel" name="stepsTitle">
+              <property name="text">
+               <string>Steps</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Expanding</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="ToolButton" name="stepsButton1"/>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="SubtitleLabel" name="stepsCaption">
+            <property name="text">
+             <string>Steps walked</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="pixelFontSize" stdset="0">
+             <number>35</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="DisplayLabel" name="stepsNum">
+            <property name="text">
+             <string>0</string>
+            </property>
+            <property name="textFormat">
+             <enum>Qt::RichText</enum>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="pixelFontSize" stdset="0">
+             <number>160</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="ProgressBar" name="stepsProgressBar">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="sizeIncrement">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="value">
+             <number>50</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="CardWidget" name="timeCard">
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_6" stretch="0,0,1,0">
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinAndMaxSize</enum>
+          </property>
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="IconWidget" name="CaloriesIcon_3">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>30</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../resource/images/icon/chronometer.png</normaloff>../resource/images/icon/chronometer.png</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="TitleLabel" name="timeTitle">
+              <property name="text">
+               <string>Time</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Expanding</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="ToolButton" name="timeButton1"/>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="SubtitleLabel" name="timeCaption">
+            <property name="text">
+             <string>Exercise time</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="pixelFontSize" stdset="0">
+             <number>35</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="DisplayLabel" name="timeNum">
+            <property name="text">
+             <string>0</string>
+            </property>
+            <property name="textFormat">
+             <enum>Qt::RichText</enum>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="pixelFontSize" stdset="0">
+             <number>160</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="ProgressBar" name="timeProgressBar">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="sizeIncrement">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="value">
+             <number>0</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="CardWidget" name="caloriesCard">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1,0">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinAndMaxSize</enum>
+          </property>
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="IconWidget" name="CaloriesIcon">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>30</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../resource/images/icon/calories.png</normaloff>../resource/images/icon/calories.png</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="TitleLabel" name="caloriesTitle">
+              <property name="text">
+               <string>Calories</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Expanding</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="ToolButton" name="caloriesButton1"/>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="SubtitleLabel" name="caloriesCaption">
+            <property name="text">
+             <string>Calories burned</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="pixelFontSize" stdset="0">
+             <number>35</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="DisplayLabel" name="caloriesNum">
+            <property name="text">
+             <string>0</string>
+            </property>
+            <property name="textFormat">
+             <enum>Qt::RichText</enum>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="pixelFontSize" stdset="0">
+             <number>160</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="ProgressBar" name="caloriesProgressBar">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="sizeIncrement">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="value">
+             <number>100</number>
+            </property>
+            <property name="textVisible">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="CardWidget" name="distanceCard">
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,0,1,0">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinAndMaxSize</enum>
+          </property>
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="IconWidget" name="distanceIcon">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>30</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>../resource/images/icon/distance.png</normaloff>../resource/images/icon/distance.png</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="TitleLabel" name="distanceTitle">
+              <property name="text">
+               <string>Distance</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Expanding</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="ToolButton" name="distanceButton1"/>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="SubtitleLabel" name="distanceCaption">
+            <property name="text">
+             <string>Distance walked</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="pixelFontSize" stdset="0">
+             <number>35</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="DisplayLabel" name="distanceNum">
+            <property name="text">
+             <string>0</string>
+            </property>
+            <property name="textFormat">
+             <enum>Qt::RichText</enum>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="pixelFontSize" stdset="0">
+             <number>160</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="ProgressBar" name="distanceProgressBar">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="sizeIncrement">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="value">
+             <number>0</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0">
+    <widget class="TitleLabel" name="TitleLabel">
+     <property name="text">
+      <string>Health</string>
+     </property>
+     <property name="pixelFontSize" stdset="0">
+      <number>50</number>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>ToolButton</class>
+   <extends>QToolButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>IconWidget</class>
+   <extends>QWidget</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
   <customwidget>
    <class>CardWidget</class>
    <extends>QFrame</extends>
@@ -76,26 +541,23 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>ElevatedCardWidget</class>
-   <extends>SimpleCardWidget</extends>
+   <class>SubtitleLabel</class>
+   <extends>QLabel</extends>
    <header>qfluentwidgets</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>SimpleCardWidget</class>
-   <extends>CardWidget</extends>
-   <header>qfluentwidgets</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>HeaderCardWidget</class>
-   <extends>SimpleCardWidget</extends>
-   <header>qfluentwidgets</header>
-   <container>1</container>
   </customwidget>
   <customwidget>
    <class>TitleLabel</class>
    <extends>QLabel</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>DisplayLabel</class>
+   <extends>QLabel</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>ProgressBar</class>
+   <extends>QProgressBar</extends>
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>

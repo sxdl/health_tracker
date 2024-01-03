@@ -1,7 +1,3 @@
-# from health_tracker.health_app_tkinter import *
-from health_tracker.health_app_pyqt import *
-from health_tracker.tracker import *
-
 import argparse
 
 
@@ -33,7 +29,8 @@ if __name__ == "__main__":
             from health_tracker.health_app_tkinter import *
             run_app()
         elif args.framework == "pyQt":
-            pass  # todo 修改为 pyQt 的包
+            from health_tracker.health_app_pyqt import *
+            run_app()
         else:
             raise ValueError(f"Unknown framework: {args.framework}")
 
