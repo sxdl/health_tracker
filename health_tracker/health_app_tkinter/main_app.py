@@ -31,6 +31,8 @@ class HealthTrackingApp:
         # “设备”页面
         self.device_frame = ttk.Frame(self.nav_bar)
         self.create_device_page()
+        self.device_list = []  # 创建一个空的设备列表
+        self.device_label = None  # 初始化设备标签
 
         # “我的”页面
         self.my_frame = ttk.Frame(self.nav_bar)
