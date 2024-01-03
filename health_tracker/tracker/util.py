@@ -30,7 +30,6 @@ class LocalFileStorage:
             return False
 
 
-
 class UserLocalFileStorage:
     @staticmethod
     def write_data(user_id: str, filename: str, data):

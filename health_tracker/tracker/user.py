@@ -51,8 +51,8 @@ class User:
         """Load profile"""
         pass
 
-    def get_profile(self):
-        """获取用户的基本信息"""
+    def get_profile(self) -> dict:
+        """获取用户的个人资料:gender, birth, height, weight"""
         return self.profile.get_data()
 
 

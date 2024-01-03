@@ -3,9 +3,21 @@
 from abc import ABC, abstractmethod
 from collections import namedtuple, defaultdict
 from datetime import date as dt_date
-from . util import UserLocalFileStorage as LocalFileStorage
+from .util import UserLocalFileStorage as LocalFileStorage
+from enum import Enum
 
-__all__ = ["ActivityDataStatistics", "StepCount", "Distance", "FlightsClimbed", "ActiveEnergyBurned", "Profile", "Distance", "FlightsClimbed", "ActiveEnergyBurned"]
+__all__ = ["ActivityDataStatistics", "StepCount", "Distance", "FlightsClimbed", "ActiveEnergyBurned", "Profile",
+           "Distance", "FlightsClimbed", "ActiveEnergyBurned"]
+
+
+class ACTIVITY_DATA_TYPES(Enum):
+    """活动数据类型枚举类"""
+    STEP_COUNT = 'step_count'
+    DISTANCE = 'distance'
+    FLIGHTS_CLIMBED = 'flights_climbed'
+    ACTIVE_ENERGY_BURNED = 'active_energy_burned'
+    EXERCISE_MINUTES = 'exercise_minutes'
+    ACTIVE_HOURS = 'active_hours'
 
 
 class BaseData(ABC):
@@ -34,14 +46,24 @@ class BaseData(ABC):
 
 
 class BaseActivityData(BaseData):
-    """活动数据基类"""
+    """(弃用)活动数据基类"""
 
     @abstractmethod
     def get_data_by_date(self, date: dt_date):
+        """
+        获取指定日期的所有数据
+        :param date:
+        :return:
+        """
         pass
 
     @abstractmethod
     def get_daily_total(self, date: dt_date):
+        """
+        获取指定日期的数据总和
+        :param date:
+        :return:
+        """
         pass
 
     @abstractmethod
@@ -85,7 +107,7 @@ class ActivityDataStatistics:
             'active_hours': self.active_hours.get_all_daily_total()
         }
 
-    def get_latest_daily_total(self):
+    def get_latest_daily_total(self) -> dict:
         return {
             'steps': self.steps.get_latest_daily_total(),
             'distance': self.distance.get_latest_daily_total(),
@@ -212,17 +234,77 @@ class UpdateFromFile:
         return data
 
 
-class AutoUpdateFromMultipleWays(UpdateFromPhone, UpdateFromWatch, UpdateFromFile):
+# class AutoUpdateFromMultipleWays(UpdateFromPhone, UpdateFromWatch, UpdateFromFile):
+#     """支持多种方式自动更新的数据，统一管理获取数据的方法"""
+#
+#     def __init__(self, available_ways: list):
+#         self._available_ways = available_ways
+#
+#     def auto_update(self):
+#         for way in self._available_ways:
+#             if way.isAvailable():
+#                 # way.auto_update()
+#                 return way.auto_update
+
+
+class AutoUpdateFromMultipleWays:
     """支持多种方式自动更新的数据，统一管理获取数据的方法"""
 
-    def __init__(self, available_ways: list):
-        self._available_ways = available_ways
-
-    def auto_update(self):
-        for way in self._available_ways:
+    @staticmethod
+    def auto_update(available_ways: list):
+        """
+        从多种方式中选择一种可用的方式来自动更新数据
+        :param available_ways:
+        :return:
+        """
+        for way in available_ways:
             if way.isAvailable():
                 # way.auto_update()
                 return way.auto_update
+
+
+class ActivityData(BaseData, AutoUpdateFromMultipleWays):
+    """
+    活动数据类, 数据格式为：(date, time, value)
+    """
+
+    def __init__(self, user_id, data_type):
+        """
+        从ACITIVITY_DATA_TYPES中选择一个数据类型
+        数据类型包括：['step_count', 'distance', 'flights_climbed', 'active_energy_burned', 'exercise_minutes', 'active_hours']
+        :param user_id:
+        :param data_type: ACITIVITY_DATA_TYPES中的一个
+        """
+        self._datatype = data_type.value  # 数据类型
+        self._user_id = user_id
+        self._activity_data = namedtuple(self._datatype, ['date', 'time', 'value'])
+        self.data = None
+        self._update_ways = [UpdateFromWatch, UpdateFromPhone, UpdateFromFile]
+        # todo 添加对应的handler，用于随机读写数据文件
+
+        self.load_data()
+
+    def load_data(self):
+        self.data = [self._activity_data(*x) for x in
+                     self.auto_update(self._update_ways)(self._user_id, self._datatype)]
+
+    def save_data(self):
+        pass
+
+    def get_data_by_date(self, date: dt_date):
+        return [x for x in self.data if x.date == date]
+
+    def get_daily_total(self, date: dt_date):
+        return sum([x.value for x in self.get_data_by_date(date)])
+
+    def get_all_daily_total(self):
+        return {x: self.get_daily_total(x) for x in self.get_all_dates()}
+
+    def get_all_dates(self):
+        return list(set([x.date for x in self.data]))
+
+    def get_latest_daily_total(self):
+        return self.get_daily_total(max(self.get_all_dates()))
 
 
 class StepCount(BaseActivityData, AutoUpdateFromMultipleWays):
@@ -234,12 +316,13 @@ class StepCount(BaseActivityData, AutoUpdateFromMultipleWays):
         self._step_count = namedtuple(self._datatype, ['date', 'time', 'steps'])
         self.data = None
         self.daily_total_data = None
-        super().__init__([UpdateFromWatch, UpdateFromPhone, UpdateFromFile])
+        # super().__init__([UpdateFromWatch, UpdateFromPhone, UpdateFromFile])
+        self._update_ways = [UpdateFromWatch, UpdateFromPhone, UpdateFromFile]
 
         self.load_data()
 
     def load_data(self):
-        self.data = [self._step_count(*x) for x in self.auto_update()(self.user_id, self._datatype)]
+        self.data = [self._step_count(*x) for x in self.auto_update(self._update_ways)(self.user_id, self._datatype)]
 
     def save_data(self):
         pass
