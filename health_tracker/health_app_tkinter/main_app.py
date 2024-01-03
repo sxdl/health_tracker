@@ -4,12 +4,17 @@ from . show_profile import ShowProfileWindow
 from .my_statistics import MyStatisticsWindow
 from ..tracker.user import User
 
+from ttkbootstrap import Style
+
 __all__ = ["run_app"]
 
 
 class HealthTrackingApp:
     def __init__(self, root, user=None):
         self.root = root
+        # self.root.overrideredirect(True)  # 设置窗口为无边框
+        self.root.geometry('800x450')  # 设置窗口大小为800x450
+        self.center_window(self.root)
         self.root.title("健康追踪应用")
 
         self.user = user if user else User("0", "游客")
@@ -37,6 +42,14 @@ class HealthTrackingApp:
 
         # 显示导航栏
         self.nav_bar.pack(expand=1, fill="both")
+
+    def center_window(self, window):
+        window.update_idletasks()
+        width = window.winfo_width()
+        height = window.winfo_height()
+        x = (window.winfo_screenwidth() // 2) - (width // 2)
+        y = (window.winfo_screenheight() // 2) - (height // 2)
+        window.geometry('{}x{}+{}+{}'.format(width, height, x, y))
 
     def create_my_page(self):
         # 在“我的”页面创建姓名标签
@@ -80,11 +93,13 @@ class HealthTrackingApp:
         # TODO: 实现进入详细的数据页面的功能
         print("进入我的数据页面")
         my_data_window = tk.Toplevel(self.root)
+        self.center_window(my_data_window)
         my_data_page = MyStatisticsWindow(my_data_window, self.user)
 
     def show_profile(self):
         print("查看和修改个人资料")
         profile_window = tk.Toplevel(self.root)
+        self.center_window(profile_window)
         edit_profile = ShowProfileWindow(profile_window, self.user)
 
     def add_device(self):
@@ -98,7 +113,10 @@ class HealthTrackingApp:
 
 
 def run_app(user_id="0", user_name="游客"):
-    root = tk.Tk()
+    # 应用主题
+    style = Style(theme="superhero")
+    root = style.master
+
+    # root = tk.Tk()
     app = HealthTrackingApp(root, user=User(user_id, user_name))
     root.mainloop()
-
