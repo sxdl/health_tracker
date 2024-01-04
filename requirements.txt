@@ -1,3 +1,4 @@
 tkcalendar~=1.6.1
 PyQt5~=5.15.9
 ttkbootstrap~=1.10.1
+PyQt-Fluent-Widgets

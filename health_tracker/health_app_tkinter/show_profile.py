@@ -13,7 +13,8 @@ class ShowProfileWindow:
         self.root = root
         self.root.title("个人资料")
 
-        self.user_profile = user.profile.data
+        # self.user_profile = user.profile.data
+        self.user_profile = self.user.get_profile()
 
         # 创建标签显示个人资料
         self.gender_label = ttk.Label(root, text="性别: " + self.user_profile.gender)
@@ -41,7 +42,7 @@ class ShowProfileWindow:
     def refresh_profile(self):
         """刷新个人资料"""
         print("刷新个人资料")
-        self.user_profile = self.user.profile.data
+        self.user_profile = self.user.get_profile()
         # 更新标签
         self.gender_label.config(text="性别: " + self.user_profile.gender)
         self.birth_label.config(text="出生日期: " + self.user_profile.birth)

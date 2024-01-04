@@ -13,7 +13,7 @@ class EditProfileWindow:
         self.previous = previous
         self.root.title("修改个人资料")
 
-        self.gender, self.birth, self.height, self.weight = user.profile.data
+        self.gender, self.birth, self.height, self.weight = user.get_profile()
         self.GENDER = {"男": 0, "女": 1, "未知": 2}
 
         # 创建标签和输入框
@@ -73,12 +73,15 @@ class EditProfileWindow:
         # 保存用户输入的个人资料
         self.gender = self.gender_combobox.get()
         self.birth = self.current_date_label["text"]
+        self.birth = None
         self.height = self.height_entry.get()
         self.weight = self.weight_entry.get()
 
         # TODO: 这里可以添加将修改后的资料保存到文件或数据库的功能
         # self.user.profile.save_data()
-        self.user.profile.update_data([self.gender, self.birth, self.height, self.weight])
+        self.user.profile.update_data_by_field("gender", self.gender)
+        self.user.profile.update_data_by_field("height", self.height)
+        self.user.profile.update_data_by_field("weight", self.weight)
 
         # 关闭窗口
         self.root.destroy()

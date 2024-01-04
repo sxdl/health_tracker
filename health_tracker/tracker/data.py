@@ -3,11 +3,22 @@
 from abc import ABC, abstractmethod
 from collections import namedtuple, defaultdict
 from datetime import date as dt_date
-from .util import UserLocalFileStorage as LocalFileStorage
 from enum import Enum
 
-__all__ = ["ActivityDataStatistics", "StepCount", "Distance", "FlightsClimbed", "ActiveEnergyBurned", "Profile",
-           "Distance", "FlightsClimbed", "ActiveEnergyBurned"]
+__all__ = [
+    "ActivityDataStatistics",
+    "StepCount",
+    "Distance",
+    "FlightsClimbed",
+    "ActiveEnergyBurned",
+    "Profile",
+    "Distance",
+    "FlightsClimbed",
+    "ActiveEnergyBurned",
+    "ACTIVITY_DATA_TYPES",
+    "STATIC_DATA_TYPES",
+    "DATA_TYPES"
+]
 
 
 class ACTIVITY_DATA_TYPES(Enum):
@@ -18,6 +29,26 @@ class ACTIVITY_DATA_TYPES(Enum):
     ACTIVE_ENERGY_BURNED = 'active_energy_burned'
     EXERCISE_MINUTES = 'exercise_minutes'
     ACTIVE_HOURS = 'active_hours'
+
+
+class STATIC_DATA_TYPES(Enum):
+    """静态数据类型枚举类"""
+    PROFILE = 'profile'
+
+
+class DATA_TYPES(Enum):
+    """数据类型枚举类"""
+    PROFILE = 'profile'
+    STEP_COUNT = 'step_count'
+    DISTANCE = 'distance'
+    FLIGHTS_CLIMBED = 'flights_climbed'
+    ACTIVE_ENERGY_BURNED = 'active_energy_burned'
+    EXERCISE_MINUTES = 'exercise_minutes'
+    ACTIVE_HOURS = 'active_hours'
+
+
+from .util import UserLocalFileStorage as LocalFileStorage
+from .file_handler import user_file_handler_factory, UserMultiFieldFileHandler, UserSingleFieldFileHandler
 
 
 class BaseData(ABC):
@@ -132,32 +163,82 @@ class Profile(BaseData):
     """个人资料类"""
 
     def __init__(self, user_id):
-        self._datatype = 'profile'
-        self.user_id = user_id
-        self._profile = namedtuple(self._datatype, ['gender', 'birth', 'height', 'weight'])
-        self.data = None
-        self.load_data()
+        self._datatype = DATA_TYPES.PROFILE.value
+        self._user_id = user_id
+        self._FIELD_LIST = 'gender', 'birth', 'height', 'weight'
+        self._profile = namedtuple(self._datatype, self._FIELD_LIST)
+        self._data_handler: UserSingleFieldFileHandler = user_file_handler_factory(self._user_id, self._datatype)
+        # self.data = None
+        # self.load_data()
+
+        if not self.check_data():
+            self.init_data()
 
     def load_data(self):
-        if LocalFileStorage.check_file(self.user_id, self._datatype):
-            self.data = self._profile(*LocalFileStorage.read_data(self.user_id, self._datatype))
+        """
+        弃用
+        :return:
+        """
+        if LocalFileStorage.check_file(self._user_id, self._datatype):
+            self.data = self._profile(*LocalFileStorage.read_data(self._user_id, self._datatype))
         else:
             self.data = self._profile('未知', '未知', '未知', '未知')
             self.save_data()
 
     def save_data(self):
-        LocalFileStorage.write_data(self.user_id, self._datatype, self.data)
+        """
+        弃用
+        :return:
+        """
+        LocalFileStorage.write_data(self._user_id, self._datatype, self.data)
 
     def update_data(self, data_value: list):
+        """
+        弃用
+        :param data_value:
+        :return:
+        """
         self.data = self._profile(*data_value)
         self.save_data()
 
-    def get_data(self) -> dict:
+    def init_data(self):
+        """
+        初始化数据为默认值“未知”
+        :return:
+        """
+        self._data_handler.delete_file()
+        for i in range(len(self._FIELD_LIST)):
+            self._data_handler.append_line('未知')
+
+    def check_data(self) -> bool:
+        """
+        检查文件是否存在，并检查文件中的数据行数是否完整
+        :return:
+        """
+        return (self._data_handler.check_file()
+                and self._data_handler.get_file_length() == len(self._FIELD_LIST))
+
+    def update_data_by_field(self, field: str, data_value):
+        """
+        更新指定字段的数据
+        :param field: ['gender', 'birth', 'height', 'weight']
+        :param data_value:
+        :return:
+        """
+        self._data_handler.modify_line(self._FIELD_LIST.index(field), data_value)
+
+    def get_dict_data(self) -> dict:
         """返回用户的个人资料"""
-        return self.data._asdict()
+        # return self.data._asdict()
+
+        return {field: self._data_handler.read_line(i) for i, field in enumerate(self._FIELD_LIST)}
+
+    def get_namedtuple_data(self) -> namedtuple:
+        return self._profile(*(self._data_handler.read_line(i) for i, _ in enumerate(self._FIELD_LIST)))
 
     def __repr__(self):
-        return f'Profile({self.data})'
+        # return f'Profile({self.data})'
+        return f'Profile({self.get_dict_data()})'
 
 
 class ManualUpdateInterface(ABC):
@@ -234,33 +315,33 @@ class UpdateFromFile:
         return data
 
 
-# class AutoUpdateFromMultipleWays(UpdateFromPhone, UpdateFromWatch, UpdateFromFile):
-#     """支持多种方式自动更新的数据，统一管理获取数据的方法"""
-#
-#     def __init__(self, available_ways: list):
-#         self._available_ways = available_ways
-#
-#     def auto_update(self):
-#         for way in self._available_ways:
-#             if way.isAvailable():
-#                 # way.auto_update()
-#                 return way.auto_update
+class AutoUpdateFromMultipleWays(UpdateFromPhone, UpdateFromWatch, UpdateFromFile):
+    """（弃用）支持多种方式自动更新的数据，统一管理获取数据的方法"""
 
+    def __init__(self, available_ways: list):
+        self._available_ways = available_ways
 
-class AutoUpdateFromMultipleWays:
-    """支持多种方式自动更新的数据，统一管理获取数据的方法"""
-
-    @staticmethod
-    def auto_update(available_ways: list):
-        """
-        从多种方式中选择一种可用的方式来自动更新数据
-        :param available_ways:
-        :return:
-        """
-        for way in available_ways:
+    def auto_update(self):
+        for way in self._available_ways:
             if way.isAvailable():
                 # way.auto_update()
                 return way.auto_update
+
+
+# class AutoUpdateFromMultipleWays:
+#     """（new）支持多种方式自动更新的数据，统一管理获取数据的方法"""
+#
+#     @staticmethod
+#     def auto_update(available_ways: list):
+#         """
+#         从多种方式中选择一种可用的方式来自动更新数据
+#         :param available_ways:
+#         :return:
+#         """
+#         for way in available_ways:
+#             if way.isAvailable():
+#                 # way.auto_update()
+#                 return way.auto_update
 
 
 class ActivityData(BaseData, AutoUpdateFromMultipleWays):
@@ -316,13 +397,13 @@ class StepCount(BaseActivityData, AutoUpdateFromMultipleWays):
         self._step_count = namedtuple(self._datatype, ['date', 'time', 'steps'])
         self.data = None
         self.daily_total_data = None
-        # super().__init__([UpdateFromWatch, UpdateFromPhone, UpdateFromFile])
+        super().__init__([UpdateFromWatch, UpdateFromPhone, UpdateFromFile])
         self._update_ways = [UpdateFromWatch, UpdateFromPhone, UpdateFromFile]
 
         self.load_data()
 
     def load_data(self):
-        self.data = [self._step_count(*x) for x in self.auto_update(self._update_ways)(self.user_id, self._datatype)]
+        self.data = [self._step_count(*x) for x in self.auto_update()(self.user_id, self._datatype)]
 
     def save_data(self):
         pass
