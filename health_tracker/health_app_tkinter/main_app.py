@@ -3,7 +3,7 @@ from tkinter import ttk
 from . show_profile import ShowProfileWindow
 from .my_statistics import MyStatisticsWindow
 from ..tracker.user import User
-from health_tracker.tracker import util
+from . import devices as util
 
 from ttkbootstrap import Style
 
