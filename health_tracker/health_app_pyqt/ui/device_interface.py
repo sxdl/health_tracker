@@ -9,8 +9,9 @@ from .device_interface_ui import Ui_DeviceInterface
 
 from ...tracker import User
 
+
 class DeviceInterface(QWidget, Ui_DeviceInterface):
-    def __init__(self, user: User, parent = None):
+    def __init__(self, user: User, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
 
@@ -28,12 +29,11 @@ class DeviceInterface(QWidget, Ui_DeviceInterface):
         self.menu.addAction(QAction(FIF.REMOVE.icon(), 'Remove'))
         self.menu.addAction(QAction(FIF.SHARE.icon(), 'Share'))
 
-
         self.deviceButton1.setIcon(FIF.MORE)
         self.deviceButton2.setIcon(FIF.MORE)
         self.deviceButton1.setMenu(self.menu)
         self.deviceButton2.setMenu(self.menu)
-        
+
         self.addDeviceButton.setIcon(FIF.ADD)
 
 
