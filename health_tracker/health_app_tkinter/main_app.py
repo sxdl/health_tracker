@@ -3,6 +3,7 @@ from tkinter import ttk
 from . show_profile import ShowProfileWindow
 from .my_statistics import MyStatisticsWindow
 from ..tracker.user import User
+from . import devices as util
 
 from ttkbootstrap import Style
 
@@ -30,6 +31,8 @@ class HealthTrackingApp:
         # “设备”页面
         self.device_frame = ttk.Frame(self.nav_bar)
         self.create_device_page()
+        self.device_list = []  # 创建一个空的设备列表
+        self.device_label = None  # 初始化设备标签
 
         # “我的”页面
         self.my_frame = ttk.Frame(self.nav_bar)
@@ -42,6 +45,57 @@ class HealthTrackingApp:
 
         # 显示导航栏
         self.nav_bar.pack(expand=1, fill="both")
+    def create_device_page(self):
+        # 在“设备”页面显示已绑定设备
+        # TODO: 实现显示已绑定设备的功能
+        self.device_label = ttk.Label(self.device_frame, text="已绑定设备列表: ")
+        self.device_label.grid(row=0, column=0, pady=10, padx=10, sticky="w")
+
+        print(f"After create_device_page: {self.device_label}")  # 打印self.device_label的值
+
+        # 创建“添加设备”按钮
+        add_device_button = ttk.Button(self.device_frame, text="添加设备", command=self.add_device)
+        add_device_button.grid(row=1, column=0, pady=10, padx=10, sticky="w")
+
+        # 创建设备使用时间按钮并设置为不可见
+        self.device_buttons = {
+            "手机": ttk.Button(self.device_frame, text="手机日使用时间", command=self.record_phone_usage),
+            "无线耳机": ttk.Button(self.device_frame, text="无线耳机日使用时间", command=self.record_earphone_usage),
+            "电脑": ttk.Button(self.device_frame, text="电脑日使用时间", command=self.record_computer_usage),
+            "Pad": ttk.Button(self.device_frame, text="Pad日使用时间", command=self.record_pad_usage),
+        }
+        for i, button in enumerate(self.device_buttons.values()):
+            button.grid(row=i + 1, column=2, pady=10, padx=10, sticky="w")
+            button.grid_remove()  # 设置按钮为不可见
+
+
+    def add_device(self):
+        # TODO: 显示已有设备列表
+        # TODO: 实现添加新设备的功能
+        self.new_window = tk.Toplevel(self.root)
+        for device in self.device_buttons.keys():
+            button = ttk.Button(self.new_window, text=device, command=lambda d=device: self.add_device_type(d))
+            button.pack()
+
+    def add_device_type(self, device):
+        self.device_buttons[device].grid()  # 设置按钮为可见
+        self.device_list.append(device)  # 将设备添加到设备列表中
+        self.device_label.config(text=f"已绑定设备列表: {', '.join(self.device_list)}")  # 更新设备列表的显示
+        self.new_window.destroy()
+        print(f"After add_device_type: {self.device_label}")  # 打印self.device_label的值
+
+    def record_phone_usage(self):
+        phone_usage_window = tk.Toplevel(self.root)
+        phone_usage_page = util.PhoneUsageWindow(phone_usage_window, self.user.user_id, "earphone_usage.txt")
+    def record_earphone_usage(self):
+        earphone_usage_window = tk.Toplevel(self.root)
+        earphone_usage_page = util.EarphoneUsageWindow(earphone_usage_window, self.user.user_id, "earphone_usage.txt")
+    def record_computer_usage(self):
+        computer_usage_window = tk.Toplevel(self.root)
+        computer_usage_page = util.ComputerUsageWindow(computer_usage_window, self.user.user_id, "earphone_usage.txt")
+    def record_pad_usage(self):
+        pad_usage_window = tk.Toplevel(self.root)
+        pad_usage_page = util.PadUsageWindow(pad_usage_window, self.user.user_id, "earphone_usage.txt")
 
     def center_window(self, window):
         window.update_idletasks()
@@ -64,15 +118,6 @@ class HealthTrackingApp:
         profile_button = ttk.Button(self.my_frame, text="个人资料", command=self.show_profile)
         profile_button.grid(row=2, column=0, pady=10, padx=10, sticky="w")
 
-    def create_device_page(self):
-        # 在“设备”页面显示已绑定设备
-        # TODO: 实现显示已绑定设备的功能
-        device_label = ttk.Label(self.device_frame, text="已绑定设备列表: 设备1, 设备2")
-        device_label.grid(row=0, column=0, pady=10, padx=10, sticky="w")
-
-        # 创建“添加设备”按钮
-        add_device_button = ttk.Button(self.device_frame, text="添加设备", command=self.add_device)
-        add_device_button.grid(row=1, column=0, pady=10, padx=10, sticky="w")
 
     def create_health_page(self):
         # 在“健康”页面显示活动记录
@@ -102,10 +147,6 @@ class HealthTrackingApp:
         self.center_window(profile_window)
         edit_profile = ShowProfileWindow(profile_window, self.user)
 
-    def add_device(self):
-        # TODO: 显示已有设备列表
-        # TODO: 实现添加新设备的功能
-        print("添加新设备")
 
     def show_activity_records(self):
         # TODO: 实现查看活动记录的功能

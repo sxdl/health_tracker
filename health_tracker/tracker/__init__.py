@@ -8,3 +8,6 @@ __all__.extend(user.__all__)
 
 from . util import *
 __all__.extend(util.__all__)
+
+from . file_handler import *
+__all__.extend(file_handler.__all__)

@@ -152,3 +152,22 @@ class DataStimulator:
             hours.append(active_hours(dt, time, value))
 
         UserLocalFileStorage.write_data(user_id, 'active_hours', hours)
+
+
+class UserInputData:
+    @staticmethod
+    def input_data(user_id: str, filename: str):
+        print(f"请输入要存储在 {filename} 中的数据：")
+        data = input()
+        UserLocalFileStorage.write_data(user_id, filename, data)
+
+    @staticmethod
+    def update_data(user_id: str, filename: str):
+        print(f"请输入要更新在 {filename} 中的数据：")
+        data = input()
+        if UserLocalFileStorage.check_file(user_id, filename):
+            old_data = UserLocalFileStorage.read_data(user_id, filename)
+            old_data.append(data)
+            UserLocalFileStorage.write_data(user_id, filename, old_data)
+        else:
+            print(f"{filename} 文件不存在。")

@@ -51,9 +51,9 @@ class User:
         """Load profile"""
         pass
 
-    def get_profile(self) -> dict:
+    def get_profile(self) -> namedtuple:
         """获取用户的个人资料:gender, birth, height, weight"""
-        return self.profile.get_data()
+        return self.profile.get_namedtuple_data()
 
 
 
