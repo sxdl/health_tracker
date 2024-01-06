@@ -4,6 +4,7 @@ import io
 import os
 import sys
 import json
+from abc import ABC, abstractmethod
 from .data import ACTIVITY_DATA_TYPES, STATIC_DATA_TYPES
 
 __all__ = ["user_file_handler_factory", "UserMultiFieldFileHandler", "UserSingleFieldFileHandler"]  # 对外提供的接口类名
@@ -172,7 +173,35 @@ class RandomFileHandler:
         os.remove(filepath)
 
 
-class MultiFieldDataFileHandler(RandomFileHandler):
+class MultiFieldDataFileHandlerInterface(ABC):
+    """多字段数据文件读写接口类"""
+
+    @staticmethod
+    @abstractmethod
+    def format_data(data) -> str:
+        """将数据格式化为字符串"""
+        pass
+
+    @staticmethod
+    @abstractmethod
+    def parse_data(data: str) -> tuple:
+        """将字符串解析为数据"""
+        pass
+
+    @staticmethod
+    @abstractmethod
+    def search_by_field(filepath: str, field: int, value) -> int:
+        """
+        根据字段查找匹配数据的行号
+        :param filepath:
+        :param field: 字段号，从0开始
+        :param value: 字段值
+        :return: 行号，未找到返回-1
+        """
+        pass
+
+
+class MultiFieldDataFileHandler(RandomFileHandler, MultiFieldDataFileHandlerInterface):
     """多字段数据文件读写类"""
 
     @staticmethod
@@ -232,15 +261,26 @@ class MultiFieldDataFileHandler(RandomFileHandler):
         return -1
 
 
-class UserSingleFieldFileHandler(RandomFileHandler):
-    """用户单字段数据文件读写类"""
-
+class BaseUserFileHandler(ABC):
+    """用户文件读写基类"""
     def __init__(self, user_id: str, data_type: str):
         self._user_id = user_id
         self._data_type = data_type
         self._filepath = f'local/{user_id}/{data_type}.txt'
 
         # self.check_file()
+
+
+class UserSingleFieldFileHandler(BaseUserFileHandler, RandomFileHandler):
+    """用户单字段数据文件读写类"""
+
+    def __init__(self, user_id: str, data_type: str):
+        super().__init__(user_id, data_type)
+        # self._user_id = user_id
+        # self._data_type = data_type
+        # self._filepath = f'local/{user_id}/{data_type}.txt'
+        #
+        # # self.check_file()
 
     def check_file(self):
         return RandomFileHandler.check_file(self._filepath)
@@ -273,15 +313,16 @@ class UserSingleFieldFileHandler(RandomFileHandler):
         RandomFileHandler.delete_file(self._filepath)
 
 
-class UserMultiFieldFileHandler(MultiFieldDataFileHandler):
+class UserMultiFieldFileHandler(BaseUserFileHandler, MultiFieldDataFileHandler):
     """用户多字段数据文件读写类"""
 
     def __init__(self, user_id: str, data_type: str):
-        self._user_id = user_id
-        self._data_type = data_type
-        self._filepath = f'local/{user_id}/{data_type}.txt'
-
-        self.check_file()
+        super().__init__(user_id, data_type)
+        # self._user_id = user_id
+        # self._data_type = data_type
+        # self._filepath = f'local/{user_id}/{data_type}.txt'
+        #
+        # self.check_file()
 
     def check_file(self):
         return RandomFileHandler.check_file(self._filepath)
