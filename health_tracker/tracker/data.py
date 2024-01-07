@@ -4,8 +4,12 @@ from abc import ABC, abstractmethod
 from collections import namedtuple, defaultdict
 from datetime import date as dt_date
 from enum import Enum
+import time
+from .consts import *
+from .decorators import print_run_time
 
 __all__ = [
+    "ActivityDataFileHandler",
     "ActivityDataStatistics",
     "StepCount",
     "Distance",
@@ -47,7 +51,7 @@ class DATA_TYPES(Enum):
     ACTIVE_HOURS = 'active_hours'
 
 
-from .util import UserLocalFileStorage as LocalFileStorage
+# from .util import UserLocalFileStorage as LocalFileStorage
 from .file_handler import user_file_handler_factory, UserMultiFieldFileHandler, UserSingleFieldFileHandler
 
 
@@ -114,39 +118,70 @@ class ActivityDataStatistics:
     """活动数据统计类"""
 
     def __init__(self, user_id):
-        self.steps = StepCount(user_id)
-        self.distance = Distance(user_id)
-        self.flights_climbed = FlightsClimbed(user_id)
-        self.active_energy_burned = ActiveEnergyBurned(user_id)
-        self.exercise_minutes = ExerciseMinutes(user_id)
-        self.active_hours = ActiveHours(user_id)
+        # self.steps = StepCount(user_id)
+        # self.distance = Distance(user_id)
+        # self.flights_climbed = FlightsClimbed(user_id)
+        # self.active_energy_burned = ActiveEnergyBurned(user_id)
+        # self.exercise_minutes = ExerciseMinutes(user_id)
+        # self.active_hours = ActiveHours(user_id)
 
-        # self.data = defaultdict(list, {
-        #     'steps': [],
-        #     'distance': [],
-        #     'flights_climbed': [],
-        #     'active_energy_burned': []
-        # })
-
-    def get_all_daily_total(self):
-        return {
-            'steps': self.steps.get_all_daily_total(),
-            'distance': self.distance.get_all_daily_total(),
-            'flights_climbed': self.flights_climbed.get_all_daily_total(),
-            'active_energy_burned': self.active_energy_burned.get_all_daily_total(),
-            'exercise_minutes': self.exercise_minutes.get_all_daily_total(),
-            'active_hours': self.active_hours.get_all_daily_total()
+        self.activity_datas = {
+            'steps': ActivityDataFileHandler(user_id, 'step_count'),
+            'distance': ActivityDataFileHandler(user_id, 'distance'),
+            'flights_climbed': ActivityDataFileHandler(user_id, 'flights_climbed'),
+            'active_energy_burned': ActivityDataFileHandler(user_id, 'active_energy_burned'),
+            'exercise_minutes': ActivityDataFileHandler(user_id, 'exercise_minutes'),
+            'active_hours': ActivityDataFileHandler(user_id, 'active_hours')
         }
+
+        # self.steps = ActivityDataFileHandler(user_id, 'step_count')
+        # self.distance = ActivityDataFileHandler(user_id, 'distance')
+        # self.flights_climbed = ActivityDataFileHandler(user_id, 'flights_climbed')
+        # self.active_energy_burned = ActivityDataFileHandler(user_id, 'active_energy_burned')
+        # self.exercise_minutes = ActivityDataFileHandler(user_id, 'exercise_minutes')
+        # self.active_hours = ActivityDataFileHandler(user_id, 'active_hours')
+
+    def get_all_daily_total(self) -> dict:
+        """
+        获取所有历史数据总和，返回一个字典
+        :return:
+        """
+        return {key: value.get_all_daily_total() for key, value in self.activity_datas.items()}
+
+    # def get_all_daily_total(self):
+    #     """
+    #     获取所有日期的数据总和，返回一个字典
+    #     :return:
+    #     """
+    #     return {
+    #         'steps': self.steps.get_all_daily_total(),
+    #         'distance': self.distance.get_all_daily_total(),
+    #         'flights_climbed': self.flights_climbed.get_all_daily_total(),
+    #         'active_energy_burned': self.active_energy_burned.get_all_daily_total(),
+    #         'exercise_minutes': self.exercise_minutes.get_all_daily_total(),
+    #         'active_hours': self.active_hours.get_all_daily_total()
+    #     }
 
     def get_latest_daily_total(self) -> dict:
-        return {
-            'steps': self.steps.get_latest_daily_total(),
-            'distance': self.distance.get_latest_daily_total(),
-            'flights_climbed': self.flights_climbed.get_latest_daily_total(),
-            'active_energy_burned': self.active_energy_burned.get_latest_daily_total(),
-            'exercise_minutes': self.exercise_minutes.get_latest_daily_total(),
-            'active_hours': self.active_hours.get_latest_daily_total()
-        }
+        """
+        获取最近一天的数据总和，返回一个字典
+        :return: {'steps', 'distance', 'flights_climbed', 'active_energy_burned, 'exercise_minutes', 'active_hours'}
+        """
+        return {key: value.get_latest_daily_total() for key, value in self.activity_datas.items()}
+
+    # def get_latest_daily_total(self) -> dict:
+    #     """
+    #     获取最近一天的数据总和，返回一个字典
+    #     :return: {'steps', 'distance', 'flights_climbed', 'active_energy_burned, 'exercise_minutes', 'active_hours'}
+    #     """
+    #     return {
+    #         'steps': self.steps.get_latest_daily_total(),
+    #         'distance': self.distance.get_latest_daily_total(),
+    #         'flights_climbed': self.flights_climbed.get_latest_daily_total(),
+    #         'active_energy_burned': self.active_energy_burned.get_latest_daily_total(),
+    #         'exercise_minutes': self.exercise_minutes.get_latest_daily_total(),
+    #         'active_hours': self.active_hours.get_latest_daily_total()
+    #     }
 
 
 class WeightBaseData(BaseData):
@@ -160,7 +195,7 @@ class WeightBaseData(BaseData):
 
 
 class Profile(BaseData):
-    """个人资料类"""
+    """个人资料类， 是静态数据类"""
 
     def __init__(self, user_id):
         self._datatype = DATA_TYPES.PROFILE.value
@@ -179,18 +214,18 @@ class Profile(BaseData):
         弃用
         :return:
         """
-        if LocalFileStorage.check_file(self._user_id, self._datatype):
-            self.data = self._profile(*LocalFileStorage.read_data(self._user_id, self._datatype))
-        else:
-            self.data = self._profile('未知', '未知', '未知', '未知')
-            self.save_data()
+        # if LocalFileStorage.check_file(self._user_id, self._datatype):
+        #     self.data = self._profile(*LocalFileStorage.read_data(self._user_id, self._datatype))
+        # else:
+        #     self.data = self._profile('未知', '未知', '未知', '未知')
+        #     self.save_data()
 
     def save_data(self):
         """
         弃用
         :return:
         """
-        LocalFileStorage.write_data(self._user_id, self._datatype, self.data)
+        # LocalFileStorage.write_data(self._user_id, self._datatype, self.data)
 
     def update_data(self, data_value: list):
         """
@@ -307,12 +342,13 @@ class UpdateFromFile:
 
     @staticmethod
     def auto_update(user_id, data_type):
-        if LocalFileStorage.check_file(user_id, data_type):
-            data = LocalFileStorage.read_data(user_id, data_type)
-        else:
-            raise FileNotFoundError(f'用户 {user_id} 的 {data_type} 数据文件不存在')
-            # data = None
-        return data
+        # if LocalFileStorage.check_file(user_id, data_type):
+        #     data = LocalFileStorage.read_data(user_id, data_type)
+        # else:
+        #     raise FileNotFoundError(f'用户 {user_id} 的 {data_type} 数据文件不存在')
+        #     # data = None
+        # return data
+        pass
 
 
 class AutoUpdateFromMultipleWays(UpdateFromPhone, UpdateFromWatch, UpdateFromFile):
@@ -344,8 +380,102 @@ class AutoUpdateFromMultipleWays(UpdateFromPhone, UpdateFromWatch, UpdateFromFil
 #                 return way.auto_update
 
 
-class ActivityData(BaseData, AutoUpdateFromMultipleWays):
+class ActivityDataFileHandler(UserMultiFieldFileHandler):
+    """活动数据文件处理类"""
+
+    def __init__(self, user_id, data_type):
+        """
+        从ACITIVITY_DATA_TYPES中选择一个数据类型
+        数据类型包括：['step_count', 'distance', 'flights_climbed', 'active_energy_burned', 'exercise_minutes', 'active_hours']
+        :param user_id:
+        :param data_type:
+        """
+        super().__init__(user_id, data_type)
+        self._FIELD_LIST = 'date', 'time', 'value'
+        self._activity_data = namedtuple(self._data_type, self._FIELD_LIST)
+
+    def read_line(self, pos: int) -> tuple:
+        """
+        读取指定行的数据
+        :param pos:
+        :return:
+        """
+        return self._activity_data(*super().read_line(pos))
+
+    @print_run_time
+    def get_data_by_date(self, date: str) -> list:
+        """
+        读取指定日期的数据
+        :param date:
+        :return: 返回一个列表，列表中的每个元素是一个namedtuple(date, time, value)
+        """
+        # date_str = date.strftime('%Y-%m-%d')
+        selected_lines = self.search_by_field_all(0, date)
+        return [self.read_line(i) for i in selected_lines]
+
+    def get_data_by_date_range(self, start_date: str, end_date: str) -> list:
+        """
+        读取指定日期范围内的数据
+        :param start_date:
+        :param end_date:
+        :return: 返回一个列表，列表中的每个元素是一个namedtuple(date, time, value)
+        """
+        # start_date_str = start_date.strftime('%Y-%m-%d')
+        # end_date_str = end_date.strftime('%Y-%m-%d')
+        selected_lines = self.search_by_field_range(0, (start_date, end_date))
+        return [self.read_line(i) for i in selected_lines]
+
+    @print_run_time
+    def get_daily_total(self, date: str):
+        """
+        获取指定日期的数据总和
+        :param date:
+        :return:
+        """
+        return sum([float(x.value) for x in self.get_data_by_date(date)])
+
+    def get_daily_total_range(self, start_date: str, end_date: str):
+        """
+        获取指定日期范围内的数据总和
+        :param start_date:
+        :param end_date:
+        :return:
+        """
+        return sum([x.value for x in self.get_data_by_date_range(start_date, end_date)])
+
+    def get_start_date(self):
+        """
+        获取数据中的最早日期
+        :return:
+        """
+        return self.read_line(0).date
+
+    def get_end_date(self):
+        """
+        获取数据中的最晚日期
+        :return:
+        """
+        return self.read_line(-1).date
+
+    @print_run_time
+    def get_latest_daily_total(self):
+        """
+        获取最近一天的数据总和
+        :return:
+        """
+        return self.get_daily_total(self.get_end_date())
+
+    def get_all_daily_total(self) -> float:
+        """
+        获取历史数据总和
+        :return:
+        """
+        return sum([x.value for x in self.read_lines([x for x in range(self.get_file_length())])])
+
+
+class ActivityData(BaseData):
     """
+    弃用，使用ActivityDataFileHandler代替
     活动数据类, 数据格式为：(date, time, value)
     """
 
@@ -359,21 +489,35 @@ class ActivityData(BaseData, AutoUpdateFromMultipleWays):
         self._datatype = data_type.value  # 数据类型
         self._user_id = user_id
         self._activity_data = namedtuple(self._datatype, ['date', 'time', 'value'])
-        self.data = None
-        self._update_ways = [UpdateFromWatch, UpdateFromPhone, UpdateFromFile]
-        # todo 添加对应的handler，用于随机读写数据文件
+        # self.data = None
+        self._update_ways = [UpdateFromWatch, UpdateFromPhone, UpdateFromFile]  # TODO: 优化更新方式的选择
+        self._data_handler: UserMultiFieldFileHandler = user_file_handler_factory(self._user_id, self._datatype)
 
-        self.load_data()
+        # self.load_data()
 
     def load_data(self):
+        """
+        弃用
+        :return:
+        """
         self.data = [self._activity_data(*x) for x in
                      self.auto_update(self._update_ways)(self._user_id, self._datatype)]
 
     def save_data(self):
+        """
+        弃用
+        :return:
+        """
         pass
 
-    def get_data_by_date(self, date: dt_date):
-        return [x for x in self.data if x.date == date]
+    def get_data_by_date(self, date: dt_date) -> list:
+        """
+        获取指定日期的所有数据
+        :param date:
+        :return: 返回一个列表，列表中的每个元素是一个namedtuple(date, time, value)
+        """
+        # return [x for x in self.data if x.date == date]
+        return [self._activity_data(*x) for x in self._data_handler.read_data_by_date(date)]
 
     def get_daily_total(self, date: dt_date):
         return sum([x.value for x in self.get_data_by_date(date)])

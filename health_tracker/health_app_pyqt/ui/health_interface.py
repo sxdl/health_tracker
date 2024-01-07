@@ -10,8 +10,9 @@ from .health_interface_ui import Ui_HealthInterface
 
 from ...tracker import User
 
+
 class HealthInterface(QWidget, Ui_HealthInterface):
-    def __init__(self, user: User, parent = None):
+    def __init__(self, user: User, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
 
