@@ -4,6 +4,7 @@ import os
 from collections import namedtuple, defaultdict
 from datetime import timedelta, datetime, date
 import random
+from .data import ActivityDataFileHandler
 
 __all__ = ["UserLocalFileStorage", "DataStimulator"]
 
@@ -13,6 +14,12 @@ class LocalFileStorage:
     def write_data(data, filepath: str):
         with open(filepath, 'w') as file:
             json.dump(data, file)
+
+    @staticmethod
+    def append_data(data, filepath: str):
+        with open(filepath, 'a') as file:
+            json.dump(data, file)
+            file.write('\n')
 
     @staticmethod
     def read_data(filepath: str):
@@ -33,17 +40,22 @@ class LocalFileStorage:
 class UserLocalFileStorage:
     @staticmethod
     def write_data(user_id: str, filename: str, data):
-        filepath = f'local/{user_id}/{filename}.json'
+        filepath = f'local/{user_id}/{filename}.txt'
         LocalFileStorage.write_data(data, filepath)
 
     @staticmethod
+    def append_data(user_id: str, filename: str, data):
+        filepath = f'local/{user_id}/{filename}.txt'
+        LocalFileStorage.append_data(data, filepath)
+
+    @staticmethod
     def read_data(user_id: str, filename: str):
-        filepath = f'local/{user_id}/{filename}.json'
+        filepath = f'local/{user_id}/{filename}.txt'
         return LocalFileStorage.read_data(filepath)
 
     @staticmethod
     def check_file(user_id: str, filename: str):
-        filepath = f'local/{user_id}/{filename}.json'
+        filepath = f'local/{user_id}/{filename}.txt'
         return LocalFileStorage.check_file(filepath)
 
 
@@ -64,14 +76,21 @@ class DataStimulator:
         steps = []
         # 从三年前开始记录
         start_date = date.today() - timedelta(days=3 * 365)
+
+        file_handler = ActivityDataFileHandler(user_id, 'step_count')
+        file_handler.check_file()
+        file_handler.delete_file()
+
         for i in range(3 * 365 * 48):
             dt = (start_date + timedelta(days=i // 48)).strftime('%Y-%m-%d')
             # 从0点开始，每半小时记录一次
             time = (datetime.strptime(dt, '%Y-%m-%d') + timedelta(minutes=30 * (i % 48))).strftime('%H:%M')
             value = random.randint(0, 1000)
-            steps.append(step_count(dt, time, value))
+            # steps.append(step_count(dt, time, value))
+            data = step_count(dt, time, value)
+            file_handler.append_line(data)
 
-        UserLocalFileStorage.write_data(user_id, 'step_count', steps)
+        # UserLocalFileStorage.write_data(user_id, 'step_count', steps)
 
     @staticmethod
     def stimulate_distance(user_id: str):
@@ -80,14 +99,21 @@ class DataStimulator:
         distances = []
         # 从三年前开始记录
         start_date = date.today() - timedelta(days=3 * 365)
+
+        file_handler = ActivityDataFileHandler(user_id, 'distance')
+        file_handler.check_file()
+        file_handler.delete_file()
+
         for i in range(3 * 365 * 48):
             dt = (start_date + timedelta(days=i // 48)).strftime('%Y-%m-%d')
             # 从0点开始，每半小时记录一次
             time = (datetime.strptime(dt, '%Y-%m-%d') + timedelta(minutes=30 * (i % 48))).strftime('%H:%M')
             value = random.randint(0, 1000) / 1000
-            distances.append(distance(dt, time, value))
+            # distances.append(distance(dt, time, value))
+            data = distance(dt, time, value)
+            file_handler.append_line(data)
 
-        UserLocalFileStorage.write_data(user_id, 'distance', distances)
+        # UserLocalFileStorage.write_data(user_id, 'distance', distances)
 
     @staticmethod
     def stimulate_flights_climbed(user_id: str):
@@ -96,14 +122,21 @@ class DataStimulator:
         flights = []
         # 从三年前开始记录
         start_date = date.today() - timedelta(days=3 * 365)
+
+        file_handler = ActivityDataFileHandler(user_id, 'flights_climbed')
+        file_handler.check_file()
+        file_handler.delete_file()
+
         for i in range(3 * 365 * 48):
             dt = (start_date + timedelta(days=i // 48)).strftime('%Y-%m-%d')
             # 从0点开始，每半小时记录一次
             time = (datetime.strptime(dt, '%Y-%m-%d') + timedelta(minutes=30 * (i % 48))).strftime('%H:%M')
             value = random.randint(0, 10)
-            flights.append(flights_climbed(dt, time, value))
+            # flights.append(flights_climbed(dt, time, value))
+            data = flights_climbed(dt, time, value)
+            file_handler.append_line(data)
 
-        UserLocalFileStorage.write_data(user_id, 'flights_climbed', flights)
+        # UserLocalFileStorage.write_data(user_id, 'flights_climbed', flights)
 
     @staticmethod
     def stimulate_active_energy_burned(user_id: str):
@@ -112,14 +145,21 @@ class DataStimulator:
         energies = []
         # 从三年前开始记录
         start_date = date.today() - timedelta(days=3 * 365)
+
+        file_handler = ActivityDataFileHandler(user_id, 'active_energy_burned')
+        file_handler.check_file()
+        file_handler.delete_file()
+
         for i in range(3 * 365 * 48):
             dt = (start_date + timedelta(days=i // 48)).strftime('%Y-%m-%d')
             # 从0点开始，每半小时记录一次
             time = (datetime.strptime(dt, '%Y-%m-%d') + timedelta(minutes=30 * (i % 48))).strftime('%H:%M')
             value = random.randint(0, 300)
-            energies.append(active_energy_burned(dt, time, value))
+            # energies.append(active_energy_burned(dt, time, value))
+            data = active_energy_burned(dt, time, value)
+            file_handler.append_line(data)
 
-        UserLocalFileStorage.write_data(user_id, 'active_energy_burned', energies)
+        # UserLocalFileStorage.write_data(user_id, 'active_energy_burned', energies)
 
     @staticmethod
     def stimulate_exercise_minutes(user_id: str):
@@ -128,14 +168,21 @@ class DataStimulator:
         times = []
         # 从三年前开始记录
         start_date = date.today() - timedelta(days=3 * 365)
+
+        file_handler = ActivityDataFileHandler(user_id, 'exercise_minutes')
+        file_handler.check_file()
+        file_handler.delete_file()
+
         for i in range(3 * 365 * 48):
             dt = (start_date + timedelta(days=i // 48)).strftime('%Y-%m-%d')
             # 从0点开始，每半小时记录一次
             time = (datetime.strptime(dt, '%Y-%m-%d') + timedelta(minutes=30 * (i % 48))).strftime('%H:%M')
             value = random.randint(0, 5)
-            times.append(exercise_time(dt, time, value))
+            # times.append(exercise_time(dt, time, value))
+            data = exercise_time(dt, time, value)
+            file_handler.append_line(data)
 
-        UserLocalFileStorage.write_data(user_id, 'exercise_minutes', times)
+        # UserLocalFileStorage.write_data(user_id, 'exercise_minutes', times)
 
     @staticmethod
     def stimulate_active_hours(user_id: str):
@@ -144,14 +191,21 @@ class DataStimulator:
         hours = []
         # 从三年前开始记录
         start_date = date.today() - timedelta(days=3 * 365)
+
+        file_handler = ActivityDataFileHandler(user_id, 'active_hours')
+        file_handler.check_file()
+        file_handler.delete_file()
+
         for i in range(3 * 365 * 24):
             dt = (start_date + timedelta(days=i // 24)).strftime('%Y-%m-%d')
             # 从0点开始，每小时记录一次
             time = (datetime.strptime(dt, '%Y-%m-%d') + timedelta(hours=i % 24)).strftime('%H:%M')
             value = random.randint(0, 1)
-            hours.append(active_hours(dt, time, value))
+            # hours.append(active_hours(dt, time, value))
+            data = active_hours(dt, time, value)
+            file_handler.append_line(data)
 
-        UserLocalFileStorage.write_data(user_id, 'active_hours', hours)
+        # UserLocalFileStorage.write_data(user_id, 'active_hours', hours)
 
 
 class UserInputData:

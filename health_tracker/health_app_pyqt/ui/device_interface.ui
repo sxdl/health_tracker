@@ -86,7 +86,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../resource/images/icon/smartwatch-app.png</normaloff>../resource/images/icon/smartwatch-app.png</iconset>
+          <normaloff>health_tracker/health_app_pyqt/resource/images/icon/smartwatch-app.png</normaloff>health_tracker/health_app_pyqt/resource/images/icon/smartwatch-app.png</iconset>
         </property>
        </widget>
       </item>
@@ -157,7 +157,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../resource/images/icon/smart-band.png</normaloff>../resource/images/icon/smart-band.png</iconset>
+          <normaloff>health_tracker/health_app_pyqt/resource/images/icon/smart-band.png</normaloff>health_tracker/health_app_pyqt/resource/images/icon/smart-band.png</iconset>
         </property>
        </widget>
       </item>

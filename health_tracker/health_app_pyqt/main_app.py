@@ -33,7 +33,6 @@ class MainWindow(SplitFluentWindow):
         self.addSubInterface(self.device_interface, FluentIcon.DICTIONARY_ADD,'Device Interface')
 
 
-
 def run_app():
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
     QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
