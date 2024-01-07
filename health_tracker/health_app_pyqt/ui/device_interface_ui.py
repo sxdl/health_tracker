@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'device_interface.ui'
+# Form implementation generated from reading ui file 'd:\Study\University\Y2T1\OOP\Health-Tracker\health_tracker\health_app_pyqt\ui\device_interface.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -24,10 +24,20 @@ class Ui_DeviceInterface(object):
         self.verticalLayout.setObjectName("verticalLayout")
         spacerItem = QtWidgets.QSpacerItem(966, 37, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         self.verticalLayout.addItem(spacerItem)
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_4.setContentsMargins(-1, -1, -1, 10)
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.TitleLabel = TitleLabel(DeviceInterface)
         self.TitleLabel.setProperty("pixelFontSize", 50)
         self.TitleLabel.setObjectName("TitleLabel")
-        self.verticalLayout.addWidget(self.TitleLabel)
+        self.horizontalLayout_4.addWidget(self.TitleLabel)
+        self.themeButton = ToolButton(DeviceInterface)
+        self.themeButton.setObjectName("themeButton")
+        self.horizontalLayout_4.addWidget(self.themeButton)
+        self.GitHubButton = ToolButton(DeviceInterface)
+        self.GitHubButton.setObjectName("GitHubButton")
+        self.horizontalLayout_4.addWidget(self.GitHubButton)
+        self.verticalLayout.addLayout(self.horizontalLayout_4)
         self.deviceCard1 = SimpleCardWidget(DeviceInterface)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -48,7 +58,7 @@ class Ui_DeviceInterface(object):
         self.deviceIcon1.setSizePolicy(sizePolicy)
         self.deviceIcon1.setMinimumSize(QtCore.QSize(60, 60))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("health_tracker/health_app_pyqt/resource/images/icon/smartwatch-app.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("d:\\Study\\University\\Y2T1\\OOP\\Health-Tracker\\health_tracker\\health_app_pyqt\\ui\\../resource/images/icon/smartwatch-app.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.deviceIcon1.setIcon(icon)
         self.deviceIcon1.setObjectName("deviceIcon1")
         self.horizontalLayout_2.addWidget(self.deviceIcon1)
@@ -87,7 +97,7 @@ class Ui_DeviceInterface(object):
         self.deviceIcon2.setSizePolicy(sizePolicy)
         self.deviceIcon2.setMinimumSize(QtCore.QSize(60, 60))
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("health_tracker/health_app_pyqt/resource/images/icon/smart-band.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("d:\\Study\\University\\Y2T1\\OOP\\Health-Tracker\\health_tracker\\health_app_pyqt\\ui\\../resource/images/icon/smart-band.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.deviceIcon2.setIcon(icon1)
         self.deviceIcon2.setObjectName("deviceIcon2")
         self.horizontalLayout_3.addWidget(self.deviceIcon2)
@@ -127,4 +137,4 @@ class Ui_DeviceInterface(object):
         self.deviceDescrp1.setText(_translate("DeviceInterface", "Smart Watch"))
         self.deviceName2.setText(_translate("DeviceInterface", "Mi Band 7"))
         self.deviceDescrp2.setText(_translate("DeviceInterface", "Smart Band"))
-from qfluentwidgets import BodyLabel, IconWidget, PrimaryDropDownToolButton, PrimaryToolButton, SimpleCardWidget, TitleLabel
+from qfluentwidgets import BodyLabel, IconWidget, PrimaryDropDownToolButton, PrimaryToolButton, SimpleCardWidget, TitleLabel, ToolButton
