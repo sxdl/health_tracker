@@ -1,14 +1,13 @@
 # codeing = utf-8
 import typing
 from PyQt5 import QtCore
-from PyQt5.QtCore import Qt, pyqtSignal, QUrl
-from PyQt5.QtGui import QFont, QIcon, QDesktopServices
+from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtWidgets import QWidget
 
-from qfluentwidgets import FluentIcon as FIF, toggleTheme
+from qfluentwidgets import FluentIcon as FIF
 from .health_interface_ui import Ui_HealthInterface
 
-from ..config import *
 from ...tracker import User
 
 
@@ -28,20 +27,20 @@ class HealthInterface(QWidget, Ui_HealthInterface):
 
         # 卡路里显示
         self.caloriesButton1.setIcon(FIF.MORE)
-        self.caloriesNum.setText(str(int(self.active_energy_burned)))
+        self.caloriesNum.setText(str(self.active_energy_burned))
         self.caloriesTarget = 27000
         self.caloriesProgressBar.setValue(min(int(self.active_energy_burned / self.caloriesTarget * 100), 100))
         
         # 时间显示
         # TODO: 此处未给出时间的接口，暂时用卡路里代替
         self.timeButton1.setIcon(FIF.MORE)
-        self.timeNum.setText(str(int(self.active_energy_burned)))
+        self.timeNum.setText(str(self.active_energy_burned))
         self.timeTarget = 6000
         self.timeProgressBar.setValue(min(int(self.active_energy_burned / self.timeTarget * 100), 100))
 
         # 步数显示
         self.stepsButton1.setIcon(FIF.MORE)
-        self.stepsNum.setText(str(int(self.steps)))
+        self.stepsNum.setText(str(self.steps))
         self.stepsTarget = 30000
         self.stepsProgressBar.setValue(min(int(self.steps / self.stepsTarget * 100), 100))
 
@@ -50,15 +49,5 @@ class HealthInterface(QWidget, Ui_HealthInterface):
         self.distanceNum.setText(str(int(self.distance)))
         self.distanceTarget = 60
         self.distanceProgressBar.setValue(min(int(self.distance / self.distanceTarget * 100), 100))
-
-        self.themeButton.setIcon(FIF.CONSTRACT)
-        self.themeButton.setToolTip("Change Theme")
-        self.themeButton.clicked.connect(lambda: toggleTheme(True))
-
-        self.GitHubButton.setIcon(FIF.GITHUB)
-        self.GitHubButton.setToolTip("GitHub")
-        self.GitHubButton.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(GITHUB)))
-
-
 
         
