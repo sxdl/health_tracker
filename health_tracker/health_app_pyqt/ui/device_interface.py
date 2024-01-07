@@ -34,6 +34,6 @@ class DeviceInterface(QWidget, Ui_DeviceInterface):
         self.deviceButton1.setMenu(self.menu)
         self.deviceButton2.setMenu(self.menu)
 
-        self.addDeviceButton.setIcon(FIF.ADD)
+        self.addDeviceButton.setIcon(FIF.ADD_TO)
 
 

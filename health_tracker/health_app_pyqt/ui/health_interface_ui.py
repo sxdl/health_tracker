@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'health_interface.ui'
+# Form implementation generated from reading ui file 'd:\Study\University\Y2T1\OOP\Health-Tracker\health_tracker\health_app_pyqt\ui\health_interface.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_HealthInterface(object):
     def setupUi(self, HealthInterface):
         HealthInterface.setObjectName("HealthInterface")
-        HealthInterface.resize(999, 800)
+        HealthInterface.resize(999, 873)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -46,7 +46,7 @@ class Ui_HealthInterface(object):
         self.stepsIcon.setSizePolicy(sizePolicy)
         self.stepsIcon.setMinimumSize(QtCore.QSize(30, 30))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("health_tracker/health_app_pyqt/resource/images/icon/step.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("d:\\Study\\University\\Y2T1\\OOP\\Health-Tracker\\health_tracker\\health_app_pyqt\\ui\\../resource/images/icon/step.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.stepsIcon.setIcon(icon)
         self.stepsIcon.setObjectName("stepsIcon")
         self.horizontalLayout_6.addWidget(self.stepsIcon)
@@ -98,7 +98,7 @@ class Ui_HealthInterface(object):
         self.CaloriesIcon_3.setSizePolicy(sizePolicy)
         self.CaloriesIcon_3.setMinimumSize(QtCore.QSize(30, 30))
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("health_tracker/health_app_pyqt/resource/images/icon/chronometer.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("d:\\Study\\University\\Y2T1\\OOP\\Health-Tracker\\health_tracker\\health_app_pyqt\\ui\\../resource/images/icon/chronometer.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.CaloriesIcon_3.setIcon(icon1)
         self.CaloriesIcon_3.setObjectName("CaloriesIcon_3")
         self.horizontalLayout_4.addWidget(self.CaloriesIcon_3)
@@ -150,7 +150,7 @@ class Ui_HealthInterface(object):
         self.CaloriesIcon.setSizePolicy(sizePolicy)
         self.CaloriesIcon.setMinimumSize(QtCore.QSize(30, 30))
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("health_tracker/health_app_pyqt/resource/images/icon/calories.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap("d:\\Study\\University\\Y2T1\\OOP\\Health-Tracker\\health_tracker\\health_app_pyqt\\ui\\../resource/images/icon/calories.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.CaloriesIcon.setIcon(icon2)
         self.CaloriesIcon.setObjectName("CaloriesIcon")
         self.horizontalLayout_2.addWidget(self.CaloriesIcon)
@@ -202,7 +202,7 @@ class Ui_HealthInterface(object):
         self.distanceIcon.setSizePolicy(sizePolicy)
         self.distanceIcon.setMinimumSize(QtCore.QSize(30, 30))
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("health_tracker/health_app_pyqt/resource/images/icon/distance.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap("d:\\Study\\University\\Y2T1\\OOP\\Health-Tracker\\health_tracker\\health_app_pyqt\\ui\\../resource/images/icon/distance.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.distanceIcon.setIcon(icon3)
         self.distanceIcon.setObjectName("distanceIcon")
         self.horizontalLayout_3.addWidget(self.distanceIcon)

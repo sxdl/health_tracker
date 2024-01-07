@@ -27,20 +27,20 @@ class HealthInterface(QWidget, Ui_HealthInterface):
 
         # 卡路里显示
         self.caloriesButton1.setIcon(FIF.MORE)
-        self.caloriesNum.setText(str(self.active_energy_burned))
+        self.caloriesNum.setText(str(int(self.active_energy_burned)))
         self.caloriesTarget = 27000
         self.caloriesProgressBar.setValue(min(int(self.active_energy_burned / self.caloriesTarget * 100), 100))
         
         # 时间显示
         # TODO: 此处未给出时间的接口，暂时用卡路里代替
         self.timeButton1.setIcon(FIF.MORE)
-        self.timeNum.setText(str(self.active_energy_burned))
+        self.timeNum.setText(str(int(self.active_energy_burned)))
         self.timeTarget = 6000
         self.timeProgressBar.setValue(min(int(self.active_energy_burned / self.timeTarget * 100), 100))
 
         # 步数显示
         self.stepsButton1.setIcon(FIF.MORE)
-        self.stepsNum.setText(str(self.steps))
+        self.stepsNum.setText(str(int(self.steps)))
         self.stepsTarget = 30000
         self.stepsProgressBar.setValue(min(int(self.steps / self.stepsTarget * 100), 100))
 
