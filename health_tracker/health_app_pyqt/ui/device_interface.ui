@@ -37,14 +37,27 @@
     </spacer>
    </item>
    <item>
-    <widget class="TitleLabel" name="TitleLabel">
-     <property name="text">
-      <string>My Device</string>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <property name="bottomMargin">
+      <number>10</number>
      </property>
-     <property name="pixelFontSize" stdset="0">
-      <number>50</number>
-     </property>
-    </widget>
+     <item>
+      <widget class="TitleLabel" name="TitleLabel">
+       <property name="text">
+        <string>My Device</string>
+       </property>
+       <property name="pixelFontSize" stdset="0">
+        <number>50</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="ToolButton" name="themeButton"/>
+     </item>
+     <item>
+      <widget class="ToolButton" name="GitHubButton"/>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="SimpleCardWidget" name="deviceCard1">
@@ -86,7 +99,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>health_tracker/health_app_pyqt/resource/images/icon/smartwatch-app.png</normaloff>health_tracker/health_app_pyqt/resource/images/icon/smartwatch-app.png</iconset>
+          <normaloff>../resource/images/icon/smartwatch-app.png</normaloff>../resource/images/icon/smartwatch-app.png</iconset>
         </property>
        </widget>
       </item>
@@ -157,7 +170,7 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>health_tracker/health_app_pyqt/resource/images/icon/smart-band.png</normaloff>health_tracker/health_app_pyqt/resource/images/icon/smart-band.png</iconset>
+          <normaloff>../resource/images/icon/smart-band.png</normaloff>../resource/images/icon/smart-band.png</iconset>
         </property>
        </widget>
       </item>
