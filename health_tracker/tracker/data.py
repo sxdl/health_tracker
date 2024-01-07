@@ -393,14 +393,18 @@ class ActivityDataFileHandler(UserMultiFieldFileHandler):
         super().__init__(user_id, data_type)
         self._FIELD_LIST = 'date', 'time', 'value'
         self._activity_data = namedtuple(self._data_type, self._FIELD_LIST)
+        self.check_file()
 
-    def read_line(self, pos: int) -> tuple:
+    def read_line(self, pos: int) -> [tuple, None]:
         """
         读取指定行的数据
         :param pos:
         :return:
         """
-        return self._activity_data(*super().read_line(pos))
+        data = super().read_line(pos)
+        if data is None:
+            return None
+        return self._activity_data(*data)
 
     @print_run_time
     def get_data_by_date(self, date: str) -> list:
@@ -432,6 +436,8 @@ class ActivityDataFileHandler(UserMultiFieldFileHandler):
         :param date:
         :return:
         """
+        if date is None:
+            return 0
         return sum([float(x.value) for x in self.get_data_by_date(date)])
 
     def get_daily_total_range(self, start_date: str, end_date: str):
@@ -455,6 +461,9 @@ class ActivityDataFileHandler(UserMultiFieldFileHandler):
         获取数据中的最晚日期
         :return:
         """
+        data = self.read_line(-1)
+        if data is None:
+            return None
         return self.read_line(-1).date
 
     @print_run_time

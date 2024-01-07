@@ -11,6 +11,7 @@ if __name__ == "__main__":
     run_parser = subparsers.add_parser("run", help="Run the program with a specified front-end framework.")
     run_parser.add_argument("-f", "--framework", choices=["tkinter", "pyQt"], default="tkinter",
                             help="Specify the front-end framework (tkinter or pyQt).")
+    run_parser.add_argument("-u", "--uid", nargs="?", default="0", help="Specify the user's UID (default is '0').")
 
     # Command: stimulator
     stimulator_parser = subparsers.add_parser("stimulator", help="Generate simulated data.")
@@ -27,10 +28,10 @@ if __name__ == "__main__":
 
         if args.framework == "tkinter":
             from health_tracker.health_app_tkinter import *
-            run_app()
+            run_app(user_id=args.uid)
         elif args.framework == "pyQt":
             from health_tracker.health_app_pyqt import *
-            run_app()
+            run_app(user_id=args.uid)
         else:
             raise ValueError(f"Unknown framework: {args.framework}")
 

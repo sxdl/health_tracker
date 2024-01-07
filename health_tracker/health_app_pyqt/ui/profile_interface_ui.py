@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'd:\Study\University\Y2T1\OOP\Health-Tracker\health_tracker\health_app_pyqt\ui\profile_interface.ui'
+# Form implementation generated from reading ui file 'profile_interface.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -44,7 +44,7 @@ class Ui_ProfileInterface(object):
         self.IconWidget.setSizePolicy(sizePolicy)
         self.IconWidget.setMinimumSize(QtCore.QSize(200, 200))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("d:\\Study\\University\\Y2T1\\OOP\\Health-Tracker\\health_tracker\\health_app_pyqt\\ui\\../resource/images/profile/user.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("health_tracker/health_app_pyqt/resource/images/profile/user.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.IconWidget.setIcon(icon)
         self.IconWidget.setObjectName("IconWidget")
         self.verticalLayout_3.addWidget(self.IconWidget)

@@ -56,17 +56,14 @@ class MainWindow(SplitFluentWindow):
         )
 
 
-
-
-
-def run_app():
+def run_app(user_id="0", user_name="游客"):
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
     QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
     QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
 
     app = QApplication(sys.argv)
     setTheme(Theme.DARK)
-    w = MainWindow()
+    w = MainWindow(User(user_id, user_name))
     w.show()
     sys.exit(app.exec_())
     
