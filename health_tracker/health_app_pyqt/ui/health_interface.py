@@ -1,13 +1,14 @@
 # codeing = utf-8
 import typing
 from PyQt5 import QtCore
-from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtGui import QFont, QIcon
+from PyQt5.QtCore import Qt, pyqtSignal, QUrl
+from PyQt5.QtGui import QFont, QIcon, QDesktopServices
 from PyQt5.QtWidgets import QWidget
 
-from qfluentwidgets import FluentIcon as FIF
+from qfluentwidgets import FluentIcon as FIF, toggleTheme
 from .health_interface_ui import Ui_HealthInterface
 
+from ..config import *
 from ...tracker import User
 
 
@@ -49,5 +50,15 @@ class HealthInterface(QWidget, Ui_HealthInterface):
         self.distanceNum.setText(str(int(self.distance)))
         self.distanceTarget = 60
         self.distanceProgressBar.setValue(min(int(self.distance / self.distanceTarget * 100), 100))
+
+        self.themeButton.setIcon(FIF.CONSTRACT)
+        self.themeButton.setToolTip("Change Theme")
+        self.themeButton.clicked.connect(lambda: toggleTheme(True))
+
+        self.GitHubButton.setIcon(FIF.GITHUB)
+        self.GitHubButton.setToolTip("GitHub")
+        self.GitHubButton.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(GITHUB)))
+
+
 
         

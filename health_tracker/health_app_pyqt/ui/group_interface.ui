@@ -31,14 +31,27 @@
     </spacer>
    </item>
    <item>
-    <widget class="TitleLabel" name="TitleLabel">
-     <property name="text">
-      <string>Group</string>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="bottomMargin">
+      <number>10</number>
      </property>
-     <property name="pixelFontSize" stdset="0">
-      <number>50</number>
-     </property>
-    </widget>
+     <item>
+      <widget class="TitleLabel" name="TitleLabel">
+       <property name="text">
+        <string>Group</string>
+       </property>
+       <property name="pixelFontSize" stdset="0">
+        <number>50</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="ToolButton" name="groupThemeButton"/>
+     </item>
+     <item>
+      <widget class="ToolButton" name="GitHubButton"/>
+     </item>
+    </layout>
    </item>
    <item>
     <spacer name="verticalSpacer_2">
@@ -56,6 +69,11 @@
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>ToolButton</class>
+   <extends>QToolButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
   <customwidget>
    <class>TitleLabel</class>
    <extends>QLabel</extends>

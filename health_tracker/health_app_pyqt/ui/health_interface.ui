@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>999</width>
-    <height>873</height>
+    <height>879</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -36,7 +36,7 @@
      </property>
     </spacer>
    </item>
-   <item row="2" column="0">
+   <item row="4" column="0">
     <layout class="QGridLayout" name="gridLayout" rowstretch="0,0" columnstretch="0,0">
      <property name="topMargin">
       <number>0</number>
@@ -511,15 +511,28 @@
      </item>
     </layout>
    </item>
-   <item row="1" column="0">
-    <widget class="TitleLabel" name="TitleLabel">
-     <property name="text">
-      <string>Health</string>
+   <item row="2" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <property name="bottomMargin">
+      <number>5</number>
      </property>
-     <property name="pixelFontSize" stdset="0">
-      <number>50</number>
-     </property>
-    </widget>
+     <item>
+      <widget class="TitleLabel" name="TitleLabel">
+       <property name="text">
+        <string>Health</string>
+       </property>
+       <property name="pixelFontSize" stdset="0">
+        <number>50</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="ToolButton" name="themeButton"/>
+     </item>
+     <item>
+      <widget class="ToolButton" name="GitHubButton"/>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1005</width>
-    <height>650</height>
+    <width>1053</width>
+    <height>865</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,34 +31,54 @@
     </spacer>
    </item>
    <item>
-    <widget class="TitleLabel" name="TitleLabel">
-     <property name="text">
-      <string>Profile</string>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="bottomMargin">
+      <number>10</number>
      </property>
-     <property name="pixelFontSize" stdset="0">
-      <number>50</number>
-     </property>
-    </widget>
+     <item>
+      <widget class="TitleLabel" name="TitleLabel">
+       <property name="text">
+        <string>Profile</string>
+       </property>
+       <property name="pixelFontSize" stdset="0">
+        <number>50</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="ToolButton" name="themeButton"/>
+     </item>
+     <item>
+      <widget class="ToolButton" name="GitHubButton"/>
+     </item>
+    </layout>
    </item>
    <item>
-    <widget class="IconWidget" name="IconWidget">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <property name="bottomMargin">
+      <number>30</number>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>200</width>
-       <height>200</height>
-      </size>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>../resource/images/profile/user.png</normaloff>../resource/images/profile/user.png</iconset>
-     </property>
-    </widget>
+     <item>
+      <widget class="IconWidget" name="IconWidget">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>200</height>
+        </size>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>../resource/images/profile/user.png</normaloff>../resource/images/profile/user.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="SimpleCardWidget" name="profileCard">
@@ -79,15 +99,15 @@
        <number>28</number>
       </property>
       <property name="verticalSpacing">
-       <number>20</number>
+       <number>10</number>
       </property>
-      <item row="1" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item row="2" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
         <property name="spacing">
          <number>30</number>
         </property>
         <item>
-         <widget class="StrongBodyLabel" name="nameCap">
+         <widget class="StrongBodyLabel" name="UIDCap">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -101,7 +121,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Name</string>
+           <string>UID</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -109,7 +129,56 @@
          </widget>
         </item>
         <item>
-         <widget class="BodyLabel" name="nameLabel">
+         <widget class="BodyLabel" name="UIDLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Body label</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="0" column="0">
+       <widget class="SubtitleLabel" name="SubtitleLabel_2">
+        <property name="text">
+         <string>About Me</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <property name="spacing">
+         <number>30</number>
+        </property>
+        <item>
+         <widget class="StrongBodyLabel" name="genderCap">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Gender</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="BodyLabel" name="genderLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -165,13 +234,13 @@
         </item>
        </layout>
       </item>
-      <item row="2" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item row="1" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
         <property name="spacing">
          <number>30</number>
         </property>
         <item>
-         <widget class="StrongBodyLabel" name="UIDCap">
+         <widget class="StrongBodyLabel" name="nameCap">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -185,7 +254,7 @@
            </size>
           </property>
           <property name="text">
-           <string>UID</string>
+           <string>Name</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -193,7 +262,7 @@
          </widget>
         </item>
         <item>
-         <widget class="BodyLabel" name="UIDLabel">
+         <widget class="BodyLabel" name="nameLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -206,55 +275,6 @@
          </widget>
         </item>
        </layout>
-      </item>
-      <item row="3" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <property name="spacing">
-         <number>30</number>
-        </property>
-        <item>
-         <widget class="StrongBodyLabel" name="genderCap">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>50</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Gender</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="BodyLabel" name="genderLabel">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Body label</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="0" column="0">
-       <widget class="SubtitleLabel" name="SubtitleLabel_2">
-        <property name="text">
-         <string>About Me</string>
-        </property>
-       </widget>
       </item>
      </layout>
     </widget>
@@ -262,6 +282,9 @@
    <item>
     <widget class="SimpleCardWidget" name="historyCard">
      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>10</number>
+      </property>
       <item>
        <widget class="SubtitleLabel" name="SubtitleLabel">
         <property name="text">
@@ -442,6 +465,11 @@
   </layout>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>ToolButton</class>
+   <extends>QToolButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
   <customwidget>
    <class>IconWidget</class>
    <extends>QWidget</extends>

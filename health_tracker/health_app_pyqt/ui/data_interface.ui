@@ -13,8 +13,8 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -30,35 +30,115 @@
      </property>
     </spacer>
    </item>
-   <item>
-    <widget class="TitleLabel" name="TitleLabel">
-     <property name="text">
-      <string>My Data</string>
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="bottomMargin">
+      <number>10</number>
      </property>
-     <property name="pixelFontSize" stdset="0">
-      <number>50</number>
-     </property>
+     <item>
+      <widget class="TitleLabel" name="TitleLabel">
+       <property name="text">
+        <string>My Data</string>
+       </property>
+       <property name="pixelFontSize" stdset="0">
+        <number>50</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="ToolButton" name="themeButton"/>
+     </item>
+     <item>
+      <widget class="ToolButton" name="GitHubButton"/>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="0">
+    <widget class="QStackedWidget" name="stackedWidget">
+     <widget class="QWidget" name="caloriesPage">
+      <layout class="QGridLayout" name="caloriesGridLayout">
+       <item row="0" column="0">
+        <widget class="CardWidget" name="caloriesCardWidget">
+         <layout class="QVBoxLayout" name="verticalLayout"/>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="timePage">
+      <layout class="QGridLayout" name="timeGridLayout">
+       <item row="0" column="0">
+        <widget class="CardWidget" name="timeCardWidget">
+         <layout class="QGridLayout" name="timeCardGridLayout">
+          <item row="0" column="0">
+           <widget class="DisplayLabel" name="DisplayLabel_2">
+            <property name="text">
+             <string>Time Diagram</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="stepPage">
+      <layout class="QGridLayout" name="stepGridLayout">
+       <item row="0" column="0">
+        <widget class="CardWidget" name="stepCardWidget">
+         <layout class="QGridLayout" name="stepCardGridLayout">
+          <item row="0" column="0">
+           <widget class="DisplayLabel" name="DisplayLabel_3">
+            <property name="text">
+             <string>Step Diagram</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
-   <item>
-    <spacer name="verticalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+   <item row="2" column="0">
+    <widget class="SegmentedWidget" name="pivot">
+     <property name="autoFillBackground">
+      <bool>false</bool>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
+    </widget>
    </item>
   </layout>
  </widget>
  <customwidgets>
   <customwidget>
+   <class>ToolButton</class>
+   <extends>QToolButton</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>CardWidget</class>
+   <extends>QFrame</extends>
+   <header>qfluentwidgets</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
    <class>TitleLabel</class>
    <extends>QLabel</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>DisplayLabel</class>
+   <extends>QLabel</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>Pivot</class>
+   <extends>QWidget</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>SegmentedWidget</class>
+   <extends>Pivot</extends>
    <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>

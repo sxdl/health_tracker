@@ -1,12 +1,13 @@
 import typing
 from PyQt5 import QtCore
-from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtGui import QFont, QIcon
+from PyQt5.QtCore import Qt, pyqtSignal, QUrl
+from PyQt5.QtGui import QFont, QIcon, QDesktopServices
 from PyQt5.QtWidgets import QWidget, QAction
 
-from qfluentwidgets import FluentIcon as FIF, RoundMenu
+from qfluentwidgets import FluentIcon as FIF, RoundMenu, toggleTheme
 from .device_interface_ui import Ui_DeviceInterface
 
+from ..config import *
 from ...tracker import User
 
 
@@ -35,5 +36,13 @@ class DeviceInterface(QWidget, Ui_DeviceInterface):
         self.deviceButton2.setMenu(self.menu)
 
         self.addDeviceButton.setIcon(FIF.ADD_TO)
+
+        self.themeButton.setIcon(FIF.CONSTRACT)
+        self.themeButton.setToolTip("Change Theme")
+        self.themeButton.clicked.connect(lambda: toggleTheme(True))
+
+        self.GitHubButton.setIcon(FIF.GITHUB)
+        self.GitHubButton.setToolTip("GitHub")
+        self.GitHubButton.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(GITHUB)))
 
 

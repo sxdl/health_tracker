@@ -19,10 +19,20 @@ class Ui_GroupInterface(object):
         self.verticalLayout.setObjectName("verticalLayout")
         spacerItem = QtWidgets.QSpacerItem(966, 37, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         self.verticalLayout.addItem(spacerItem)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setContentsMargins(-1, -1, -1, 10)
+        self.horizontalLayout.setObjectName("horizontalLayout")
         self.TitleLabel = TitleLabel(GroupInterface)
         self.TitleLabel.setProperty("pixelFontSize", 50)
         self.TitleLabel.setObjectName("TitleLabel")
-        self.verticalLayout.addWidget(self.TitleLabel)
+        self.horizontalLayout.addWidget(self.TitleLabel)
+        self.groupThemeButton = ToolButton(GroupInterface)
+        self.groupThemeButton.setObjectName("groupThemeButton")
+        self.horizontalLayout.addWidget(self.groupThemeButton)
+        self.GitHubButton = ToolButton(GroupInterface)
+        self.GitHubButton.setObjectName("GitHubButton")
+        self.horizontalLayout.addWidget(self.GitHubButton)
+        self.verticalLayout.addLayout(self.horizontalLayout)
         spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem1)
 
@@ -33,4 +43,4 @@ class Ui_GroupInterface(object):
         _translate = QtCore.QCoreApplication.translate
         GroupInterface.setWindowTitle(_translate("GroupInterface", "Form"))
         self.TitleLabel.setText(_translate("GroupInterface", "Group"))
-from qfluentwidgets import TitleLabel
+from qfluentwidgets import TitleLabel, ToolButton

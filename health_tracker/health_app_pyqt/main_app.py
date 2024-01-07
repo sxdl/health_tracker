@@ -1,11 +1,11 @@
 # coding:utf-8
 import sys
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QFont, QIcon, QPixmap
 from PyQt5.QtWidgets import QApplication, QWidget
 
-from qfluentwidgets import SplitFluentWindow, FluentIcon, setTheme, Theme, NavigationAvatarWidget, FluentIcon as FIF
+from qfluentwidgets import SplitFluentWindow, FluentIcon, setTheme, Theme, SplashScreen, NavigationAvatarWidget, FluentIcon as FIF
 
 from .ui.health_interface import HealthInterface
 from .ui.device_interface import DeviceInterface
@@ -24,6 +24,10 @@ class MainWindow(SplitFluentWindow):
 
         self.setWindowIcon(QIcon(r'health_tracker\health_app_pyqt\resource\images\icon\icon.png'))
         self.setWindowTitle('Health Tracker')
+
+        # 若开启云母效果，会与 WebEngineView 冲突
+        self.updateFrameless()
+        self.setMicaEffectEnabled(False)
 
         self.user = user if user else User("0", "游客")
         self.today_data = self.user.activity_data.get_latest_daily_total()
@@ -50,6 +54,8 @@ class MainWindow(SplitFluentWindow):
             text='Settings',
             position=Qt.BottomDockWidgetArea
         )
+
+
 
 
 
