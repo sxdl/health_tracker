@@ -58,7 +58,7 @@ class RandomFileHandler:
         return data
 
     @staticmethod
-    def read_line(filepath: str, pos: int) -> str:
+    def read_line(filepath: str, pos: int) -> [str, None]:
         """
         读取指定位置的一行数据
         :param filepath:
@@ -66,7 +66,10 @@ class RandomFileHandler:
         :return:
         """
         data = RandomFileHandler.read_lines(filepath, [pos])
-        return data[0]
+        if len(data) == 0:
+            return None
+        else:
+            return data[0]
 
     @staticmethod
     def append_line(data: str, filepath: str):
@@ -234,10 +237,12 @@ class MultiFieldDataFileHandler(RandomFileHandler, MultiFieldDataFileHandlerInte
         RandomFileHandler.modify_line(filepath, pos, data)
 
     @staticmethod
-    def read_line(filepath: str, pos: int) -> tuple:
+    def read_line(filepath: str, pos: int) -> [tuple, None]:
         if pos < 0:
             pos = RandomFileHandler.get_file_length(filepath) + pos
         data = RandomFileHandler.read_line(filepath, pos)
+        if data is None:
+            return None
         data = MultiFieldDataFileHandler.parse_data(data)
         return data
 
@@ -379,7 +384,7 @@ class UserMultiFieldFileHandler(BaseUserFileHandler, MultiFieldDataFileHandler):
         return MultiFieldDataFileHandler.search_by_field(self._filepath, field, value)
 
     @print_run_time
-    def search_by_field_all(self, field: int, value) -> list:
+    def search_by_field_all(self, field: int, value) -> [list, None]:
         return MultiFieldDataFileHandler.search_by_field_all(self._filepath, field, value)
 
     def search_by_field_range(self, field: int, value_range: tuple) -> list:
