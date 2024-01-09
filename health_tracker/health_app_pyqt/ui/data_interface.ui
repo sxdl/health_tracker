@@ -64,15 +64,32 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="timePage">
-      <layout class="QGridLayout" name="timeGridLayout">
+     <widget class="QWidget" name="floorPage">
+      <layout class="QGridLayout" name="floorGridLayout">
        <item row="0" column="0">
-        <widget class="CardWidget" name="timeCardWidget">
-         <layout class="QGridLayout" name="timeCardGridLayout">
+        <widget class="CardWidget" name="floorCardWidget">
+         <layout class="QGridLayout" name="floorCardGridLayout">
           <item row="0" column="0">
            <widget class="DisplayLabel" name="DisplayLabel_2">
             <property name="text">
-             <string>Time Diagram</string>
+             <string>Floor Diagram</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="distancePage">
+      <layout class="QGridLayout" name="distanceGridLayout">
+       <item row="0" column="0">
+        <widget class="CardWidget" name="distanceCardWidget">
+         <layout class="QGridLayout" name="distanceCardGridLayout">
+          <item row="0" column="0">
+           <widget class="DisplayLabel" name="DisplayLabel_3">
+            <property name="text">
+             <string>Distance Diagram</string>
             </property>
            </widget>
           </item>
@@ -87,7 +104,7 @@
         <widget class="CardWidget" name="stepCardWidget">
          <layout class="QGridLayout" name="stepCardGridLayout">
           <item row="0" column="0">
-           <widget class="DisplayLabel" name="DisplayLabel_3">
+           <widget class="DisplayLabel" name="DisplayLabel_4">
             <property name="text">
              <string>Step Diagram</string>
             </property>

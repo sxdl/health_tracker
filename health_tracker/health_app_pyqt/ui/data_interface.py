@@ -52,9 +52,15 @@ class DataInterface(QWidget, Ui_DataInterface):
             )
 
             self.pivot.addItem(
-                routeKey="time",
-                text="Time",
-                onClick=lambda: self.stackedWidget.setCurrentWidget(self.timePage),
+                routeKey="floor",
+                text="Floor",
+                onClick=lambda: self.stackedWidget.setCurrentWidget(self.floorPage),
+            )
+
+            self.pivot.addItem(
+                routeKey="distance",
+                text="Distance",
+                onClick=lambda: self.stackedWidget.setCurrentWidget(self.distancePage),
             )
 
             self.pivot.addItem(
