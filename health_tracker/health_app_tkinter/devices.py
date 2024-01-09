@@ -231,9 +231,9 @@ class PhoneUsageWindow(DeviceUsageWindow):
             limit_label = ttk.Label(self.root, textvariable=self.limit_time)
             limit_label.grid(row=0, column=2, pady=10, padx=10, sticky="w")
             self.category_entries[category] = entry
-        # 创建“绘制饼图”按钮
-        pie_chart_button = ttk.Button(self.root, text="绘制饼图", command=self.submit_data)
-        pie_chart_button.grid(row=0, column=4, pady=10, padx=10, sticky="w")
+        # # 创建“绘制饼图”按钮
+        # pie_chart_button = ttk.Button(self.root, text="绘制饼图", command=self.submit_data)
+        # pie_chart_button.grid(row=0, column=4, pady=10, padx=10, sticky="w")
 
     def submit_data(self):
         total_duration = float(self.entry.get())
@@ -247,11 +247,11 @@ class PhoneUsageWindow(DeviceUsageWindow):
             entry.delete(0, 'end')
         messagebox.showinfo("信息", "手机日使用时长已记录。")
 
-        # 绘制饼图
-        plt.figure(figsize=(6,6))
-        plt.pie(category_ratios.values(), labels=category_ratios.keys(), autopct='%1.1f%%')
-        plt.title("Proportion of Mobile Phone usage time")
-        plt.show()
+        # # 绘制饼图
+        # plt.figure(figsize=(6,6))
+        # plt.pie(category_ratios.values(), labels=category_ratios.keys(), autopct='%1.1f%%')
+        # plt.title("Proportion of Mobile Phone usage time")
+        # plt.show()
 
 class EarphoneUsageWindow(DeviceUsageWindow):
     def __init__(self, root, user_id: str, filename: str):
@@ -277,9 +277,9 @@ class EarphoneUsageWindow(DeviceUsageWindow):
             limit_label = ttk.Label(self.root, textvariable=self.limit_time)
             limit_label.grid(row=0, column=2, pady=10, padx=10, sticky="w")
             self.category_entries[category] = entry
-        # 创建“绘制饼图”按钮
-        pie_chart_button = ttk.Button(self.root, text="绘制饼图", command=self.submit_data)
-        pie_chart_button.grid(row=0, column=4, pady=10, padx=10, sticky="w")
+        # # 创建“绘制饼图”按钮
+        # pie_chart_button = ttk.Button(self.root, text="绘制饼图", command=self.submit_data)
+        # pie_chart_button.grid(row=0, column=4, pady=10, padx=10, sticky="w")
 
     def submit_data(self):
         total_duration = float(self.entry.get())
@@ -294,11 +294,11 @@ class EarphoneUsageWindow(DeviceUsageWindow):
             entry.delete(0, 'end')
         messagebox.showinfo("信息", "无线耳机日使用时长已记录。")
 
-        # 绘制饼图
-        plt.figure(figsize=(6, 6))
-        plt.pie(category_ratios.values(), labels=category_ratios.keys(), autopct='%1.1f%%')
-        plt.title("Proportion of Earphone usage time")
-        plt.show()
+        # # 绘制饼图
+        # plt.figure(figsize=(6, 6))
+        # plt.pie(category_ratios.values(), labels=category_ratios.keys(), autopct='%1.1f%%')
+        # plt.title("Proportion of Earphone usage time")
+        # plt.show()
 
 class ComputerUsageWindow(DeviceUsageWindow):
     def __init__(self, root, user_id: str, filename: str):
@@ -324,9 +324,9 @@ class ComputerUsageWindow(DeviceUsageWindow):
             limit_label = ttk.Label(self.root, textvariable=self.limit_time)
             limit_label.grid(row=0, column=2, pady=10, padx=10, sticky="w")
             self.category_entries[category] = entry
-        # 创建“绘制饼图”按钮
-        pie_chart_button = ttk.Button(self.root, text="绘制饼图", command=self.submit_data)
-        pie_chart_button.grid(row=0, column=4, pady=10, padx=10, sticky="w")
+        # # 创建“绘制饼图”按钮
+        # pie_chart_button = ttk.Button(self.root, text="绘制饼图", command=self.submit_data)
+        # pie_chart_button.grid(row=0, column=4, pady=10, padx=10, sticky="w")
 
     def submit_data(self):
         total_duration = float(self.entry.get())
@@ -341,11 +341,11 @@ class ComputerUsageWindow(DeviceUsageWindow):
             entry.delete(0, 'end')
         messagebox.showinfo("信息", "电脑日使用时长已记录。")
 
-        # 绘制饼图
-        plt.figure(figsize=(6, 6))
-        plt.pie(category_ratios.values(), labels=category_ratios.keys(), autopct='%1.1f%%')
-        plt.title("Proportion of Computer usage time")
-        plt.show()
+        # # 绘制饼图
+        # plt.figure(figsize=(6, 6))
+        # plt.pie(category_ratios.values(), labels=category_ratios.keys(), autopct='%1.1f%%')
+        # plt.title("Proportion of Computer usage time")
+        # plt.show()
 
 class PadUsageWindow(DeviceUsageWindow):
     def __init__(self, root, user_id: str, filename: str):
@@ -371,9 +371,9 @@ class PadUsageWindow(DeviceUsageWindow):
             limit_label = ttk.Label(self.root, textvariable=self.limit_time)
             limit_label.grid(row=0, column=2, pady=10, padx=10, sticky="w")
             self.category_entries[category] = entry
-        # 创建“绘制饼图”按钮
-        pie_chart_button = ttk.Button(self.root, text="绘制饼图", command=self.submit_data)
-        pie_chart_button.grid(row=0, column=4, pady=10, padx=10, sticky="w")
+        # # 创建“绘制饼图”按钮
+        # pie_chart_button = ttk.Button(self.root, text="绘制饼图", command=self.submit_data)
+        # pie_chart_button.grid(row=0, column=4, pady=10, padx=10, sticky="w")
 
     def submit_data(self):
         total_duration = float(self.entry.get())
@@ -388,8 +388,8 @@ class PadUsageWindow(DeviceUsageWindow):
             entry.delete(0, 'end')
         messagebox.showinfo("信息", "Pad日使用时长已记录。")
 
-        # 绘制饼图
-        plt.figure(figsize=(6, 6))
-        plt.pie(category_ratios.values(), labels=category_ratios.keys(), autopct='%1.1f%%')
-        plt.title("Proportion of Pad usage time")
-        plt.show()
+        # # 绘制饼图
+        # plt.figure(figsize=(6, 6))
+        # plt.pie(category_ratios.values(), labels=category_ratios.keys(), autopct='%1.1f%%')
+        # plt.title("Proportion of Pad usage time")
+        # plt.show()

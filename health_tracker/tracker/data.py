@@ -201,10 +201,8 @@ class Profile(BaseData):
         self._datatype = DATA_TYPES.PROFILE.value
         self._user_id = user_id
         self._FIELD_LIST = 'gender', 'birth', 'height', 'weight'
-        self._profile = namedtuple(self._datatype, self._FIELD_LIST)
+        self._profile = namedtuple('Profile', self._FIELD_LIST)
         self._data_handler: UserSingleFieldFileHandler = user_file_handler_factory(self._user_id, self._datatype)
-        # self.data = None
-        # self.load_data()
 
         if not self.check_data():
             self.init_data()
@@ -274,6 +272,33 @@ class Profile(BaseData):
     def __repr__(self):
         # return f'Profile({self.data})'
         return f'Profile({self.get_dict_data()})'
+
+    def save_profile_to_file(self):
+        """将用户的个人信息保存到本地文件中"""
+        with open(f'{self._user_id}_profile.txt', 'w') as f:
+            f.write(f'gender: {self.gender}\n')
+            f.write(f'birth: {self.birth}\n')
+            f.write(f'height: {self.height}\n')
+            f.write(f'weight: {self.weight}\n')
+
+    def save_profile(self):
+        """保存用户输入的个人资料"""
+        self.gender = self.gender_combobox.get()
+        self.birth = self.current_date_label["text"]
+        self.height = self.height_entry.get()
+        self.weight = self.weight_entry.get()
+
+        # 将修改后的资料保存到文件中
+        self.save_profile_to_file()
+
+        # 更新用户的个人资料
+        self.user.profile.update_data_by_field("gender", self.gender)
+        self.user.profile.update_data_by_field("height", self.height)
+        self.user.profile.update_data_by_field("weight", self.weight)
+
+        # 关闭窗口
+        self.root.destroy()
+        self.previous.refresh_profile()
 
 
 class ManualUpdateInterface(ABC):

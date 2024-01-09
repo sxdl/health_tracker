@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, simpledialog
 from . show_profile import ShowProfileWindow
 from .my_statistics import MyStatisticsWindow
 from ..tracker.user import User
@@ -13,7 +13,6 @@ __all__ = ["run_app"]
 class HealthTrackingApp:
     def __init__(self, root, user=None):
         self.root = root
-        # self.root.overrideredirect(True)  # 设置窗口为无边框
         self.root.geometry('800x450')  # 设置窗口大小为800x450
         self.center_window(self.root)
         self.root.title("健康追踪应用")
@@ -45,6 +44,7 @@ class HealthTrackingApp:
 
         # 显示导航栏
         self.nav_bar.pack(expand=1, fill="both")
+
     def create_device_page(self):
         # 在“设备”页面显示已绑定设备
         # TODO: 实现显示已绑定设备的功能
@@ -158,6 +158,52 @@ def run_app(user_id="0", user_name="游客"):
     style = Style(theme="superhero")
     root = style.master
 
-    # root = tk.Tk()
-    app = HealthTrackingApp(root, user=User(user_id, user_name))
+    # 创建一个新的窗口来获取用户输入的信息
+    user_info_window = tk.Toplevel(root)
+    user_info_window.title("请输入用户信息")
+
+    # 创建标签和输入框
+    name_label = ttk.Label(user_info_window, text="昵称:")
+    name_label.pack()
+    name_entry = ttk.Entry(user_info_window)
+    name_entry.pack()
+
+    birth_label = ttk.Label(user_info_window, text="出生日期:")
+    birth_label.pack()
+    birth_entry = ttk.Entry(user_info_window)
+    birth_entry.pack()
+
+    height_label = ttk.Label(user_info_window, text="身高:")
+    height_label.pack()
+    height_entry = ttk.Entry(user_info_window)
+    height_entry.pack()
+
+    weight_label = ttk.Label(user_info_window, text="体重:")
+    weight_label.pack()
+    weight_entry = ttk.Entry(user_info_window)
+    weight_entry.pack()
+
+    # 创建完成按钮
+    def on_done():
+        user_name = name_entry.get()
+        user_birth = birth_entry.get()
+        user_height = height_entry.get()
+        user_weight = weight_entry.get()
+
+        # 创建用户并启动应用程序
+        user = User(user_id, user_name, user_birth, user_height, user_weight)
+        app = HealthTrackingApp(root, user)
+        user_info_window.destroy()
+
+    done_button = ttk.Button(user_info_window, text="完成", command=on_done)
+    done_button.pack()
+
+    # 创建游客登录按钮
+    def on_guest():
+        app = HealthTrackingApp(root, User(user_id, user_name))
+        user_info_window.destroy()
+
+    guest_button = ttk.Button(user_info_window, text="游客登录", command=on_guest)
+    guest_button.pack()
+
     root.mainloop()
