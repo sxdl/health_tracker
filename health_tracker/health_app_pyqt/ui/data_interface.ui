@@ -59,7 +59,7 @@
       <layout class="QGridLayout" name="caloriesGridLayout">
        <item row="0" column="0">
         <widget class="CardWidget" name="caloriesCardWidget">
-         <layout class="QVBoxLayout" name="verticalLayout"/>
+         <layout class="QVBoxLayout" name="verticalLayout_1_1"/>
         </widget>
        </item>
       </layout>
@@ -67,51 +67,39 @@
      <widget class="QWidget" name="floorPage">
       <layout class="QGridLayout" name="floorGridLayout">
        <item row="0" column="0">
-        <widget class="CardWidget" name="floorCardWidget">
-         <layout class="QGridLayout" name="floorCardGridLayout">
+        <layout class="QGridLayout" name="floorCardGridLayout">
           <item row="0" column="0">
-           <widget class="DisplayLabel" name="DisplayLabel_2">
-            <property name="text">
-             <string>Floor Diagram</string>
-            </property>
+           <widget class="CardWidget" name="caloriesCardWidget">
+            <layout class="QVBoxLayout" name="verticalLayout_2_1"/>
            </widget>
           </item>
          </layout>
-        </widget>
        </item>
       </layout>
      </widget>
      <widget class="QWidget" name="distancePage">
       <layout class="QGridLayout" name="distanceGridLayout">
        <item row="0" column="0">
-        <widget class="CardWidget" name="distanceCardWidget">
-         <layout class="QGridLayout" name="distanceCardGridLayout">
+        <layout class="QGridLayout" name="distanceCardGridLayout">
           <item row="0" column="0">
-           <widget class="DisplayLabel" name="DisplayLabel_3">
-            <property name="text">
-             <string>Distance Diagram</string>
-            </property>
+           <widget class="CardWidget" name="caloriesCardWidget">
+            <layout class="QVBoxLayout" name="verticalLayout_3_1"/>
            </widget>
           </item>
          </layout>
-        </widget>
        </item>
       </layout>
      </widget>
      <widget class="QWidget" name="stepPage">
       <layout class="QGridLayout" name="stepGridLayout">
        <item row="0" column="0">
-        <widget class="CardWidget" name="stepCardWidget">
-         <layout class="QGridLayout" name="stepCardGridLayout">
+        <layout class="QGridLayout" name="stepCardGridLayout">
           <item row="0" column="0">
-           <widget class="DisplayLabel" name="DisplayLabel_4">
-            <property name="text">
-             <string>Step Diagram</string>
-            </property>
+           <widget class="CardWidget" name="caloriesCardWidget">
+            <layout class="QVBoxLayout" name="verticalLayout_4_1"/>
            </widget>
           </item>
          </layout>
-        </widget>
        </item>
       </layout>
      </widget>
