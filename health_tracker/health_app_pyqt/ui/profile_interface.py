@@ -17,6 +17,7 @@ class ProfileInterface(QWidget, Ui_ProfileInterface):
         self.setupUi(self)
 
         self.user = user
+        self.profile = self.user.get_profile()
 
         self.themeButton.setIcon(FIF.CONSTRACT)
         self.themeButton.setToolTip("Change Theme")
@@ -30,6 +31,9 @@ class ProfileInterface(QWidget, Ui_ProfileInterface):
         # TODO: 此处数据接口较混乱，暂时没看懂，不清楚如何调取用户的性别年龄等，先给出名字和UID示例，其余信息设置方法类似
         self.nameLabel.setText(self.user.name)
         self.UIDLabel.setText(self.user.user_id)
+        self.genderLabel.setText(self.profile.gender)
+        self.ageLabel.setText(self.profile.birth)
+
 
         # TODO: 设置显示历史数据
 
