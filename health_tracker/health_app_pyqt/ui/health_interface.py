@@ -25,6 +25,8 @@ class HealthInterface(QWidget, Ui_HealthInterface):
         self.distance = self.latest_data["distance"]
         self.flights_climbed = self.latest_data["flights_climbed"]
         self.active_energy_burned = self.latest_data["active_energy_burned"]
+        self.exercise_minutes = self.latest_data["exercise_minutes"]  # 锻炼时长
+        self.active_hours = self.latest_data["active_hours"]  # 活动小时数
 
         # 卡路里显示
         self.caloriesButton1.setIcon(FIF.MORE)
@@ -33,11 +35,10 @@ class HealthInterface(QWidget, Ui_HealthInterface):
         self.caloriesProgressBar.setValue(min(int(self.active_energy_burned / self.caloriesTarget * 100), 100))
         
         # 时间显示
-        # TODO: 此处未给出时间的接口，暂时用卡路里代替
         self.timeButton1.setIcon(FIF.MORE)
-        self.timeNum.setText(str(int(self.active_energy_burned)))
-        self.timeTarget = 6000
-        self.timeProgressBar.setValue(min(int(self.active_energy_burned / self.timeTarget * 100), 100))
+        self.timeTarget = 12
+        self.timeNum.setText(f"{int(self.active_hours)}")
+        self.timeProgressBar.setValue(min(int(self.active_hours / self.timeTarget * 100), 100))
 
         # 步数显示
         self.stepsButton1.setIcon(FIF.MORE)

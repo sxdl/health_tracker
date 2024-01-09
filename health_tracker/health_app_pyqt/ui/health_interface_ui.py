@@ -261,7 +261,7 @@ class Ui_HealthInterface(object):
         self.stepsCaption.setText(_translate("HealthInterface", "Steps walked"))
         self.stepsNum.setText(_translate("HealthInterface", "0"))
         self.timeTitle.setText(_translate("HealthInterface", "Time"))
-        self.timeCaption.setText(_translate("HealthInterface", "Exercise time"))
+        self.timeCaption.setText(_translate("HealthInterface", "Active hours"))
         self.timeNum.setText(_translate("HealthInterface", "0"))
         self.caloriesTitle.setText(_translate("HealthInterface", "Calories"))
         self.caloriesCaption.setText(_translate("HealthInterface", "Calories burned"))

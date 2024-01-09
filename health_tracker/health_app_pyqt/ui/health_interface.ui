@@ -225,7 +225,7 @@
           <item>
            <widget class="SubtitleLabel" name="timeCaption">
             <property name="text">
-             <string>Exercise time</string>
+             <string>Active hours</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
