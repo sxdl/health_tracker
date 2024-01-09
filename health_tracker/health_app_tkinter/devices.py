@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
-import matplotlib.pyplot as plt
 from abc import ABC, abstractmethod
 
 from ..tracker.util import *
