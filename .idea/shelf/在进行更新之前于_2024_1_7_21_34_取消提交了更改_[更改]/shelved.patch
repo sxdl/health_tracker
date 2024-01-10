@@ -1,0 +1,378 @@
+Index: main.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import argparse\r\n\r\n\r\nif __name__ == \"__main__\":\r\n    parser = argparse.ArgumentParser(description=\"Entrance for the main project.\")\r\n\r\n    # Subparsers for different commands\r\n    subparsers = parser.add_subparsers(title=\"Available commands\", dest=\"command\")\r\n\r\n    # Command: run\r\n    run_parser = subparsers.add_parser(\"run\", help=\"Run the program with a specified front-end framework.\")\r\n    run_parser.add_argument(\"-f\", \"--framework\", choices=[\"tkinter\", \"pyQt\"], default=\"tkinter\",\r\n                            help=\"Specify the front-end framework (tkinter or pyQt).\")\r\n\r\n    # Command: stimulator\r\n    stimulator_parser = subparsers.add_parser(\"stimulator\", help=\"Generate simulated data.\")\r\n    stimulator_parser.add_argument(\"-d\", \"--data_type\",\r\n                                   choices=[\"a\", \"all\", \"s\", \"step\", \"d\", \"distance\", \"f\", \"floor\", \"ah\",\r\n                                            \"active_hours\", \"ae\", \"active_energy\", \"em\", \"exercise_minutes\"],\r\n                                   help=\"Specify the type of data to generate.\")\r\n    stimulator_parser.add_argument(\"uid\", nargs=\"?\", default=\"0\", help=\"Specify the user's UID (default is '0').\")\r\n\r\n    args = parser.parse_args()\r\n\r\n    if args.command == \"run\":\r\n        print(f\"Running with {args.framework} framework.\")\r\n\r\n        if args.framework == \"tkinter\":\r\n            from health_tracker.health_app_tkinter import *\r\n            run_app()\r\n        elif args.framework == \"pyQt\":\r\n            from health_tracker.health_app_pyqt import *\r\n            run_app()\r\n        else:\r\n            raise ValueError(f\"Unknown framework: {args.framework}\")\r\n\r\n    elif args.command == \"stimulator\":\r\n        print(f\"Generating data {args.data_type} for user {args.uid}.\")\r\n\r\n        from health_tracker.tracker import *\r\n        if args.data_type == \"a\" or args.data_type == \"all\":  # 生成所有数据\r\n            DataStimulator.stimulate_all_data(args.uid)\r\n        elif args.data_type == \"s\" or args.data_type == \"step\":  # 生成步数数据\r\n            DataStimulator.stimulate_step_count(args.uid)\r\n        elif args.data_type == \"d\" or args.data_type == \"distance\":  # 生成距离数据\r\n            DataStimulator.stimulate_distance(args.uid)\r\n        elif args.data_type == \"f\" or args.data_type == \"floor\":  # 生成爬楼数据\r\n            DataStimulator.stimulate_flights_climbed(args.uid)\r\n        elif args.data_type == \"ah\" or args.data_type == \"active_hours\":  # 生成活动时间数据\r\n            DataStimulator.stimulate_active_hours(args.uid)\r\n        elif args.data_type == \"ae\" or args.data_type == \"active_energy\":  # 生成活动热量数据\r\n            DataStimulator.stimulate_active_energy_burned(args.uid)\r\n        elif args.data_type == \"em\" or args.data_type == \"exercise_minutes\":  # 生成运动时间数据\r\n            DataStimulator.stimulate_exercise_minutes(args.uid)\r\n        else:\r\n            raise ValueError(f\"Unknown data type: {args.data_type}\")\r\n\r\n    else:\r\n        parser.print_help()\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/main.py b/main.py
+--- a/main.py	(revision 3097326b70a4faf6f102bb0b533fc9eb78c1ec82)
++++ b/main.py	(date 1704533014474)
+@@ -1,6 +1,5 @@
+ import argparse
+ 
+-
+ if __name__ == "__main__":
+     parser = argparse.ArgumentParser(description="Entrance for the main project.")
+ 
+@@ -57,3 +56,5 @@
+ 
+     else:
+         parser.print_help()
++
++
+Index: health_tracker/health_app_tkinter/main_app.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import tkinter as tk\r\nfrom tkinter import ttk\r\nfrom . show_profile import ShowProfileWindow\r\nfrom .my_statistics import MyStatisticsWindow\r\nfrom ..tracker.user import User\r\nfrom . import devices as util\r\n\r\nfrom ttkbootstrap import Style\r\n\r\n__all__ = [\"run_app\"]\r\n\r\n\r\nclass HealthTrackingApp:\r\n    def __init__(self, root, user=None):\r\n        self.root = root\r\n        # self.root.overrideredirect(True)  # 设置窗口为无边框\r\n        self.root.geometry('800x450')  # 设置窗口大小为800x450\r\n        self.center_window(self.root)\r\n        self.root.title(\"健康追踪应用\")\r\n\r\n        self.user = user if user else User(\"0\", \"游客\")\r\n        self.today_data = self.user.activity_data.get_latest_daily_total()\r\n\r\n        # 创建导航栏\r\n        self.nav_bar = ttk.Notebook(root)\r\n\r\n        # “健康”页面\r\n        self.health_frame = ttk.Frame(self.nav_bar)\r\n        self.create_health_page()\r\n\r\n        # “设备”页面\r\n        self.device_frame = ttk.Frame(self.nav_bar)\r\n        self.create_device_page()\r\n        self.device_list = []  # 创建一个空的设备列表\r\n        self.device_label = None  # 初始化设备标签\r\n\r\n        # “我的”页面\r\n        self.my_frame = ttk.Frame(self.nav_bar)\r\n        self.create_my_page()\r\n\r\n        # 将页面添加到导航栏\r\n        self.nav_bar.add(self.health_frame, text=\"健康\")\r\n        self.nav_bar.add(self.device_frame, text=\"设备\")\r\n        self.nav_bar.add(self.my_frame, text=\"我的\")\r\n\r\n        # 显示导航栏\r\n        self.nav_bar.pack(expand=1, fill=\"both\")\r\n    def create_device_page(self):\r\n        # 在“设备”页面显示已绑定设备\r\n        # TODO: 实现显示已绑定设备的功能\r\n        self.device_label = ttk.Label(self.device_frame, text=\"已绑定设备列表: \")\r\n        self.device_label.grid(row=0, column=0, pady=10, padx=10, sticky=\"w\")\r\n\r\n        print(f\"After create_device_page: {self.device_label}\")  # 打印self.device_label的值\r\n\r\n        # 创建“添加设备”按钮\r\n        add_device_button = ttk.Button(self.device_frame, text=\"添加设备\", command=self.add_device)\r\n        add_device_button.grid(row=1, column=0, pady=10, padx=10, sticky=\"w\")\r\n\r\n        # 创建设备使用时间按钮并设置为不可见\r\n        self.device_buttons = {\r\n            \"手机\": ttk.Button(self.device_frame, text=\"手机日使用时间\", command=self.record_phone_usage),\r\n            \"无线耳机\": ttk.Button(self.device_frame, text=\"无线耳机日使用时间\", command=self.record_earphone_usage),\r\n            \"电脑\": ttk.Button(self.device_frame, text=\"电脑日使用时间\", command=self.record_computer_usage),\r\n            \"Pad\": ttk.Button(self.device_frame, text=\"Pad日使用时间\", command=self.record_pad_usage),\r\n        }\r\n        for i, button in enumerate(self.device_buttons.values()):\r\n            button.grid(row=i + 1, column=2, pady=10, padx=10, sticky=\"w\")\r\n            button.grid_remove()  # 设置按钮为不可见\r\n\r\n\r\n    def add_device(self):\r\n        # TODO: 显示已有设备列表\r\n        # TODO: 实现添加新设备的功能\r\n        self.new_window = tk.Toplevel(self.root)\r\n        for device in self.device_buttons.keys():\r\n            button = ttk.Button(self.new_window, text=device, command=lambda d=device: self.add_device_type(d))\r\n            button.pack()\r\n\r\n    def add_device_type(self, device):\r\n        self.device_buttons[device].grid()  # 设置按钮为可见\r\n        self.device_list.append(device)  # 将设备添加到设备列表中\r\n        self.device_label.config(text=f\"已绑定设备列表: {', '.join(self.device_list)}\")  # 更新设备列表的显示\r\n        self.new_window.destroy()\r\n        print(f\"After add_device_type: {self.device_label}\")  # 打印self.device_label的值\r\n\r\n    def record_phone_usage(self):\r\n        phone_usage_window = tk.Toplevel(self.root)\r\n        phone_usage_page = util.PhoneUsageWindow(phone_usage_window, self.user.user_id, \"earphone_usage.txt\")\r\n    def record_earphone_usage(self):\r\n        earphone_usage_window = tk.Toplevel(self.root)\r\n        earphone_usage_page = util.EarphoneUsageWindow(earphone_usage_window, self.user.user_id, \"earphone_usage.txt\")\r\n    def record_computer_usage(self):\r\n        computer_usage_window = tk.Toplevel(self.root)\r\n        computer_usage_page = util.ComputerUsageWindow(computer_usage_window, self.user.user_id, \"earphone_usage.txt\")\r\n    def record_pad_usage(self):\r\n        pad_usage_window = tk.Toplevel(self.root)\r\n        pad_usage_page = util.PadUsageWindow(pad_usage_window, self.user.user_id, \"earphone_usage.txt\")\r\n\r\n    def center_window(self, window):\r\n        window.update_idletasks()\r\n        width = window.winfo_width()\r\n        height = window.winfo_height()\r\n        x = (window.winfo_screenwidth() // 2) - (width // 2)\r\n        y = (window.winfo_screenheight() // 2) - (height // 2)\r\n        window.geometry('{}x{}+{}+{}'.format(width, height, x, y))\r\n\r\n    def create_my_page(self):\r\n        # 在“我的”页面创建姓名标签\r\n        name_label = ttk.Label(self.my_frame, text=f\"用户姓名: {self.user.name}\")\r\n        name_label.grid(row=0, column=0, pady=10, padx=10, sticky=\"w\")\r\n\r\n        # 创建“我的数据”按钮\r\n        my_data_button = ttk.Button(self.my_frame, text=\"我的数据\", command=self.show_my_data)\r\n        my_data_button.grid(row=1, column=0, pady=10, padx=10, sticky=\"w\")\r\n\r\n        # 创建“个人资料”按钮\r\n        profile_button = ttk.Button(self.my_frame, text=\"个人资料\", command=self.show_profile)\r\n        profile_button.grid(row=2, column=0, pady=10, padx=10, sticky=\"w\")\r\n\r\n\r\n    def create_health_page(self):\r\n        # 在“健康”页面显示活动记录\r\n        active_energy_burned_label = ttk.Label(self.health_frame, text=f\"活动热量: {self.today_data['active_energy_burned']} /270 千卡\")\r\n        active_energy_burned_label.grid(row=0, column=0, pady=10, padx=10, sticky=\"w\")\r\n        exercise_time_label = ttk.Label(self.health_frame, text=f\"锻炼时长: {self.today_data['exercise_minutes']} /25 分钟\")\r\n        exercise_time_label.grid(row=1, column=0, pady=10, padx=10, sticky=\"w\")\r\n        active_hours_label = ttk.Label(self.health_frame, text=f\"活动小时数: {self.today_data['active_hours']} /12 小时\")\r\n        active_hours_label.grid(row=2, column=0, pady=10, padx=10, sticky=\"w\")\r\n        steps_label = ttk.Label(self.health_frame, text=f\"今日步数: {self.today_data['steps']} /10000 步\")\r\n        steps_label.grid(row=3, column=0, pady=10, padx=10, sticky=\"w\")\r\n\r\n        # 创建“查看活动记录”按钮\r\n        view_activity_button = ttk.Button(self.health_frame, text=\"查看历史活动记录\", command=self.show_activity_records)\r\n        view_activity_button.grid(row=4, column=0, pady=10, padx=10, sticky=\"w\")\r\n\r\n    def show_my_data(self):\r\n        # TODO: 实现进入详细的数据页面的功能\r\n        print(\"进入我的数据页面\")\r\n        my_data_window = tk.Toplevel(self.root)\r\n        self.center_window(my_data_window)\r\n        my_data_page = MyStatisticsWindow(my_data_window, self.user)\r\n\r\n    def show_profile(self):\r\n        print(\"查看和修改个人资料\")\r\n        profile_window = tk.Toplevel(self.root)\r\n        self.center_window(profile_window)\r\n        edit_profile = ShowProfileWindow(profile_window, self.user)\r\n\r\n\r\n    def show_activity_records(self):\r\n        # TODO: 实现查看活动记录的功能\r\n        print(\"查看活动记录\")\r\n\r\n\r\ndef run_app(user_id=\"0\", user_name=\"游客\"):\r\n    # 应用主题\r\n    style = Style(theme=\"superhero\")\r\n    root = style.master\r\n\r\n    # root = tk.Tk()\r\n    app = HealthTrackingApp(root, user=User(user_id, user_name))\r\n    root.mainloop()\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/health_tracker/health_app_tkinter/main_app.py b/health_tracker/health_app_tkinter/main_app.py
+--- a/health_tracker/health_app_tkinter/main_app.py	(revision 3097326b70a4faf6f102bb0b533fc9eb78c1ec82)
++++ b/health_tracker/health_app_tkinter/main_app.py	(date 1704556308276)
+@@ -3,7 +3,7 @@
+ from . show_profile import ShowProfileWindow
+ from .my_statistics import MyStatisticsWindow
+ from ..tracker.user import User
+-from . import devices as util
++from . import devices as devices
+ 
+ from ttkbootstrap import Style
+ 
+@@ -70,8 +70,6 @@
+ 
+ 
+     def add_device(self):
+-        # TODO: 显示已有设备列表
+-        # TODO: 实现添加新设备的功能
+         self.new_window = tk.Toplevel(self.root)
+         for device in self.device_buttons.keys():
+             button = ttk.Button(self.new_window, text=device, command=lambda d=device: self.add_device_type(d))
+@@ -86,16 +84,16 @@
+ 
+     def record_phone_usage(self):
+         phone_usage_window = tk.Toplevel(self.root)
+-        phone_usage_page = util.PhoneUsageWindow(phone_usage_window, self.user.user_id, "earphone_usage.txt")
++        phone_usage_page = devices.PhoneUsageWindow(phone_usage_window, self.user.user_id, "earphone_usage.txt")
+     def record_earphone_usage(self):
+         earphone_usage_window = tk.Toplevel(self.root)
+-        earphone_usage_page = util.EarphoneUsageWindow(earphone_usage_window, self.user.user_id, "earphone_usage.txt")
++        earphone_usage_page = devices.EarphoneUsageWindow(earphone_usage_window, self.user.user_id, "earphone_usage.txt")
+     def record_computer_usage(self):
+         computer_usage_window = tk.Toplevel(self.root)
+-        computer_usage_page = util.ComputerUsageWindow(computer_usage_window, self.user.user_id, "earphone_usage.txt")
++        computer_usage_page = devices.ComputerUsageWindow(computer_usage_window, self.user.user_id, "earphone_usage.txt")
+     def record_pad_usage(self):
+         pad_usage_window = tk.Toplevel(self.root)
+-        pad_usage_page = util.PadUsageWindow(pad_usage_window, self.user.user_id, "earphone_usage.txt")
++        pad_usage_page = devices.PadUsageWindow(pad_usage_window, self.user.user_id, "earphone_usage.txt")
+ 
+     def center_window(self, window):
+         window.update_idletasks()
+@@ -134,6 +132,55 @@
+         view_activity_button = ttk.Button(self.health_frame, text="查看历史活动记录", command=self.show_activity_records)
+         view_activity_button.grid(row=4, column=0, pady=10, padx=10, sticky="w")
+ 
++        # 创建“营养摄入”按钮
++        nutrition_intake_button = ttk.Button(self.health_frame, text="营养摄入",
++                                             command=self.open_nutrition_intake_window)
++        nutrition_intake_button.grid(row=5, column=0, pady=10, padx=10, sticky="w")
++
++        # 创建“热量”按钮
++        calorie_intake_button = ttk.Button(self.health_frame, text="热量", command=self.open_calorie_window)
++
++        calorie_intake_button.grid(row=6, column=0, pady=10, padx=10, sticky="w")
++
++    def open_nutrition_intake_window(self):
++        # 打开营养摄入窗口
++        nutrition_intake_window = tk.Toplevel(self.root)
++        self.center_window(nutrition_intake_window)
++
++        # 创建“日饮水量”按钮
++        daily_water_intake_button = ttk.Button(nutrition_intake_window, text="日饮水量", command=self.open_daily_water_intake_window)
++        daily_water_intake_button.pack()
++
++    def open_daily_water_intake_window(self):
++        # 打开日饮水量窗口
++        daily_water_intake_window = tk.Toplevel(self.root)
++        self.center_window(daily_water_intake_window)
++        daily_water_intake_page = devices.DailyWaterIntakeWindow(daily_water_intake_window, self.user.user_id, "water_intake.txt")
++
++    def record_calorie_intake(self):
++        # 打开热量摄入窗口
++        calorie_intake_window = tk.Toplevel(self.root)
++        self.center_window(calorie_intake_window)
++
++    def open_calorie_window(self):
++        # 打开热量窗口
++        calorie_window = tk.Toplevel(self.root)
++        self.center_window(calorie_window)
++        # 创建“热量摄入”按钮
++        calorie_intake_button = ttk.Button(calorie_window, text="热量摄入", command=self.record_calorie_intake)
++        calorie_intake_button.pack()
++
++    # def beverage_calorie_input(self):
++    #     phone_usage_window = tk.Toplevel(self.root)
++    #     phone_usage_page = devices.PhoneUsageWindow(phone_usage_window, self.user.user_id, "earphone_usage.txt")
++    # def fitness_calorie_input(self):
++    #     earphone_usage_window = tk.Toplevel(self.root)
++    #     earphone_usage_page = devices.EarphoneUsageWindow(earphone_usage_window, self.user.user_id, "earphone_usage.txt")
++    # def exerciese_calorie_output(self):
++    #     computer_usage_window = tk.Toplevel(self.root)
++    #     computer_usage_page = devices.ComputerUsageWindow(computer_usage_window, self.user.user_id, "earphone_usage.txt")
++
++
+     def show_my_data(self):
+         # TODO: 实现进入详细的数据页面的功能
+         print("进入我的数据页面")
+Index: README.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># 健康追踪系统\r\n\r\n## 项目结构\r\n\r\n```plaintext\r\n- health_tracker\r\n  - health_app_tikinter             应用前端包\r\n  - health_app_pyQt                 应用前端包\r\n  - tracker                         应用后端包\r\n  - local                           用户本地数据，子文件夹为用户id，默认不上传，程序会自动生成\r\n  main.py                           主程序入口\r\n  requirements.txt                  依赖包列表\r\n  README.md                         项目说明\r\n```\r\n\r\n## 模块介绍\r\n### main.py\r\n\r\n主程序入口，用于启动应用，提供命令行参数解析功能。输入`main.py -h`查看帮助。\r\n\r\n常用命令：\r\n\r\n```bash\r\n# 启动应用\r\npython mian,py run -h           # 查看帮助\r\npython main.py run -f tkinter      # 使用tkinter框架启动\r\npython main.py run -f pyQt         # 使用pyQt启动\r\n\r\n# 生成用户数据\r\npython main.py stimulator -h    # 查看帮助\r\npython main.py stimulator -d a 0  # 生成用户id为0的所有用户数据\r\npython main.py stimulator -d s 0  # 生成用户id为0的步数数据\r\npython main.py stimulator -d a    # 默认用户id为0\r\n```\r\n\r\n### tracker\r\n\r\n这个包里面是应用的后端，包含了应用的所有逻辑。下面目前有这几个文件：\r\n\r\n- `__init__.py`：包的初始化文件，用于导入包内的模块\r\n- `user.py`：用户类，前端和后端的交互都是通过用户类来进行的\r\n- `data.py`：数据类，用于存储用户的数据\r\n- `util.py`：工具类，用于存储一些工具函数，包括数据生成函数、数据读取函数、数据写入函数等\r\n\r\n### health_app_tkinter\r\n\r\n这个包里面是应用的前端，仅供调试使用，正式上线使用pyQt重写，使用tkinter框架实现。\r\n\r\n### health_app_pyQt\r\n\r\n这个包里面是应用的前端，使用pyQt框架实现。\r\n\r\n### local\r\n\r\n这个文件夹用于存储用户的本地数据，每个用户的数据都会存储在一个单独的文件夹中，文件夹的名字为用户的id。\r\n\r\n## TODO\r\n\r\n### 新增随机文件读取功能\r\n\r\n先设计一个基类，用于随机文件的基本读写，然后再设计几个继承自基类的子类，子类中实现对不同数据类型的文件读取功能。可以看情况调整类的结构。\r\n\r\n至少提供如下功能，使得其他模块可以通过这个类来读取随机文件：\r\n\r\n- 读取文件中的指定行\r\n- 查找文件中的匹配行\r\n- 对指定行的数据进行修改\r\n- 对文件中的数据进行追加\r\n- 对文件中的数据进行删除\r\n\r\n### 完善pyQt前端\r\n\r\n使用pyQt框架重写前端，实现app的所有功能。界面设计复刻手机上的健康app。\r\n\r\n### 提供用户每日手动输入数据的功能\r\n\r\n因为实际使用中，用户的数据不可能都是通过手环或者其他设备自动采集的，所以需要提供一个手动输入数据的功能，用户可以在app中手动输入数据，然后保存到本地。\r\n\r\n就是在app中提供一个手动输入数据的界面，用户可以在这个界面中输入各种数据，然后保存到本地。\r\n\r\n先随便使用一个框架快速实现功能，然后再使用pyQt框架完善美化。\r\n\r\n注意，不同的用户因为数据类型不同，所以需要提供不同的手动输入界面。\r\n\r\n### 添加群组功能\r\n\r\n添加群组功能，管理员可以创建群组，管理群活动、发布群公告。可以查看群活动数据（活动详情、个人排名）\r\n\r\n普通成员可以加入群组，接受邀请或扫码申请加入群组。\r\n\r\n普通成员可以报名参加群活动，查看群活动数据。\r\n\r\n### 在健康页面添加趋势卡片\r\n\r\n添加趋势卡片，展示各个数据的30天变化趋势，分为（有所下降，无趋势变化，有所上升）\r\n\r\n### 周月年报\r\n\r\n在我的页面添加周月年报卡片，\r\n\r\n运动周报：本周步数情况（目标步数、七日数据、日均步数、较上周、达标天数）、本周运动情况（运动总时长、较上周、每日时长、总消耗卡路里、较上周、日均消耗）\r\n\r\n运动月报：本月步数情况、本月运动情况（每日时长->周分布、增加热量分布（跑步、步行、爬高、其他%））\r\n\r\n运动年报\r\n\r\n### 站内信\r\n\r\n实现多客户端的站内信系统，用于群组的消息管理。\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/README.md b/README.md
+--- a/README.md	(revision 3097326b70a4faf6f102bb0b533fc9eb78c1ec82)
++++ b/README.md	(date 1704526284015)
+@@ -22,7 +22,7 @@
+ 
+ ```bash
+ # 启动应用
+-python mian,py run -h           # 查看帮助
++python mian.py run -h           # 查看帮助
+ python main.py run -f tkinter      # 使用tkinter框架启动
+ python main.py run -f pyQt         # 使用pyQt启动
+ 
+Index: health_tracker/health_app_tkinter/devices.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import tkinter as tk\r\nfrom tkinter import ttk\r\nfrom tkinter import messagebox\r\nimport matplotlib.pyplot as plt\r\nfrom abc import ABC, abstractmethod\r\n\r\nfrom ..tracker.util import *\r\n\r\n\r\nclass AbstractInputWindow(ABC):\r\n    def __init__(self, root, user_id: str, filename: str):\r\n        self.root = root\r\n        self.user_id = user_id\r\n        self.filename = filename\r\n\r\n        # 创建输入框\r\n        self.entry = ttk.Entry(root)\r\n        self.entry.grid(row=0, column=0, pady=10, padx=10)\r\n\r\n        # 创建提交按钮\r\n        submit_button = ttk.Button(root, text=\"提交\", command=self.submit_data)\r\n        submit_button.grid(row=1, column=0, pady=10, padx=10)\r\n\r\n    @abstractmethod\r\n    def submit_data(self):\r\n        pass\r\n\r\nclass NutrientIntakeWindow(AbstractInputWindow):\r\n    def __init__(self, root, user_id: str, filename: str):\r\n        super().__init__(root, user_id, filename)\r\n        self.root.title(\"一日摄入营养素\")\r\n\r\n    def submit_data(self):\r\n        data = self.entry.get()\r\n        UserLocalFileStorage.write_data(self.user_id, self.filename, data)\r\n        self.entry.delete(0, 'end')\r\n        messagebox.showinfo(\"信息\", \"一日摄入营养素已记录。\")\r\n\r\nclass CalorieIntakeOutputWindow(AbstractInputWindow):\r\n    def __init__(self, root, user_id: str, filename: str):\r\n        super().__init__(root, user_id, filename)\r\n        self.root.title(\"一日卡路里摄入与消耗量\")\r\n\r\n    def submit_data(self):\r\n        data = self.entry.get()\r\n        UserLocalFileStorage.write_data(self.user_id, self.filename, data)\r\n        self.entry.delete(0, 'end')\r\n        messagebox.showinfo(\"信息\", \"一日卡路里摄入与消耗量已记录。\")\r\n\r\nclass DeviceUsageWindow(AbstractInputWindow):\r\n    def __init__(self, root, user_id: str, filename: str):\r\n        super().__init__(root, user_id, filename)\r\n        self.root.title(\"一日电子设备使用时间\")\r\n\r\n    def submit_data(self):\r\n        data = self.entry.get()\r\n        UserLocalFileStorage.write_data(self.user_id, self.filename, data)\r\n        self.entry.delete(0, 'end')\r\n        messagebox.showinfo(\"信息\", \"一日电子设备使用时间已记录。\")\r\n\r\n\r\nclass DailyWaterIntakeWindow(NutrientIntakeWindow):\r\n    def __init__(self, root, user_id: str, filename: str):\r\n        super().__init__(root, user_id, filename)\r\n        self.root.title(\"一日饮水量\")\r\n\r\n    def submit_data(self):\r\n        data = self.entry.get()\r\n        UserLocalFileStorage.write_data(self.user_id, self.filename, data)\r\n        self.entry.delete(0, 'end')\r\n        messagebox.showinfo(\"信息\", \"一日饮水量已记录。\")\r\n\r\nclass FiberIntakeWindow(NutrientIntakeWindow):\r\n    def __init__(self, root, user_id: str, filename: str):\r\n        super().__init__(root, user_id, filename)\r\n        self.root.title(\"一日膳食纤维摄入量\")\r\n\r\n    def submit_data(self):\r\n        data = self.entry.get()\r\n        UserLocalFileStorage.write_data(self.user_id, self.filename, data)\r\n        self.entry.delete(0, 'end')\r\n        messagebox.showinfo(\"信息\", \"一日膳食纤维摄入量已记录。\")\r\n\r\nclass ProteinIntakeWindow(NutrientIntakeWindow):\r\n    def __init__(self, root, user_id: str, filename: str):\r\n        super().__init__(root, user_id, filename)\r\n        self.root.title(\"一日蛋白质摄入量\")\r\n\r\n    def submit_data(self):\r\n        data = self.entry.get()\r\n        UserLocalFileStorage.write_data(self.user_id, self.filename, data)\r\n        self.entry.delete(0, 'end')\r\n        messagebox.showinfo(\"信息\", \"一日蛋白质摄入量已记录。\")\r\n\r\nclass FatIntakeWindow(NutrientIntakeWindow):\r\n    def __init__(self, root, user_id: str, filename: str):\r\n        super().__init__(root, user_id, filename)\r\n        self.root.title(\"一日脂肪摄入量\")\r\n\r\n    def submit_data(self):\r\n        data = self.entry.get()\r\n        UserLocalFileStorage.write_data(self.user_id, self.filename, data)\r\n        self.entry.delete(0, 'end')\r\n        messagebox.showinfo(\"信息\", \"一日脂肪摄入量已记录。\")\r\n\r\nclass MealCalorieIntakeWindow(CalorieIntakeOutputWindow):\r\n    def __init__(self, root, user_id: str, filename: str, meal_type: str):\r\n        super().__init__(root, user_id, filename)\r\n        self.root.title(f\"{meal_type}的卡路里摄入量\")\r\n        self.meal_type = meal_type\r\n\r\n    def submit_data(self):\r\n        data = self.entry.get()\r\n        UserLocalFileStorage.write_data(self.user_id, f\"{self.filename}_{self.meal_type}\", data)\r\n        self.entry.delete(0, 'end')\r\n        messagebox.showinfo(\"信息\", f\"{self.meal_type}的卡路里摄入量已记录。\")\r\n\r\n    @classmethod\r\n    def create_meal_windows(cls, root, user_id: str, filename: str):\r\n        meal_types = [\"早餐\", \"中餐\", \"晚餐\"]\r\n        return [cls(root, user_id, filename, meal_type) for meal_type in meal_types]\r\n\r\nclass FruitCalorieIntakeWindow(CalorieIntakeOutputWindow):\r\n    def __init__(self, root, user_id: str, filename: str):\r\n        super().__init__(root, user_id, filename)\r\n        self.root.title(\"一日水果卡路里摄入量\")\r\n\r\n    def submit_data(self):\r\n        data = self.entry.get()\r\n        UserLocalFileStorage.write_data(self.user_id, self.filename, data)\r\n        self.entry.delete(0, 'end')\r\n        messagebox.showinfo(\"信息\", \"一日水果卡路里摄入量已记录。\")\r\n\r\nclass BeverageCalorieIntakeWindow(CalorieIntakeOutputWindow):\r\n    def __init__(self, root, user_id: str, filename: str):\r\n        super().__init__(root, user_id, filename)\r\n        self.root.title(\"一日饮品卡路里摄入量\")\r\n\r\n    def submit_data(self):\r\n        data = self.entry.get()\r\n        UserLocalFileStorage.write_data(self.user_id, self.filename, data)\r\n        self.entry.delete(0, 'end')\r\n        messagebox.showinfo(\"信息\", \"一日饮品卡路里摄入量已记录。\")\r\n\r\nclass FitnessFoodCalorieIntakeWindow(CalorieIntakeOutputWindow):\r\n    def __init__(self, root, user_id: str, filename: str):\r\n        super().__init__(root, user_id, filename)\r\n        self.root.title(\"一日健身食品卡路里摄入量\")\r\n\r\n    def submit_data(self):\r\n        data = self.entry.get()\r\n        UserLocalFileStorage.write_data(self.user_id, self.filename, data)\r\n        self.entry.delete(0, 'end')\r\n        messagebox.showinfo(\"信息\", \"一日健身食品卡路里摄入量已记录。\")\r\n\r\nclass ExerciseCalorieOutputWindow(CalorieIntakeOutputWindow):\r\n    def __init__(self, root, user_id: str, filename: str):\r\n        super().__init__(root, user_id, filename)\r\n        self.root.title(\"一日体育活动卡路里消耗量\")\r\n\r\n        # 创建活动名称输入框\r\n        self.activity_label = tk.Label(root, text=\"请输入体育活动名称：\")\r\n        self.activity_label.grid(row=1, column=0, pady=10, padx=10)\r\n        self.activity_entry = ttk.Entry(root)\r\n        self.activity_entry.grid(row=1, column=1, pady=10, padx=10)\r\n\r\n        # 创建活动时长输入框\r\n        self.duration_label = tk.Label(root, text=\"请输入活动时长（分钟）：\")\r\n        self.duration_label.grid(row=2, column=0, pady=10, padx=10)\r\n        self.duration_entry = ttk.Entry(root)\r\n        self.duration_entry.grid(row=2, column=1, pady=10, padx=10)\r\n\r\n        # 卡路里消耗量字典\r\n        self.calorie_dict = {\r\n            \"游泳\": 175,\r\n            \"田径\": 450,\r\n            \"篮球\": 250,\r\n            \"自行车\": 330,\r\n            \"慢跑\": 300,\r\n            \"散步\": 75\r\n        }\r\n\r\n        # 用户输入和运动类别的映射\r\n        self.activity_mapping = {\r\n            \"游\": \"游泳\",\r\n            \"快跑\": \"田径\",\r\n            \"一千米\":\"田径\",\r\n            \"走\": \"散步\",\r\n            \"球\": \"篮球\",\r\n            \"车\": \"自行车\",\r\n        }\r\n\r\n    def submit_data(self):\r\n        user_input = self.activity_entry.get()\r\n        duration = float(self.duration_entry.get())\r\n        # 根据用户输入获取运动类别\r\n        activity = self.activity_mapping.get(user_input, \"\")\r\n        # 根据运动类别获取每半小时消耗的卡路里\r\n        calorie_per_half_hour = self.calorie_dict.get(activity, 0)\r\n        # 计算消耗的卡路里\r\n        calories = duration / 30 * calorie_per_half_hour\r\n        data = {\"activity\": activity, \"duration\": duration, \"calories\": calories}\r\n        UserLocalFileStorage.write_data(self.user_id, self.filename, data)\r\n        self.entry.delete(0, 'end')\r\n        self.activity_entry.delete(0, 'end')\r\n        self.duration_entry.delete(0, 'end')\r\n        messagebox.showinfo(\"信息\", f\"一日体育活动卡路里消耗量已记录。消耗的卡路里为：{calories} 卡\")\r\n\r\nclass PhoneUsageWindow(DeviceUsageWindow):\r\n    def __init__(self, root, user_id: str, filename: str):\r\n        super().__init__(root, user_id, filename)\r\n        self.root.title(\"手机日使用时长\")\r\n\r\n        # 创建手机日使用时间\r\n        duration_label = tk.Label(root, text=f\"请输入手机的日使用时长（分钟）：     \")\r\n        duration_label.grid(row=0, column=0, pady=10, padx=10, sticky=\"w\")\r\n        self.entry = ttk.Entry(self.root)\r\n        self.entry.grid(row=0, column=1, pady=10, padx=10, sticky=\"w\")\r\n\r\n\r\n        # 创建娱乐、学习、工作、生活各方面的使用时间输入框\r\n        self.usage_categories = [\"Amusement\", \"Study\", \"Work\", \"Life\"]\r\n        self.category_entries = {}\r\n        for i, category in enumerate(self.usage_categories):\r\n            label = tk.Label(root, text=f\"请输入手机在{category}方面的使用时长（分钟）：\")\r\n            label.grid(row=i+1, column=0, pady=10, padx=10)\r\n            entry = ttk.Entry(root)\r\n            entry.grid(row=i+1, column=1, pady=10, padx=10)\r\n            # 创建上限时间标签\r\n            self.limit_time = tk.StringVar()\r\n            limit_label = ttk.Label(self.root, textvariable=self.limit_time)\r\n            limit_label.grid(row=0, column=2, pady=10, padx=10, sticky=\"w\")\r\n            self.category_entries[category] = entry\r\n        # 创建“绘制饼图”按钮\r\n        pie_chart_button = ttk.Button(self.root, text=\"绘制饼图\", command=self.submit_data)\r\n        pie_chart_button.grid(row=0, column=4, pady=10, padx=10, sticky=\"w\")\r\n\r\n    def submit_data(self):\r\n        total_duration = float(self.entry.get())\r\n        self.limit_time.set(f\"/{total_duration}\")  # 更新上限时间标签\r\n        category_durations = {category: float(entry.get()) for category, entry in self.category_entries.items()}\r\n        category_ratios = {category: duration / total_duration for category, duration in category_durations.items()}\r\n        data = {\"device\": \"手机\", \"total_duration\": total_duration, \"category_durations\": category_durations, \"category_ratios\": category_ratios}\r\n        UserLocalFileStorage.write_data(self.user_id, self.filename, data)\r\n        self.entry.delete(0, 'end')\r\n        for entry in self.category_entries.values():\r\n            entry.delete(0, 'end')\r\n        messagebox.showinfo(\"信息\", \"手机日使用时长已记录。\")\r\n\r\n        # 绘制饼图\r\n        plt.figure(figsize=(6,6))\r\n        plt.pie(category_ratios.values(), labels=category_ratios.keys(), autopct='%1.1f%%')\r\n        plt.title(\"Proportion of Mobile Phone usage time\")\r\n        plt.show()\r\n\r\nclass EarphoneUsageWindow(DeviceUsageWindow):\r\n    def __init__(self, root, user_id: str, filename: str):\r\n        super().__init__(root, user_id, filename)\r\n        self.root.title(\"无线耳机日使用时长\")\r\n\r\n        # 创建无线耳机日使用时间\r\n        duration_label = tk.Label(root, text=f\"请输入无线耳机的日使用时长（分钟）：     \")\r\n        duration_label.grid(row=0, column=0, pady=10, padx=10, sticky=\"w\")\r\n        self.entry = ttk.Entry(self.root)\r\n        self.entry.grid(row=0, column=1, pady=10, padx=10, sticky=\"w\")\r\n\r\n        # 创建娱乐、学习、工作、生活各方面的使用时间输入框\r\n        self.usage_categories = [\"Amusement\", \"Study\", \"Work\", \"Life\"]\r\n        self.category_entries = {}\r\n        for i, category in enumerate(self.usage_categories):\r\n            label = tk.Label(root, text=f\"请输入无线耳机在{category}方面的使用时长（分钟）：\")\r\n            label.grid(row=i + 1, column=0, pady=10, padx=10)\r\n            entry = ttk.Entry(root)\r\n            entry.grid(row=i + 1, column=1, pady=10, padx=10)\r\n            # 创建上限时间标签\r\n            self.limit_time = tk.StringVar()\r\n            limit_label = ttk.Label(self.root, textvariable=self.limit_time)\r\n            limit_label.grid(row=0, column=2, pady=10, padx=10, sticky=\"w\")\r\n            self.category_entries[category] = entry\r\n        # 创建“绘制饼图”按钮\r\n        pie_chart_button = ttk.Button(self.root, text=\"绘制饼图\", command=self.submit_data)\r\n        pie_chart_button.grid(row=0, column=4, pady=10, padx=10, sticky=\"w\")\r\n\r\n    def submit_data(self):\r\n        total_duration = float(self.entry.get())\r\n        self.limit_time.set(f\"/{total_duration}\")  # 更新上限时间标签\r\n        category_durations = {category: float(entry.get()) for category, entry in self.category_entries.items()}\r\n        category_ratios = {category: duration / total_duration for category, duration in category_durations.items()}\r\n        data = {\"device\": \"无线耳机\", \"total_duration\": total_duration, \"category_durations\": category_durations,\r\n                \"category_ratios\": category_ratios}\r\n        UserLocalFileStorage.write_data(self.user_id, self.filename, data)\r\n        self.entry.delete(0, 'end')\r\n        for entry in self.category_entries.values():\r\n            entry.delete(0, 'end')\r\n        messagebox.showinfo(\"信息\", \"无线耳机日使用时长已记录。\")\r\n\r\n        # 绘制饼图\r\n        plt.figure(figsize=(6, 6))\r\n        plt.pie(category_ratios.values(), labels=category_ratios.keys(), autopct='%1.1f%%')\r\n        plt.title(\"Proportion of Earphone usage time\")\r\n        plt.show()\r\n\r\nclass ComputerUsageWindow(DeviceUsageWindow):\r\n    def __init__(self, root, user_id: str, filename: str):\r\n        super().__init__(root, user_id, filename)\r\n        self.root.title(\"电脑日使用时长\")\r\n\r\n        # 创建电脑日使用时间\r\n        duration_label = tk.Label(root, text=f\"请输入电脑的日使用时长（分钟）：     \")\r\n        duration_label.grid(row=0, column=0, pady=10, padx=10, sticky=\"w\")\r\n        self.entry = ttk.Entry(self.root)\r\n        self.entry.grid(row=0, column=1, pady=10, padx=10, sticky=\"w\")\r\n\r\n        # 创建娱乐、学习、工作、生活各方面的使用时间输入框\r\n        self.usage_categories = [\"Amusement\", \"Study\", \"Work\", \"Life\"]\r\n        self.category_entries = {}\r\n        for i, category in enumerate(self.usage_categories):\r\n            label = tk.Label(root, text=f\"请输入电脑在{category}方面的使用时长（分钟）：\")\r\n            label.grid(row=i + 1, column=0, pady=10, padx=10)\r\n            entry = ttk.Entry(root)\r\n            entry.grid(row=i + 1, column=1, pady=10, padx=10)\r\n            # 创建上限时间标签\r\n            self.limit_time = tk.StringVar()\r\n            limit_label = ttk.Label(self.root, textvariable=self.limit_time)\r\n            limit_label.grid(row=0, column=2, pady=10, padx=10, sticky=\"w\")\r\n            self.category_entries[category] = entry\r\n        # 创建“绘制饼图”按钮\r\n        pie_chart_button = ttk.Button(self.root, text=\"绘制饼图\", command=self.submit_data)\r\n        pie_chart_button.grid(row=0, column=4, pady=10, padx=10, sticky=\"w\")\r\n\r\n    def submit_data(self):\r\n        total_duration = float(self.entry.get())\r\n        self.limit_time.set(f\"/{total_duration}\")  # 更新上限时间标签\r\n        category_durations = {category: float(entry.get()) for category, entry in self.category_entries.items()}\r\n        category_ratios = {category: duration / total_duration for category, duration in category_durations.items()}\r\n        data = {\"device\": \"电脑\", \"total_duration\": total_duration, \"category_durations\": category_durations,\r\n                \"category_ratios\": category_ratios}\r\n        UserLocalFileStorage.write_data(self.user_id, self.filename, data)\r\n        self.entry.delete(0, 'end')\r\n        for entry in self.category_entries.values():\r\n            entry.delete(0, 'end')\r\n        messagebox.showinfo(\"信息\", \"电脑日使用时长已记录。\")\r\n\r\n        # 绘制饼图\r\n        plt.figure(figsize=(6, 6))\r\n        plt.pie(category_ratios.values(), labels=category_ratios.keys(), autopct='%1.1f%%')\r\n        plt.title(\"Proportion of Computer usage time\")\r\n        plt.show()\r\n\r\nclass PadUsageWindow(DeviceUsageWindow):\r\n    def __init__(self, root, user_id: str, filename: str):\r\n        super().__init__(root, user_id, filename)\r\n        self.root.title(\"Pad日使用时长\")\r\n\r\n        # 创建手机日使用时间\r\n        duration_label = tk.Label(root, text=f\"请输入Pad的日使用时长（分钟）：     \")\r\n        duration_label.grid(row=0, column=0, pady=10, padx=10, sticky=\"w\")\r\n        self.entry = ttk.Entry(self.root)\r\n        self.entry.grid(row=0, column=1, pady=10, padx=10, sticky=\"w\")\r\n\r\n        # 创建娱乐、学习、工作、生活各方面的使用时间输入框\r\n        self.usage_categories = [\"Amusement\", \"Study\", \"Work\", \"Life\"]\r\n        self.category_entries = {}\r\n        for i, category in enumerate(self.usage_categories):\r\n            label = tk.Label(root, text=f\"请输入Pad在{category}方面的使用时长（分钟）：\")\r\n            label.grid(row=i + 1, column=0, pady=10, padx=10)\r\n            entry = ttk.Entry(root)\r\n            entry.grid(row=i + 1, column=1, pady=10, padx=10)\r\n            # 创建上限时间标签\r\n            self.limit_time = tk.StringVar()\r\n            limit_label = ttk.Label(self.root, textvariable=self.limit_time)\r\n            limit_label.grid(row=0, column=2, pady=10, padx=10, sticky=\"w\")\r\n            self.category_entries[category] = entry\r\n        # 创建“绘制饼图”按钮\r\n        pie_chart_button = ttk.Button(self.root, text=\"绘制饼图\", command=self.submit_data)\r\n        pie_chart_button.grid(row=0, column=4, pady=10, padx=10, sticky=\"w\")\r\n\r\n    def submit_data(self):\r\n        total_duration = float(self.entry.get())\r\n        self.limit_time.set(f\"/{total_duration}\")  # 更新上限时间标签\r\n        category_durations = {category: float(entry.get()) for category, entry in self.category_entries.items()}\r\n        category_ratios = {category: duration / total_duration for category, duration in category_durations.items()}\r\n        data = {\"device\": \"Pad\", \"total_duration\": total_duration, \"category_durations\": category_durations,\r\n                \"category_ratios\": category_ratios}\r\n        UserLocalFileStorage.write_data(self.user_id, self.filename, data)\r\n        self.entry.delete(0, 'end')\r\n        for entry in self.category_entries.values():\r\n            entry.delete(0, 'end')\r\n        messagebox.showinfo(\"信息\", \"Pad日使用时长已记录。\")\r\n\r\n        # 绘制饼图\r\n        plt.figure(figsize=(6, 6))\r\n        plt.pie(category_ratios.values(), labels=category_ratios.keys(), autopct='%1.1f%%')\r\n        plt.title(\"Proportion of Pad usage time\")\r\n        plt.show()
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/health_tracker/health_app_tkinter/devices.py b/health_tracker/health_app_tkinter/devices.py
+--- a/health_tracker/health_app_tkinter/devices.py	(revision 3097326b70a4faf6f102bb0b533fc9eb78c1ec82)
++++ b/health_tracker/health_app_tkinter/devices.py	(date 1704633698015)
+@@ -3,7 +3,7 @@
+ from tkinter import messagebox
+ import matplotlib.pyplot as plt
+ from abc import ABC, abstractmethod
+-
++from wordcloud import WordCloud
+ from ..tracker.util import *
+ 
+ 
+@@ -58,7 +58,6 @@
+         self.entry.delete(0, 'end')
+         messagebox.showinfo("信息", "一日电子设备使用时间已记录。")
+ 
+-
+ class DailyWaterIntakeWindow(NutrientIntakeWindow):
+     def __init__(self, root, user_id: str, filename: str):
+         super().__init__(root, user_id, filename)
+@@ -70,6 +69,26 @@
+         self.entry.delete(0, 'end')
+         messagebox.showinfo("信息", "一日饮水量已记录。")
+ 
++        # 绘制过去一周的饮水量变化曲线图
++        # 假设我们有一个名为get_past_week_data的函数，它返回过去一周的饮水量数据
++        past_week_data = UserLocalFileStorage.get_past_week_data(self.user_id, self.filename)
++        plt.figure(figsize=(10, 5))
++        plt.plot(past_week_data)
++        plt.title('过去一周的饮水量变化')
++        plt.xlabel('日期')
++        plt.ylabel('饮水量 (mL)')
++        plt.show()
++
++        # 生成词云
++        # 假设我们有一个名为get_word_cloud_text的函数，它根据用户的饮水量变化情况和平均饮水量返回词云文本
++        word_cloud_text = UserLocalFileStorage.get_word_cloud_text(self.user_id, self.filename)
++        wordcloud = WordCloud(width=800, height=400, contour_color='steelblue').generate(word_cloud_text)
++        plt.figure(figsize=(10, 5))
++        plt.imshow(wordcloud, interpolation='bilinear')
++        plt.axis('off')
++        plt.show()
++
++
+ class FiberIntakeWindow(NutrientIntakeWindow):
+     def __init__(self, root, user_id: str, filename: str):
+         super().__init__(root, user_id, filename)
+@@ -231,9 +250,9 @@
+             limit_label = ttk.Label(self.root, textvariable=self.limit_time)
+             limit_label.grid(row=0, column=2, pady=10, padx=10, sticky="w")
+             self.category_entries[category] = entry
+-        # 创建“绘制饼图”按钮
+-        pie_chart_button = ttk.Button(self.root, text="绘制饼图", command=self.submit_data)
+-        pie_chart_button.grid(row=0, column=4, pady=10, padx=10, sticky="w")
++        # # 创建“绘制饼图”按钮
++        # pie_chart_button = ttk.Button(self.root, text="绘制饼图", command=self.submit_data)
++        # pie_chart_button.grid(row=0, column=4, pady=10, padx=10, sticky="w")
+ 
+     def submit_data(self):
+         total_duration = float(self.entry.get())
+@@ -247,11 +266,11 @@
+             entry.delete(0, 'end')
+         messagebox.showinfo("信息", "手机日使用时长已记录。")
+ 
+-        # 绘制饼图
+-        plt.figure(figsize=(6,6))
+-        plt.pie(category_ratios.values(), labels=category_ratios.keys(), autopct='%1.1f%%')
+-        plt.title("Proportion of Mobile Phone usage time")
+-        plt.show()
++        # # 绘制饼图
++        # plt.figure(figsize=(6,6))
++        # plt.pie(category_ratios.values(), labels=category_ratios.keys(), autopct='%1.1f%%')
++        # plt.title("Proportion of Mobile Phone usage time")
++        # plt.show()
+ 
+ class EarphoneUsageWindow(DeviceUsageWindow):
+     def __init__(self, root, user_id: str, filename: str):
+@@ -277,9 +296,9 @@
+             limit_label = ttk.Label(self.root, textvariable=self.limit_time)
+             limit_label.grid(row=0, column=2, pady=10, padx=10, sticky="w")
+             self.category_entries[category] = entry
+-        # 创建“绘制饼图”按钮
+-        pie_chart_button = ttk.Button(self.root, text="绘制饼图", command=self.submit_data)
+-        pie_chart_button.grid(row=0, column=4, pady=10, padx=10, sticky="w")
++        # # 创建“绘制饼图”按钮
++        # pie_chart_button = ttk.Button(self.root, text="绘制饼图", command=self.submit_data)
++        # pie_chart_button.grid(row=0, column=4, pady=10, padx=10, sticky="w")
+ 
+     def submit_data(self):
+         total_duration = float(self.entry.get())
+@@ -294,11 +313,11 @@
+             entry.delete(0, 'end')
+         messagebox.showinfo("信息", "无线耳机日使用时长已记录。")
+ 
+-        # 绘制饼图
+-        plt.figure(figsize=(6, 6))
+-        plt.pie(category_ratios.values(), labels=category_ratios.keys(), autopct='%1.1f%%')
+-        plt.title("Proportion of Earphone usage time")
+-        plt.show()
++        # # 绘制饼图
++        # plt.figure(figsize=(6, 6))
++        # plt.pie(category_ratios.values(), labels=category_ratios.keys(), autopct='%1.1f%%')
++        # plt.title("Proportion of Earphone usage time")
++        # plt.show()
+ 
+ class ComputerUsageWindow(DeviceUsageWindow):
+     def __init__(self, root, user_id: str, filename: str):
+@@ -324,9 +343,9 @@
+             limit_label = ttk.Label(self.root, textvariable=self.limit_time)
+             limit_label.grid(row=0, column=2, pady=10, padx=10, sticky="w")
+             self.category_entries[category] = entry
+-        # 创建“绘制饼图”按钮
+-        pie_chart_button = ttk.Button(self.root, text="绘制饼图", command=self.submit_data)
+-        pie_chart_button.grid(row=0, column=4, pady=10, padx=10, sticky="w")
++        # # 创建“绘制饼图”按钮
++        # pie_chart_button = ttk.Button(self.root, text="绘制饼图", command=self.submit_data)
++        # pie_chart_button.grid(row=0, column=4, pady=10, padx=10, sticky="w")
+ 
+     def submit_data(self):
+         total_duration = float(self.entry.get())
+@@ -341,11 +360,11 @@
+             entry.delete(0, 'end')
+         messagebox.showinfo("信息", "电脑日使用时长已记录。")
+ 
+-        # 绘制饼图
+-        plt.figure(figsize=(6, 6))
+-        plt.pie(category_ratios.values(), labels=category_ratios.keys(), autopct='%1.1f%%')
+-        plt.title("Proportion of Computer usage time")
+-        plt.show()
++        # # 绘制饼图
++        # plt.figure(figsize=(6, 6))
++        # plt.pie(category_ratios.values(), labels=category_ratios.keys(), autopct='%1.1f%%')
++        # plt.title("Proportion of Computer usage time")
++        # plt.show()
+ 
+ class PadUsageWindow(DeviceUsageWindow):
+     def __init__(self, root, user_id: str, filename: str):
+@@ -371,9 +390,9 @@
+             limit_label = ttk.Label(self.root, textvariable=self.limit_time)
+             limit_label.grid(row=0, column=2, pady=10, padx=10, sticky="w")
+             self.category_entries[category] = entry
+-        # 创建“绘制饼图”按钮
+-        pie_chart_button = ttk.Button(self.root, text="绘制饼图", command=self.submit_data)
+-        pie_chart_button.grid(row=0, column=4, pady=10, padx=10, sticky="w")
++        # # 创建“绘制饼图”按钮
++        # pie_chart_button = ttk.Button(self.root, text="绘制饼图", command=self.submit_data)
++        # pie_chart_button.grid(row=0, column=4, pady=10, padx=10, sticky="w")
+ 
+     def submit_data(self):
+         total_duration = float(self.entry.get())
+@@ -388,8 +407,8 @@
+             entry.delete(0, 'end')
+         messagebox.showinfo("信息", "Pad日使用时长已记录。")
+ 
+-        # 绘制饼图
+-        plt.figure(figsize=(6, 6))
+-        plt.pie(category_ratios.values(), labels=category_ratios.keys(), autopct='%1.1f%%')
+-        plt.title("Proportion of Pad usage time")
+-        plt.show()
+\ No newline at end of file
++        # # 绘制饼图
++        # plt.figure(figsize=(6, 6))
++        # plt.pie(category_ratios.values(), labels=category_ratios.keys(), autopct='%1.1f%%')
++        # plt.title("Proportion of Pad usage time")
++        # plt.show()
+\ No newline at end of file
+Index: health_tracker/tracker/util.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import json\r\nfrom abc import ABC, abstractmethod\r\nimport os\r\nfrom collections import namedtuple, defaultdict\r\nfrom datetime import timedelta, datetime, date\r\nimport random\r\n\r\n__all__ = [\"UserLocalFileStorage\", \"DataStimulator\"]\r\n\r\n\r\nclass LocalFileStorage:\r\n    @staticmethod\r\n    def write_data(data, filepath: str):\r\n        with open(filepath, 'w') as file:\r\n            json.dump(data, file)\r\n\r\n    @staticmethod\r\n    def read_data(filepath: str):\r\n        with open(filepath, 'r') as file:\r\n            data = json.load(file)\r\n        return data\r\n\r\n    @staticmethod\r\n    def check_file(filepath: str):\r\n        try:\r\n            with open(filepath, 'r') as file:\r\n                return True\r\n        except FileNotFoundError:\r\n            os.makedirs(os.path.dirname(filepath), exist_ok=True)\r\n            return False\r\n\r\n\r\nclass UserLocalFileStorage:\r\n    @staticmethod\r\n    def write_data(user_id: str, filename: str, data):\r\n        filepath = f'local/{user_id}/{filename}.json'\r\n        LocalFileStorage.write_data(data, filepath)\r\n\r\n    @staticmethod\r\n    def read_data(user_id: str, filename: str):\r\n        filepath = f'local/{user_id}/{filename}.json'\r\n        return LocalFileStorage.read_data(filepath)\r\n\r\n    @staticmethod\r\n    def check_file(user_id: str, filename: str):\r\n        filepath = f'local/{user_id}/{filename}.json'\r\n        return LocalFileStorage.check_file(filepath)\r\n\r\n\r\nclass DataStimulator:\r\n    @staticmethod\r\n    def stimulate_all_data(user_id: str):\r\n        DataStimulator.stimulate_step_count(user_id)\r\n        DataStimulator.stimulate_distance(user_id)\r\n        DataStimulator.stimulate_flights_climbed(user_id)\r\n        DataStimulator.stimulate_active_energy_burned(user_id)\r\n        DataStimulator.stimulate_exercise_minutes(user_id)\r\n        DataStimulator.stimulate_active_hours(user_id)\r\n\r\n    @staticmethod\r\n    def stimulate_step_count(user_id: str):\r\n        # 每隔半小时随机记录0-1000步\r\n        step_count = namedtuple('step_count', ['date', 'time', 'value'])\r\n        steps = []\r\n        # 从三年前开始记录\r\n        start_date = date.today() - timedelta(days=3 * 365)\r\n        for i in range(3 * 365 * 48):\r\n            dt = (start_date + timedelta(days=i // 48)).strftime('%Y-%m-%d')\r\n            # 从0点开始，每半小时记录一次\r\n            time = (datetime.strptime(dt, '%Y-%m-%d') + timedelta(minutes=30 * (i % 48))).strftime('%H:%M')\r\n            value = random.randint(0, 1000)\r\n            steps.append(step_count(dt, time, value))\r\n\r\n        UserLocalFileStorage.write_data(user_id, 'step_count', steps)\r\n\r\n    @staticmethod\r\n    def stimulate_distance(user_id: str):\r\n        # 每隔半小时随机记录0-1公里\r\n        distance = namedtuple('distance', ['date', 'time', 'value'])\r\n        distances = []\r\n        # 从三年前开始记录\r\n        start_date = date.today() - timedelta(days=3 * 365)\r\n        for i in range(3 * 365 * 48):\r\n            dt = (start_date + timedelta(days=i // 48)).strftime('%Y-%m-%d')\r\n            # 从0点开始，每半小时记录一次\r\n            time = (datetime.strptime(dt, '%Y-%m-%d') + timedelta(minutes=30 * (i % 48))).strftime('%H:%M')\r\n            value = random.randint(0, 1000) / 1000\r\n            distances.append(distance(dt, time, value))\r\n\r\n        UserLocalFileStorage.write_data(user_id, 'distance', distances)\r\n\r\n    @staticmethod\r\n    def stimulate_flights_climbed(user_id: str):\r\n        # 每隔半小时随机记录0-10米\r\n        flights_climbed = namedtuple('flights_climbed', ['date', 'time', 'value'])\r\n        flights = []\r\n        # 从三年前开始记录\r\n        start_date = date.today() - timedelta(days=3 * 365)\r\n        for i in range(3 * 365 * 48):\r\n            dt = (start_date + timedelta(days=i // 48)).strftime('%Y-%m-%d')\r\n            # 从0点开始，每半小时记录一次\r\n            time = (datetime.strptime(dt, '%Y-%m-%d') + timedelta(minutes=30 * (i % 48))).strftime('%H:%M')\r\n            value = random.randint(0, 10)\r\n            flights.append(flights_climbed(dt, time, value))\r\n\r\n        UserLocalFileStorage.write_data(user_id, 'flights_climbed', flights)\r\n\r\n    @staticmethod\r\n    def stimulate_active_energy_burned(user_id: str):\r\n        # 每隔半小时随机记录0-300千卡\r\n        active_energy_burned = namedtuple('active_energy_burned', ['date', 'time', 'value'])\r\n        energies = []\r\n        # 从三年前开始记录\r\n        start_date = date.today() - timedelta(days=3 * 365)\r\n        for i in range(3 * 365 * 48):\r\n            dt = (start_date + timedelta(days=i // 48)).strftime('%Y-%m-%d')\r\n            # 从0点开始，每半小时记录一次\r\n            time = (datetime.strptime(dt, '%Y-%m-%d') + timedelta(minutes=30 * (i % 48))).strftime('%H:%M')\r\n            value = random.randint(0, 300)\r\n            energies.append(active_energy_burned(dt, time, value))\r\n\r\n        UserLocalFileStorage.write_data(user_id, 'active_energy_burned', energies)\r\n\r\n    @staticmethod\r\n    def stimulate_exercise_minutes(user_id: str):\r\n        # 每隔半小时随机记录0-5分钟\r\n        exercise_time = namedtuple('exercise_minutes', ['date', 'time', 'value'])\r\n        times = []\r\n        # 从三年前开始记录\r\n        start_date = date.today() - timedelta(days=3 * 365)\r\n        for i in range(3 * 365 * 48):\r\n            dt = (start_date + timedelta(days=i // 48)).strftime('%Y-%m-%d')\r\n            # 从0点开始，每半小时记录一次\r\n            time = (datetime.strptime(dt, '%Y-%m-%d') + timedelta(minutes=30 * (i % 48))).strftime('%H:%M')\r\n            value = random.randint(0, 5)\r\n            times.append(exercise_time(dt, time, value))\r\n\r\n        UserLocalFileStorage.write_data(user_id, 'exercise_minutes', times)\r\n\r\n    @staticmethod\r\n    def stimulate_active_hours(user_id: str):\r\n        # 每隔一小时随机记录0-1小时\r\n        active_hours = namedtuple('active_hours', ['date', 'time', 'value'])\r\n        hours = []\r\n        # 从三年前开始记录\r\n        start_date = date.today() - timedelta(days=3 * 365)\r\n        for i in range(3 * 365 * 24):\r\n            dt = (start_date + timedelta(days=i // 24)).strftime('%Y-%m-%d')\r\n            # 从0点开始，每小时记录一次\r\n            time = (datetime.strptime(dt, '%Y-%m-%d') + timedelta(hours=i % 24)).strftime('%H:%M')\r\n            value = random.randint(0, 1)\r\n            hours.append(active_hours(dt, time, value))\r\n\r\n        UserLocalFileStorage.write_data(user_id, 'active_hours', hours)\r\n\r\n\r\nclass UserInputData:\r\n    @staticmethod\r\n    def input_data(user_id: str, filename: str):\r\n        print(f\"请输入要存储在 {filename} 中的数据：\")\r\n        data = input()\r\n        UserLocalFileStorage.write_data(user_id, filename, data)\r\n\r\n    @staticmethod\r\n    def update_data(user_id: str, filename: str):\r\n        print(f\"请输入要更新在 {filename} 中的数据：\")\r\n        data = input()\r\n        if UserLocalFileStorage.check_file(user_id, filename):\r\n            old_data = UserLocalFileStorage.read_data(user_id, filename)\r\n            old_data.append(data)\r\n            UserLocalFileStorage.write_data(user_id, filename, old_data)\r\n        else:\r\n            print(f\"{filename} 文件不存在。\")\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/health_tracker/tracker/util.py b/health_tracker/tracker/util.py
+--- a/health_tracker/tracker/util.py	(revision 3097326b70a4faf6f102bb0b533fc9eb78c1ec82)
++++ b/health_tracker/tracker/util.py	(date 1704552454808)
+@@ -41,12 +41,47 @@
+         filepath = f'local/{user_id}/{filename}.json'
+         return LocalFileStorage.read_data(filepath)
+ 
++    @staticmethod
++    def read_data_dict(user_id: str, filename: str):
++        filepath = f'local/{user_id}/{filename}.json'
++        data_str = LocalFileStorage.read_data(filepath)
++        return json.loads(data_str)  # 解析JSON字符串为字典
++
+     @staticmethod
+     def check_file(user_id: str, filename: str):
+         filepath = f'local/{user_id}/{filename}.json'
+         return LocalFileStorage.check_file(filepath)
+ 
++    @staticmethod
++    def get_past_week_data(user_id: str, filename: str):
++        # 获取过去七天的日期
++        past_week_dates = [(datetime.now() - timedelta(days=i)).strftime('%Y-%m-%d') for i in range(7)]
++
++        # 读取用户的数据
++        data = UserLocalFileStorage.read_data_dict(user_id, filename)
++
++        # 获取过去一周的饮水量数据
++        past_week_data = {date: data.get(date, 0) for date in past_week_dates}
++
++        return past_week_data
++
++    @staticmethod
++    def get_word_cloud_text(user_id: str, filename: str):
++        # 读取用户的数据
++        data = UserLocalFileStorage.read_data(user_id, filename)
+ 
++        # 计算饮水量的平均值
++        average_intake = sum(data.values()) / len(data)
++
++        # 根据饮水量的变化情况和平均饮水量生成词云文本
++        if average_intake < 2000:
++            word_cloud_text = 'Drink more water for better health'
++        elif average_intake < 3000:
++            word_cloud_text = 'Good job, keep up the good hydration habits'
++        else:
++            word_cloud_text = 'Excellent, your hydration habits are great'
++
++        return word_cloud_text
+ class DataStimulator:
+     @staticmethod
+     def stimulate_all_data(user_id: str):
