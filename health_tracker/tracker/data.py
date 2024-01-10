@@ -1,8 +1,10 @@
 """这个模块包含了所有的健康数据的类"""
-
+import json
 from abc import ABC, abstractmethod
 from collections import namedtuple, defaultdict
 from datetime import date as dt_date
+import os
+from datetime import datetime
 from enum import Enum
 import time
 from .consts import *
@@ -21,8 +23,7 @@ __all__ = [
     "ActiveEnergyBurned",
     "ACTIVITY_DATA_TYPES",
     "STATIC_DATA_TYPES",
-    "DATA_TYPES",
-    "UserGroupData"
+    "DATA_TYPES"
 ]
 
 
@@ -149,6 +150,18 @@ class ActivityDataStatistics:
         """
         return {key: value.get_all_daily_total() for key, value in self.activity_datas.items()}
 
+    def get_daily_total(self, data_type, date):
+        """
+        获取指定日期的数据总和，返回一个字典
+        :param data_type: 数据类型，如 'steps', 'distance', 等
+        :param date: 日期对象
+        :return: 数据总和
+        """
+        if data_type in self.activity_datas:
+            return self.activity_datas[data_type].get_daily_total(date)
+        else:
+            return 0
+
     # def get_all_daily_total(self):
     #     """
     #     获取所有日期的数据总和，返回一个字典
@@ -169,6 +182,17 @@ class ActivityDataStatistics:
         :return: {'steps', 'distance', 'flights_climbed', 'active_energy_burned, 'exercise_minutes', 'active_hours'}
         """
         return {key: value.get_latest_daily_total() for key, value in self.activity_datas.items()}
+
+    def get_daily_data(self, date):
+        """
+        获取指定日期的数据，返回一个字典
+        :param date: 日期对象
+        :return: {'steps', 'distance', 'flights_climbed', 'active_energy_burned, 'exercise_minutes', 'active_hours'}
+        """
+        daily_data = {}
+        for key, value in self.activity_datas.items():
+            daily_data[key] = value.get_daily_data(date)
+        return daily_data
 
     # def get_latest_daily_total(self) -> dict:
     #     """
@@ -202,10 +226,8 @@ class Profile(BaseData):
         self._datatype = DATA_TYPES.PROFILE.value
         self._user_id = user_id
         self._FIELD_LIST = 'gender', 'birth', 'height', 'weight'
-        self._profile = namedtuple(self._datatype, self._FIELD_LIST)
+        self._profile = namedtuple('Profile', self._FIELD_LIST)
         self._data_handler: UserSingleFieldFileHandler = user_file_handler_factory(self._user_id, self._datatype)
-        # self.data = None
-        # self.load_data()
 
         if not self.check_data():
             self.init_data()
@@ -275,6 +297,42 @@ class Profile(BaseData):
     def __repr__(self):
         # return f'Profile({self.data})'
         return f'Profile({self.get_dict_data()})'
+
+    def save_profile_to_file(self):
+        """将用户的个人信息保存到本地文件中"""
+        profile_data = {
+            'gender': self.gender,
+            'birth': self.birth,
+            'height': self.height,
+            'weight': self.weight
+        }
+
+        local_directory = 'local'
+        os.makedirs(local_directory, exist_ok=True)
+
+        file_path = f'local/{self._user_id}_profile.json'
+
+        with open(file_path, 'w') as f:
+            json.dump(profile_data, f)
+
+    def save_profile(self):
+        """保存用户输入的个人资料"""
+        self.gender = self.gender_combobox.get()
+        self.birth = self.current_date_label["text"]
+        self.height = self.height_entry.get()
+        self.weight = self.weight_entry.get()
+
+        # 将修改后的资料保存到文件中
+        self.save_profile_to_file()
+
+        # 更新用户的个人资料
+        self.user.profile.update_data_by_field("gender", self.gender)
+        self.user.profile.update_data_by_field("height", self.height)
+        self.user.profile.update_data_by_field("weight", self.weight)
+
+        # 关闭窗口
+        self.root.destroy()
+        self.previous.refresh_profile()
 
 
 class ManualUpdateInterface(ABC):
@@ -475,12 +533,55 @@ class ActivityDataFileHandler(UserMultiFieldFileHandler):
         """
         return self.get_daily_total(self.get_end_date())
 
+    def get_daily_data(self, date: str) -> [tuple, None]:
+        """
+        获取指定日期的数据
+        :param date: 日期字符串
+        :return: 返回一个namedtuple(date, time, value)或None
+        """
+        selected_lines = self.search_by_field_all(0, date)
+        if selected_lines:
+            return self.read_line(selected_lines[0])
+        return None
+
+    def get_daily_data_latest(self) -> [tuple, None]:
+        """
+        获取最新一天的数据
+        :return: 返回一个namedtuple(date, time, value)或None
+        """
+        end_date = self.get_end_date()
+        if end_date is not None:
+            try:
+                # 将 end_date 解析为日期对象
+                end_date_obj = datetime.strptime(end_date, '%Y-%m-%d')
+                # 将日期对象转换为整数
+                end_date_pos = int(end_date_obj.timestamp())
+                print("end_date:", end_date)  # 添加这行代码
+                return self.read_line(end_date_pos)
+            except ValueError as e:
+                print(f"Error parsing date: {e}")
+        return None
+
+    @print_run_time
+    def get_latest_daily_total(self):
+        """
+        获取最近一天的数据总和
+        :return:
+        """
+        latest_data = self.get_daily_data_latest()
+        if latest_data is not None:
+            # 将 end_date 直接作为字符串传递给 get_daily_total
+            end_date = latest_data.date
+            return float(self.get_daily_total(end_date))
+        return 0
+
     def get_all_daily_total(self) -> float:
         """
         获取历史数据总和
         :return:
         """
         return sum([x.value for x in self.read_lines([x for x in range(self.get_file_length())])])
+
 
 
 class ActivityData(BaseData):
@@ -746,41 +847,3 @@ class ActiveHours(AutoUpdateFromMultipleWays, BaseActivityData):
 
     def get_latest_daily_total(self):
         return self.get_daily_total(max(self.get_all_dates()))
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""                     用户group数据类                          """
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-
-class UserGroupData:
-    """用户group数据类"""
-
-    def __init__(self, user_id: str):
-        self._user_id = user_id
-        self._group_file_handler = UserSingleFieldFileHandler(user_id, 'group')
-
-        self._group_file_handler.check_file()
-
-    def __getitem__(self, key):
-        return self._group_file_handler.read_line(key)
-
-    def __setitem__(self, key, value):
-        self._group_file_handler.modify_line(key, value)
-
-    def __delitem__(self, key):
-        self._group_file_handler.delete_line(key)
-
-    def __len__(self):
-        return self._group_file_handler.get_file_length()
-
-    def __iter__(self):
-        for i in range(len(self)):
-            yield self._group_file_handler.read_line(i)
-
-    def __contains__(self, item):
-        return self._group_file_handler.search_line(item) != -1
-
-    def add_2_group(self, group_id: str):
-        self._group_file_handler.append_line(group_id)
-

@@ -39,10 +39,12 @@ class User:
     如果本类中没有提供相关的功能函数，在这个类里新增功能函数，然后在别处调用。
     """
 
-    def __init__(self, user_id: str, name: str):
+    def __init__(self, user_id: str, name: str, birth=None, height=None, weight=None):
         self.user_id = user_id
         self.name = name
-        self.groups = UserGroupData(self.user_id)
+        self.birth = birth
+        self.height = height
+        self.weight = weight
         self.profile = Profile(user_id)
         self.activity_data = ActivityDataStatistics(user_id)
         # self.health_data = HealthData(user_id, DEFAULT_HEALTH_DATA_TYPES)  # 这个对象应该是用不到，用activity_data
@@ -51,6 +53,34 @@ class User:
     def load_profile(self):
         """Load profile"""
         pass
+
+    def get_profile(self) -> namedtuple:
+        """获取用户的个人资料:gender, birth, height, weight"""
+        return self.profile.get_namedtuple_data()
+
+    def get_birth(self):
+        """获取用户的出生日期"""
+        return self.birth
+
+    def set_birth(self, birth):
+        """设置用户的出生日期"""
+        self.birth = birth
+
+    def get_height(self):
+        """获取用户的身高"""
+        return self.height
+
+    def set_height(self, height):
+        """设置用户的身高"""
+        self.height = height
+
+    def get_weight(self):
+        """获取用户的体重"""
+        return self.weight
+
+    def set_weight(self, weight):
+        """设置用户的体重"""
+        self.weight = weight
 
     def get_profile(self) -> namedtuple:
         """获取用户的个人资料:gender, birth, height, weight"""
