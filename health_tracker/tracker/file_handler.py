@@ -302,17 +302,18 @@ class MultiFieldDataFileHandler(RandomFileHandler, MultiFieldDataFileHandlerInte
                     line_numbers.append(i)
         return line_numbers
 
-class BaseUserFileHandler(ABC):
-    """用户文件读写基类"""
-    def __init__(self, user_id: str, data_type: str):
-        self._user_id = user_id
+
+class BaseIdNameFileHandler(ABC):
+    """基于id和name的文件读写类"""
+    def __init__(self, data_id: str, data_type: str):
+        self._data_id = data_id
         self._data_type = data_type
-        self._filepath = f'local/{user_id}/{data_type}.txt'
+        self._filepath = f'local/{data_id}/{data_type}.txt'
 
         # self.check_file()
 
 
-class UserSingleFieldFileHandler(BaseUserFileHandler, RandomFileHandler):
+class UserSingleFieldFileHandler(BaseIdNameFileHandler, RandomFileHandler):
     """用户单字段数据文件读写类"""
 
     def __init__(self, user_id: str, data_type: str):
@@ -354,7 +355,7 @@ class UserSingleFieldFileHandler(BaseUserFileHandler, RandomFileHandler):
         RandomFileHandler.delete_file(self._filepath)
 
 
-class UserMultiFieldFileHandler(BaseUserFileHandler, MultiFieldDataFileHandler):
+class UserMultiFieldFileHandler(BaseIdNameFileHandler, MultiFieldDataFileHandler):
     """用户多字段数据文件读写类"""
 
     def __init__(self, user_id: str, data_type: str):
@@ -419,6 +420,93 @@ def user_file_handler_factory(user_id: str, data_type: str):
         return UserSingleFieldFileHandler(user_id, data_type)
     else:
         raise ValueError(f"Invalid data type: {data_type}")
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""                  GroupFileHandler类，用于处理群组文件的读写                   """
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+class GroupMemberFileHandler(UserSingleFieldFileHandler):
+    """
+    群组成员文件读写类
+    可以通过类似列表的方式读写数据
+    """
+
+    def __init__(self, group_id: str):
+        super().__init__(group_id, 'members')
+
+    def __getitem__(self, key):
+        return self.read_line(key)
+
+    def __setitem__(self, key, value):
+        self.modify_line(key, value)
+
+    def __delitem__(self, key):
+        self.delete_line(key)
+
+    def __len__(self):
+        return self.get_file_length()
+
+    def __iter__(self):
+        for i in range(len(self)):
+            yield self.read_line(i)
+
+    def __contains__(self, item):
+        return self.search_line(item) != -1
+
+
+class GroupBaseDataFileHandler(UserSingleFieldFileHandler):
+    """
+    群组基础数据文件读写类，包括群组名、群主、创建时间、公告等
+    可以通过类似字典的方式读写数据
+    """
+
+    def __init__(self, group_id: str):
+        super().__init__(group_id, "base_data")
+        self._fields = ["group_name", "group_owner", "group_create_time", "group_announcement"]
+        self._lines = {x: i for i, x in enumerate(self._fields)}
+
+    def __getitem__(self, key):
+        pos = self._lines[key]
+        return self.read_line(pos)
+
+    def __setitem__(self, key, value):
+        pos = self._lines[key]
+        self.modify_line(pos, value)
+
+    def __delitem__(self, key):
+        pos = self._lines[key]
+        self.delete_line(pos)
+
+    def __len__(self):
+        return len(self._fields)
+
+    def __iter__(self):
+        return iter(self._fields)
+
+    def __contains__(self, item):
+        return item in self._fields
+
+    def __str__(self):
+        return str(self._fields)
+
+
+class GroupFileHandler:
+    """群组文件读写类"""
+
+    def __init__(self, group_id: str):
+        self._group_id = group_id
+        self._filedir = f'local/group/{group_id}'
+        self.members_file_handler = GroupMemberFileHandler(group_id)
+        self.base_data_file_handler = GroupBaseDataFileHandler(group_id)
+
+        self.members_file_handler.check_file()
+        self.base_data_file_handler.check_file()
+
+    def remove(self):
+        """删除群组文件"""
+        os.remove(self._filedir)
 
 
 # class DataFileHandler:
