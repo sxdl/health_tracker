@@ -86,7 +86,6 @@ class DetailDataPage(ABC):
 
 # class DetailDataPage:
 #     def __init__(self, root):
-#         # TODO: 显示日周月年的详细数据，生成图表
 #         self.root = root
 #         self.root.title("详细数据页面")
 #         self.latest_data = self.user.activity_data.get_latest_daily_total()
