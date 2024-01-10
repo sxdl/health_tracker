@@ -1,5 +1,5 @@
 """这个模块包含了所有的健康数据的类"""
-
+import json
 from abc import ABC, abstractmethod
 from collections import namedtuple, defaultdict
 from datetime import date as dt_date
@@ -275,11 +275,17 @@ class Profile(BaseData):
 
     def save_profile_to_file(self):
         """将用户的个人信息保存到本地文件中"""
-        with open(f'{self._user_id}_profile.txt', 'w') as f:
-            f.write(f'gender: {self.gender}\n')
-            f.write(f'birth: {self.birth}\n')
-            f.write(f'height: {self.height}\n')
-            f.write(f'weight: {self.weight}\n')
+        profile_data = {
+            'gender': self.gender,
+            'birth': self.birth,
+            'height': self.height,
+            'weight': self.weight
+        }
+
+        file_path = f'local/{self._user_id}_profile.json'
+
+        with open(file_path, 'w') as f:
+            json.dump(profile_data, f)
 
     def save_profile(self):
         """保存用户输入的个人资料"""

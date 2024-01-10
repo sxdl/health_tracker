@@ -96,6 +96,7 @@ class EditProfileWindow:
         self.user.profile.update_data_by_field("height", self.height)
         self.user.profile.update_data_by_field("weight", self.weight)
 
+
         # 关闭窗口
         self.root.destroy()
         self.previous.refresh_profile()
