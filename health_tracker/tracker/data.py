@@ -23,7 +23,8 @@ __all__ = [
     "ActiveEnergyBurned",
     "ACTIVITY_DATA_TYPES",
     "STATIC_DATA_TYPES",
-    "DATA_TYPES"
+    "DATA_TYPES",
+    "UserGroupData"
 ]
 
 
@@ -847,3 +848,40 @@ class ActiveHours(AutoUpdateFromMultipleWays, BaseActivityData):
 
     def get_latest_daily_total(self):
         return self.get_daily_total(max(self.get_all_dates()))
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""                     用户group数据类                          """
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+class UserGroupData:
+    """用户group数据类"""
+
+    def __init__(self, user_id: str):
+        self._user_id = user_id
+        self._group_file_handler = UserSingleFieldFileHandler(user_id, 'group')
+
+        self._group_file_handler.check_file()
+
+    def __getitem__(self, key):
+        return self._group_file_handler.read_line(key)
+
+    def __setitem__(self, key, value):
+        self._group_file_handler.modify_line(key, value)
+
+    def __delitem__(self, key):
+        self._group_file_handler.delete_line(key)
+
+    def __len__(self):
+        return self._group_file_handler.get_file_length()
+
+    def __iter__(self):
+        for i in range(len(self)):
+            yield self._group_file_handler.read_line(i)
+
+    def __contains__(self, item):
+        return self._group_file_handler.search_line(item) != -1
+
+    def add_2_group(self, group_id: str):
+        self._group_file_handler.append_line(group_id)
