@@ -8,7 +8,7 @@ from abc import ABC, abstractmethod
 from .data import ACTIVITY_DATA_TYPES, STATIC_DATA_TYPES
 from .decorators import print_run_time
 
-__all__ = ["user_file_handler_factory", "UserMultiFieldFileHandler", "UserSingleFieldFileHandler"]  # 对外提供的接口类名
+__all__ = ["user_file_handler_factory", "UserMultiFieldFileHandler", "UserSingleFieldFileHandler", "GroupFileHandler"]  # 对外提供的接口类名
 
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')

@@ -42,7 +42,7 @@ class User:
     def __init__(self, user_id: str, name: str):
         self.user_id = user_id
         self.name = name
-        self.group_id = []  # 加入群组的id
+        self.groups = UserGroupData(self.user_id)
         self.profile = Profile(user_id)
         self.activity_data = ActivityDataStatistics(user_id)
         # self.health_data = HealthData(user_id, DEFAULT_HEALTH_DATA_TYPES)  # 这个对象应该是用不到，用activity_data
@@ -56,11 +56,10 @@ class User:
         """获取用户的个人资料:gender, birth, height, weight"""
         return self.profile.get_namedtuple_data()
 
-    def added_group(self, group_id: str):
-        self.group_id.append(group_id)
+    def add_2_group(self, group_id: str):
+        """加入群组"""
+        self.groups.add_2_group(group_id)
 
-    def check_in_group(self, group_id: str):
-        if group_id in self.group_id:
-            return True
-        else:
-            return False
+    def is_in_group(self, group_id: str):
+        """检查是否在群组中"""
+        return group_id in self.groups

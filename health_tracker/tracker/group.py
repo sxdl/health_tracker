@@ -2,13 +2,13 @@
 
 import time
 import qrcode
-from health_tracker.health_tracker.tracker.file_handler import GroupFileHandler
+from health_tracker.tracker.file_handler import GroupFileHandler
 
 
-__all__ = ["GroupBase"]
+__all__ = ["Group"]
 
 
-class GroupBase:
+class Group:
     def __init__(self, group_id: str, owner_id: str, group_name: str, file_path = None):
         self.group_id = group_id            # 群组id
         self.name = group_name              # 群名称
