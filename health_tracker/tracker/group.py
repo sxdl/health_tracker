@@ -2,7 +2,7 @@
 
 import time
 import qrcode
-from health_tracker.tracker.file_handler import GroupFileHandler
+from .file_handler import GroupFileHandler
 
 
 __all__ = ["Group"]
