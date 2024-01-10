@@ -3,6 +3,7 @@ import json
 from abc import ABC, abstractmethod
 from collections import namedtuple, defaultdict
 from datetime import date as dt_date
+import os
 from enum import Enum
 import time
 from .consts import *
@@ -281,6 +282,9 @@ class Profile(BaseData):
             'height': self.height,
             'weight': self.weight
         }
+
+        local_directory = 'local'
+        os.makedirs(local_directory, exist_ok=True)
 
         file_path = f'local/{self._user_id}_profile.json'
 
