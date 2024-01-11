@@ -563,18 +563,18 @@ class ActivityDataFileHandler(UserMultiFieldFileHandler):
                 print(f"Error parsing date: {e}")
         return None
 
-    @print_run_time
-    def get_latest_daily_total(self):
-        """
-        获取最近一天的数据总和
-        :return:
-        """
-        latest_data = self.get_daily_data_latest()
-        if latest_data is not None:
-            # 将 end_date 直接作为字符串传递给 get_daily_total
-            end_date = latest_data.date
-            return float(self.get_daily_total(end_date))
-        return 0
+    # @print_run_time
+    # def get_latest_daily_total(self):
+    #     """
+    #     获取最近一天的数据总和
+    #     :return:
+    #     """
+    #     latest_data = self.get_daily_data_latest()
+    #     if latest_data is not None:
+    #         # 将 end_date 直接作为字符串传递给 get_daily_total
+    #         end_date = latest_data.date
+    #         return float(self.get_daily_total(end_date))
+    #     return 0
 
     def get_all_daily_total(self) -> float:
         """
