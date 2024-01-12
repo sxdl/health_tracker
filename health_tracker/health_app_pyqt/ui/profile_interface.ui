@@ -74,7 +74,7 @@
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>health_tracker/health_app_pyqt/resource/images/profile/user.png</normaloff>health_tracker/health_app_pyqt/resource/images/profile/user.png</iconset>
+         <normaloff>../resource/images/profile/user.png</normaloff>../resource/images/profile/user.png</iconset>
        </property>
       </widget>
      </item>
@@ -101,56 +101,7 @@
       <property name="verticalSpacing">
        <number>10</number>
       </property>
-      <item row="2" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <property name="spacing">
-         <number>30</number>
-        </property>
-        <item>
-         <widget class="StrongBodyLabel" name="UIDCap">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>50</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>UID</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="BodyLabel" name="UIDLabel">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Body label</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="0" column="0">
-       <widget class="SubtitleLabel" name="SubtitleLabel_2">
-        <property name="text">
-         <string>About Me</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
+      <item row="6" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <property name="spacing">
          <number>30</number>
@@ -192,13 +143,30 @@
         </item>
        </layout>
       </item>
-      <item row="4" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <item row="1" column="0">
+       <layout class="QGridLayout" name="gridLayout_2" rowminimumheight="0">
+        <property name="topMargin">
+         <number>3</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="SubtitleLabel" name="SubtitleLabel_2">
+          <property name="text">
+           <string>About Me</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="ToolButton" name="editButton"/>
+        </item>
+       </layout>
+      </item>
+      <item row="3" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
         <property name="spacing">
          <number>30</number>
         </property>
         <item>
-         <widget class="StrongBodyLabel" name="ageCap">
+         <widget class="StrongBodyLabel" name="UIDCap">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -212,7 +180,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Age</string>
+           <string>UID</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -220,7 +188,7 @@
          </widget>
         </item>
         <item>
-         <widget class="BodyLabel" name="ageLabel">
+         <widget class="BodyLabel" name="UIDLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -234,7 +202,7 @@
         </item>
        </layout>
       </item>
-      <item row="1" column="0">
+      <item row="2" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <property name="spacing">
          <number>30</number>
@@ -276,6 +244,132 @@
         </item>
        </layout>
       </item>
+      <item row="7" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <property name="spacing">
+         <number>30</number>
+        </property>
+        <item>
+         <widget class="StrongBodyLabel" name="ageCap">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Birthday</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="BodyLabel" name="ageLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Body label</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="4" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
+        <property name="spacing">
+         <number>30</number>
+        </property>
+        <item>
+         <widget class="StrongBodyLabel" name="UIDCap_2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Height</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="BodyLabel" name="heightLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Body label</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="5" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_10">
+        <property name="spacing">
+         <number>30</number>
+        </property>
+        <item>
+         <widget class="StrongBodyLabel" name="UIDCap_3">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>50</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Weight</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="BodyLabel" name="wLabel_3">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Body label</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>
@@ -288,7 +382,7 @@
       <item>
        <widget class="SubtitleLabel" name="SubtitleLabel">
         <property name="text">
-         <string>History Data</string>
+         <string>Accumulated Data</string>
         </property>
        </widget>
       </item>
@@ -312,7 +406,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Name</string>
+           <string>Days of Exercise</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -347,7 +441,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Name</string>
+           <string>Steps</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -389,7 +483,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Name</string>
+           <string>Calories</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -424,7 +518,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Name</string>
+           <string>Distance</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

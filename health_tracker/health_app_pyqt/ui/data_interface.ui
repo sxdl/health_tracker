@@ -14,22 +14,6 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>966</width>
-       <height>37</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
    <item row="1" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="bottomMargin">
@@ -53,53 +37,241 @@
      </item>
     </layout>
    </item>
+   <item row="0" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>966</width>
+       <height>37</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
    <item row="3" column="0">
     <widget class="QStackedWidget" name="stackedWidget">
      <widget class="QWidget" name="caloriesPage">
-      <layout class="QGridLayout" name="caloriesGridLayout">
+      <layout class="QGridLayout" name="caloriesGridLayout" rowstretch="1,0">
        <item row="0" column="0">
         <widget class="CardWidget" name="caloriesCardWidget">
          <layout class="QVBoxLayout" name="verticalLayout_1_1"/>
         </widget>
        </item>
+       <item row="1" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="leftMargin">
+          <number>30</number>
+         </property>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="StrongBodyLabel" name="StrongBodyLabel">
+             <property name="text">
+              <string>Accumulated</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="TitleLabel" name="caloriesAccumulatedLabel">
+             <property name="text">
+              <string>Title label</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="StrongBodyLabel" name="StrongBodyLabel_3">
+             <property name="text">
+              <string>Daily Average</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="TitleLabel" name="caloriesDailyLabel">
+             <property name="text">
+              <string>Title label</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="floorPage">
-      <layout class="QGridLayout" name="floorGridLayout">
+      <layout class="QGridLayout" name="floorGridLayout" rowstretch="1,0">
        <item row="0" column="0">
         <layout class="QGridLayout" name="floorCardGridLayout">
-          <item row="0" column="0">
-           <widget class="CardWidget" name="caloriesCardWidget">
-            <layout class="QVBoxLayout" name="verticalLayout_2_1"/>
-           </widget>
-          </item>
-         </layout>
+         <item row="0" column="0">
+          <widget class="CardWidget" name="caloriesCardWidget">
+           <layout class="QVBoxLayout" name="verticalLayout_2_1"/>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="1" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <property name="leftMargin">
+          <number>30</number>
+         </property>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_8">
+           <item>
+            <widget class="StrongBodyLabel" name="StrongBodyLabel_8">
+             <property name="text">
+              <string>Accumulated Height</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="TitleLabel" name="floorAccumulatedLabel">
+             <property name="text">
+              <string>Title label</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_9">
+           <item>
+            <widget class="StrongBodyLabel" name="StrongBodyLabel_9">
+             <property name="text">
+              <string>Daily Average Height</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="TitleLabel" name="floorDailyLabel">
+             <property name="text">
+              <string>Title label</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
      <widget class="QWidget" name="distancePage">
-      <layout class="QGridLayout" name="distanceGridLayout">
+      <layout class="QGridLayout" name="distanceGridLayout" rowstretch="1,0,0">
        <item row="0" column="0">
         <layout class="QGridLayout" name="distanceCardGridLayout">
-          <item row="0" column="0">
-           <widget class="CardWidget" name="caloriesCardWidget">
-            <layout class="QVBoxLayout" name="verticalLayout_3_1"/>
-           </widget>
-          </item>
-         </layout>
+         <item row="0" column="0">
+          <widget class="CardWidget" name="caloriesCardWidget">
+           <layout class="QVBoxLayout" name="verticalLayout_3_1"/>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="1" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <property name="leftMargin">
+          <number>30</number>
+         </property>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <item>
+            <widget class="StrongBodyLabel" name="StrongBodyLabel_6">
+             <property name="text">
+              <string>Accumulated Distance</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="TitleLabel" name="distanceAccumulatedLabel">
+             <property name="text">
+              <string>Title label</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_7">
+           <item>
+            <widget class="StrongBodyLabel" name="StrongBodyLabel_7">
+             <property name="text">
+              <string>Average Distance</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="TitleLabel" name="distanceDailyLabel">
+             <property name="text">
+              <string>Title label</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
      <widget class="QWidget" name="stepPage">
-      <layout class="QGridLayout" name="stepGridLayout">
+      <layout class="QGridLayout" name="stepGridLayout" rowstretch="1,0">
        <item row="0" column="0">
         <layout class="QGridLayout" name="stepCardGridLayout">
-          <item row="0" column="0">
-           <widget class="CardWidget" name="caloriesCardWidget">
-            <layout class="QVBoxLayout" name="verticalLayout_4_1"/>
-           </widget>
-          </item>
-         </layout>
+         <item row="0" column="0">
+          <widget class="CardWidget" name="caloriesCardWidget">
+           <layout class="QVBoxLayout" name="verticalLayout_4_1"/>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="1" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <property name="leftMargin">
+          <number>30</number>
+         </property>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_10">
+           <item>
+            <widget class="StrongBodyLabel" name="StrongBodyLabel_10">
+             <property name="text">
+              <string>Accumulated Steps</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="TitleLabel" name="stepsAccumulatedLabel">
+             <property name="text">
+              <string>Title label</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_11">
+           <item>
+            <widget class="StrongBodyLabel" name="StrongBodyLabel_11">
+             <property name="text">
+              <string>Daily Average Steps</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="TitleLabel" name="stepsDailyLabel">
+             <property name="text">
+              <string>Title label</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
@@ -127,12 +299,12 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>TitleLabel</class>
+   <class>StrongBodyLabel</class>
    <extends>QLabel</extends>
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
-   <class>DisplayLabel</class>
+   <class>TitleLabel</class>
    <extends>QLabel</extends>
    <header>qfluentwidgets</header>
   </customwidget>

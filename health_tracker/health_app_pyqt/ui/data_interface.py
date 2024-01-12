@@ -49,7 +49,7 @@ class DataInterface(QWidget, Ui_DataInterface):
             # Floor
             # TODO: 爬楼数据应该要改成柱状图，展示每日的数据；添加“总高度”和“平均高度”label
             self.webview = QWebEngineView()
-            self.webview.load(self.renderLocalHtmlURL("floor-daily-area-stack-gradient.html"))
+            self.webview.load(self.renderLocalHtmlURL("floor-bar-stack-borderRadius.html"))
             self.verticalLayout_2_1.addWidget(self.webview)
 
             # Distance
@@ -61,7 +61,7 @@ class DataInterface(QWidget, Ui_DataInterface):
             # Steps
             # TODO: 步数数据应该要改成柱状图，展示每日的数据；添加“总步数”和“平均步数”label
             self.webview = QWebEngineView()
-            self.webview.load(self.renderLocalHtmlURL("steps-daily-area-stack-gradient.html"))
+            self.webview.load(self.renderLocalHtmlURL("step-bar-stack-borderRadius.html"))
             self.verticalLayout_4_1.addWidget(self.webview)
 
             # 添加菜单，用于切换图表

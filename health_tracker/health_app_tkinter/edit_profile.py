@@ -13,7 +13,7 @@ class EditProfileWindow:
         self.root.title("修改个人资料")
 
         self.nickname, self.gender, self.birth, self.height, self.weight = ("默认昵称",) + user.get_profile()
-        self.GENDER = {"男": 0, "女": 1, "未知": 2}
+        self.GENDER = {"Male": 0, "Female": 1, "Other": 2}
 
         # 创建标签和输入框
         ttk.Label(root, text="昵称:").grid(row=0, column=0, pady=10, padx=10, sticky="w")
@@ -23,7 +23,7 @@ class EditProfileWindow:
 
         ttk.Label(root, text="性别:").grid(row=1, column=0, pady=10, padx=10, sticky="w")
         self.gender_combobox = ttk.Combobox(root, width=17, state="readonly")
-        self.gender_combobox["values"] = ("男", "女", "未知")
+        self.gender_combobox["values"] = ("Male", "Female", "Other")
         self.gender_combobox.current(self.GENDER[self.gender])
         self.gender_combobox.grid(row=1, column=1, pady=10, padx=10, sticky="w")
 
