@@ -10,6 +10,8 @@ from .group_interface_ui import Ui_GroupInterface
 from ..config import *
 from ...tracker import User
 
+
+
 class GroupInterface(QWidget, Ui_GroupInterface):
     def __init__(self, user: User, parent=None):
         super().__init__(parent=parent)
@@ -22,6 +24,15 @@ class GroupInterface(QWidget, Ui_GroupInterface):
         self.GitHubButton.setIcon(FIF.GITHUB)
         self.GitHubButton.setToolTip("GitHub")
         self.GitHubButton.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(GITHUB)))
+
+        self.createButton.setIcon(FIF.ADD_TO)
+        self.createButton.setToolTip("Create Group")
+
+        self.announEditButton.setIcon(FIF.EDIT)
+        self.announEditButton.setToolTip("Edit Annnouncement")
+
+        self.qrcodeButton.setIcon(FIF.QRCODE)
+        self.qrcodeButton.setToolTip("Show QRCode")
 
         groups = [
             "👥 Group 1",

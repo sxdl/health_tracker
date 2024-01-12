@@ -62,4 +62,3 @@ class HealthInterface(QWidget, Ui_HealthInterface):
 
 
 
-        

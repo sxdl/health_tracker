@@ -13,24 +13,8 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>966</width>
-       <height>37</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="1" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="bottomMargin">
       <number>10</number>
@@ -53,7 +37,7 @@
      </item>
     </layout>
    </item>
-   <item>
+   <item row="2" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="0,1">
      <item>
       <widget class="SimpleCardWidget" name="SimpleCardWidget">
@@ -85,7 +69,7 @@
            <widget class="SearchLineEdit" name="SearchLineEdit"/>
           </item>
           <item>
-           <widget class="ToolButton" name="ToolButton">
+           <widget class="ToolButton" name="createButton">
             <property name="minimumSize">
              <size>
               <width>32</width>
@@ -476,7 +460,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="ToolButton" name="ToolButton_2"/>
+                  <widget class="ToolButton" name="qrcodeButton"/>
                  </item>
                 </layout>
                </item>
@@ -543,6 +527,22 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="0" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>966</width>
+       <height>37</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>
