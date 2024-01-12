@@ -116,7 +116,7 @@ class ProfileInterface(QWidget, Ui_ProfileInterface):
 
         # 设置显示用户信息
         # TODO: 此处数据接口较混乱，暂时没看懂，不清楚如何调取用户的性别年龄等，先给出名字和UID示例，其余信息设置方法类似
-        self.nameLabel.setText(self.user.name)
+        self.nameLabel.setText(self.profile.name)
         self.UIDLabel.setText(self.user.user_id)
         self.heightLabel.setText(self.profile.height)
         self.weightLabel.setText(self.profile.weight)
@@ -140,8 +140,8 @@ class ProfileInterface(QWidget, Ui_ProfileInterface):
         self.user.profile.update_data_by_field("height", user_height)
         self.user.profile.update_data_by_field("weight", user_weight)
 
-        self.nameLabel.setText(self.user.name)
-        self.UIDLabel.setText(self.user.user_id)
+        self.nameLabel.setText(user_name)
+        self.UIDLabel.setText(user_id)
         self.heightLabel.setText(user_height)
         self.weightLabel.setText(user_weight)
         self.genderLabel.setText(user_gender)

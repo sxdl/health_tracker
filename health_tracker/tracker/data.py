@@ -856,7 +856,7 @@ class ActiveHours(AutoUpdateFromMultipleWays, BaseActivityData):
 
 
 class UserGroupData:
-    """（弃用）用户group数据类"""
+    """用户group数据类"""
 
     def __init__(self, user_id: str):
         self._user_id = user_id

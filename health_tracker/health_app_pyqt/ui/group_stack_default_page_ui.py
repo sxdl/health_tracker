@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'group_stack_default_page.ui'
+# Form implementation generated from reading ui file 'd:\Study\University\Y2T1\OOP\Health-Tracker\health_tracker\health_app_pyqt\ui\group_stack_default_page.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
