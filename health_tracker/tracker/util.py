@@ -5,6 +5,7 @@ from collections import namedtuple, defaultdict
 from datetime import timedelta, datetime, date
 import random
 from .data import ActivityDataFileHandler
+from .file_handler import *
 
 __all__ = ["UserLocalFileStorage", "DataStimulator"]
 
@@ -75,20 +76,28 @@ class DataStimulator:
         step_count = namedtuple('step_count', ['date', 'time', 'value'])
         steps = []
         # 从三年前开始记录
-        start_date = date.today() - timedelta(days=3 * 365)
+        start_date = date.today() - timedelta(days=10)
 
         file_handler = ActivityDataFileHandler(user_id, 'step_count')
         file_handler.check_file()
         file_handler.delete_file()
 
-        for i in range(3 * 365 * 48):
+        accumulated_data_file_handler = UserSingleFieldFileHandler(user_id, 'step_count_accumulated')
+        accumulated_data_file_handler.check_file()
+        accumulated_data_file_handler.delete_file()
+
+        accumulated_data = 0
+
+        for i in range(10 * 48):
             dt = (start_date + timedelta(days=i // 48)).strftime('%Y-%m-%d')
             # 从0点开始，每半小时记录一次
             time = (datetime.strptime(dt, '%Y-%m-%d') + timedelta(minutes=30 * (i % 48))).strftime('%H:%M')
             value = random.randint(0, 1000)
             # steps.append(step_count(dt, time, value))
             data = step_count(dt, time, value)
+            accumulated_data += value
             file_handler.append_line(data)
+        accumulated_data_file_handler.append_line(str(accumulated_data))
 
         # UserLocalFileStorage.write_data(user_id, 'step_count', steps)
 
@@ -98,20 +107,28 @@ class DataStimulator:
         distance = namedtuple('distance', ['date', 'time', 'value'])
         distances = []
         # 从三年前开始记录
-        start_date = date.today() - timedelta(days=3 * 365)
+        start_date = date.today() - timedelta(days=10)
 
         file_handler = ActivityDataFileHandler(user_id, 'distance')
         file_handler.check_file()
         file_handler.delete_file()
 
-        for i in range(3 * 365 * 48):
+        accumulated_data_file_handler = UserSingleFieldFileHandler(user_id, 'distance_accumulated')
+        accumulated_data_file_handler.check_file()
+        accumulated_data_file_handler.delete_file()
+
+        accumulated_data = 0
+
+        for i in range(10 * 48):
             dt = (start_date + timedelta(days=i // 48)).strftime('%Y-%m-%d')
             # 从0点开始，每半小时记录一次
             time = (datetime.strptime(dt, '%Y-%m-%d') + timedelta(minutes=30 * (i % 48))).strftime('%H:%M')
             value = random.randint(0, 1000) / 1000
             # distances.append(distance(dt, time, value))
             data = distance(dt, time, value)
+            accumulated_data += value
             file_handler.append_line(data)
+        accumulated_data_file_handler.append_line(str(accumulated_data))
 
         # UserLocalFileStorage.write_data(user_id, 'distance', distances)
 
@@ -121,20 +138,28 @@ class DataStimulator:
         flights_climbed = namedtuple('flights_climbed', ['date', 'time', 'value'])
         flights = []
         # 从三年前开始记录
-        start_date = date.today() - timedelta(days=3 * 365)
+        start_date = date.today() - timedelta(days=10)
 
         file_handler = ActivityDataFileHandler(user_id, 'flights_climbed')
         file_handler.check_file()
         file_handler.delete_file()
 
-        for i in range(3 * 365 * 48):
+        accumulated_data_file_handler = UserSingleFieldFileHandler(user_id, 'flights_climbed_accumulated')
+        accumulated_data_file_handler.check_file()
+        accumulated_data_file_handler.delete_file()
+
+        accumulated_data = 0
+
+        for i in range(10 * 48):
             dt = (start_date + timedelta(days=i // 48)).strftime('%Y-%m-%d')
             # 从0点开始，每半小时记录一次
             time = (datetime.strptime(dt, '%Y-%m-%d') + timedelta(minutes=30 * (i % 48))).strftime('%H:%M')
             value = random.randint(0, 10)
             # flights.append(flights_climbed(dt, time, value))
             data = flights_climbed(dt, time, value)
+            accumulated_data += value
             file_handler.append_line(data)
+        accumulated_data_file_handler.append_line(str(accumulated_data))
 
         # UserLocalFileStorage.write_data(user_id, 'flights_climbed', flights)
 
@@ -144,20 +169,28 @@ class DataStimulator:
         active_energy_burned = namedtuple('active_energy_burned', ['date', 'time', 'value'])
         energies = []
         # 从三年前开始记录
-        start_date = date.today() - timedelta(days=3 * 365)
+        start_date = date.today() - timedelta(days=10)
 
         file_handler = ActivityDataFileHandler(user_id, 'active_energy_burned')
         file_handler.check_file()
         file_handler.delete_file()
 
-        for i in range(3 * 365 * 48):
+        accumulated_data_file_handler = UserSingleFieldFileHandler(user_id, 'active_energy_burned_accumulated')
+        accumulated_data_file_handler.check_file()
+        accumulated_data_file_handler.delete_file()
+
+        accumulated_data = 0
+
+        for i in range(10 * 48):
             dt = (start_date + timedelta(days=i // 48)).strftime('%Y-%m-%d')
             # 从0点开始，每半小时记录一次
             time = (datetime.strptime(dt, '%Y-%m-%d') + timedelta(minutes=30 * (i % 48))).strftime('%H:%M')
             value = random.randint(0, 300)
             # energies.append(active_energy_burned(dt, time, value))
             data = active_energy_burned(dt, time, value)
+            accumulated_data += value
             file_handler.append_line(data)
+        accumulated_data_file_handler.append_line(str(accumulated_data))
 
         # UserLocalFileStorage.write_data(user_id, 'active_energy_burned', energies)
 
@@ -167,20 +200,29 @@ class DataStimulator:
         exercise_time = namedtuple('exercise_minutes', ['date', 'time', 'value'])
         times = []
         # 从三年前开始记录
-        start_date = date.today() - timedelta(days=3 * 365)
+        start_date = date.today() - timedelta(days=10)
 
         file_handler = ActivityDataFileHandler(user_id, 'exercise_minutes')
         file_handler.check_file()
         file_handler.delete_file()
 
-        for i in range(3 * 365 * 48):
+        accumulated_data_file_handler = UserSingleFieldFileHandler(user_id, 'exercise_minutes_accumulated')
+        accumulated_data_file_handler.check_file()
+        accumulated_data_file_handler.delete_file()
+
+        accumulated_data = 0
+
+        for i in range(10 * 48):
             dt = (start_date + timedelta(days=i // 48)).strftime('%Y-%m-%d')
             # 从0点开始，每半小时记录一次
             time = (datetime.strptime(dt, '%Y-%m-%d') + timedelta(minutes=30 * (i % 48))).strftime('%H:%M')
             value = random.randint(0, 5)
             # times.append(exercise_time(dt, time, value))
             data = exercise_time(dt, time, value)
+            accumulated_data += value
+
             file_handler.append_line(data)
+        accumulated_data_file_handler.append_line(str(accumulated_data))
 
         # UserLocalFileStorage.write_data(user_id, 'exercise_minutes', times)
 
@@ -190,20 +232,29 @@ class DataStimulator:
         active_hours = namedtuple('active_hours', ['date', 'time', 'value'])
         hours = []
         # 从三年前开始记录
-        start_date = date.today() - timedelta(days=3 * 365)
+        start_date = date.today() - timedelta(days=10)
 
         file_handler = ActivityDataFileHandler(user_id, 'active_hours')
         file_handler.check_file()
         file_handler.delete_file()
 
-        for i in range(3 * 365 * 24):
+        accumulated_data_file_handler = UserSingleFieldFileHandler(user_id, 'active_hours_accumulated')
+        accumulated_data_file_handler.check_file()
+        accumulated_data_file_handler.delete_file()
+
+        accumulated_data = 0
+
+        for i in range(10 * 24):
             dt = (start_date + timedelta(days=i // 24)).strftime('%Y-%m-%d')
             # 从0点开始，每小时记录一次
             time = (datetime.strptime(dt, '%Y-%m-%d') + timedelta(hours=i % 24)).strftime('%H:%M')
             value = random.randint(0, 1)
             # hours.append(active_hours(dt, time, value))
             data = active_hours(dt, time, value)
+            accumulated_data += value
+
             file_handler.append_line(data)
+        accumulated_data_file_handler.append_line(str(accumulated_data))
 
         # UserLocalFileStorage.write_data(user_id, 'active_hours', hours)
 

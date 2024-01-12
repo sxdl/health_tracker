@@ -2,7 +2,7 @@
 import json
 from abc import ABC, abstractmethod
 from collections import namedtuple, defaultdict
-from datetime import date as dt_date
+from datetime import date as dt_date, timedelta
 import os
 from datetime import datetime
 from enum import Enum
@@ -208,6 +208,27 @@ class ActivityDataStatistics:
     #         'exercise_minutes': self.exercise_minutes.get_latest_daily_total(),
     #         'active_hours': self.active_hours.get_latest_daily_total()
     #     }
+
+    def get_daily_range_total(self, start_date, end_date):
+        """
+        获取指定日期范围内的数据总和，返回一个字典
+        :param start_date: 开始日期
+        :param end_date: 结束日期
+        :return: {'steps', 'distance', 'flights_climbed', 'active_energy_burned, 'exercise_minutes', 'active_hours'}
+        """
+        daily_range_total = defaultdict(int)
+        for key, value in self.activity_datas.items():
+            daily_range_total[key] = sum(float(x.value) for x in value.get_data_by_date_range(start_date, end_date))
+        return daily_range_total
+
+    def get_last_week_total(self):
+        """
+        获取最近一周的数据总和，返回一个字典
+        :return: {'steps', 'distance', 'flights_climbed', 'active_energy_burned, 'exercise_minutes', 'active_hours'}
+        """
+        today = datetime.now().date()
+        last_week = today - timedelta(days=7)
+        return self.get_daily_range_total(last_week.strftime('%Y-%m-%d'), today.strftime('%Y-%m-%d'))
 
 
 class WeightBaseData(BaseData):
@@ -453,6 +474,8 @@ class ActivityDataFileHandler(UserMultiFieldFileHandler):
         super().__init__(user_id, data_type)
         self._FIELD_LIST = 'date', 'time', 'value'
         self._activity_data = namedtuple(self._data_type, self._FIELD_LIST)
+        self.accumulated_data_handler = UserSingleFieldFileHandler(user_id, f"{self._data_type}_accumulated")
+
         self.check_file()
 
     def read_line(self, pos: int) -> [tuple, None]:
@@ -581,7 +604,8 @@ class ActivityDataFileHandler(UserMultiFieldFileHandler):
         获取历史数据总和
         :return:
         """
-        return sum([float(x[-1]) for x in self.read_lines([x for x in range(self.get_file_length())])])
+        # return sum([float(x[-1]) for x in self.read_lines([x for x in range(self.get_file_length())])])
+        return float(self.accumulated_data_handler.read_line(0))
 
 
 

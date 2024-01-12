@@ -55,7 +55,7 @@ class LoginInterface(AcrylicWindow, Ui_LoginInterface):
 
     def on_guest(self):
         # self.login_signal.emit(User("0", "游客"))
-        w = MainWindow(User("0", "游客"))
+        w = MainWindow(User("0"))
         # 关闭登录界面
         self.close()
         w.show()

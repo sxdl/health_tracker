@@ -50,7 +50,7 @@ class User:
         self.activity_data = ActivityDataStatistics(user_id)
         # self.health_data = HealthData(user_id, DEFAULT_HEALTH_DATA_TYPES)  # 这个对象应该是用不到，用activity_data
         self.age_group = None  # 可能用不到这个
-        self.groups = Group(user_id)
+        self.groups = UserGroupData(user_id)
 
     def load_profile(self):
         """Load profile"""

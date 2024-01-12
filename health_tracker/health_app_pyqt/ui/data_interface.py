@@ -64,6 +64,21 @@ class DataInterface(QWidget, Ui_DataInterface):
             self.webview.load(self.renderLocalHtmlURL("step-bar-stack-borderRadius.html"))
             self.verticalLayout_4_1.addWidget(self.webview)
 
+            # 累计和日均label
+            self.accumulated_data = user.activity_data.get_last_week_total()
+
+            self.caloriesAccumulatedLabel.setText(f"{self.accumulated_data['active_energy_burned']:.2f} kcal")
+            self.caloriesDailyLabel.setText(f"{self.accumulated_data['active_energy_burned']/7:.2f} kcal")
+
+            self.floorAccumulatedLabel.setText(f"{self.accumulated_data['flights_climbed']:.2f} meters")
+            self.floorDailyLabel.setText(f"{self.accumulated_data['flights_climbed']/7:.2f} meters")
+
+            self.distanceAccumulatedLabel.setText(f"{self.accumulated_data['distance']:.2f} meters")
+            self.distanceDailyLabel.setText(f"{self.accumulated_data['distance']/7:.2f} meters")
+
+            self.stepsAccumulatedLabel.setText(f"{self.accumulated_data['steps']:.2f} steps")
+            self.stepsDailyLabel.setText(f"{self.accumulated_data['steps']/7:.2f} steps")
+
             # 添加菜单，用于切换图表
             self.pivot.addItem(
                 routeKey="calories",

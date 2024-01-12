@@ -11,6 +11,7 @@ from .profile_interface_ui import Ui_ProfileInterface
 from ..config import *
 from ...tracker import User
 
+
 class CustomMessageBox(MessageBoxBase):
     """ Custom message box """
     user_info_updated = pyqtSignal(str, str, str, str, str, str)
@@ -115,7 +116,6 @@ class ProfileInterface(QWidget, Ui_ProfileInterface):
         self.editButton.clicked.connect(self.on_edit)
 
         # 设置显示用户信息
-        # TODO: 此处数据接口较混乱，暂时没看懂，不清楚如何调取用户的性别年龄等，先给出名字和UID示例，其余信息设置方法类似
         self.nameLabel.setText(self.profile.name)
         self.UIDLabel.setText(self.user.user_id)
         self.heightLabel.setText(self.profile.height)
@@ -123,6 +123,12 @@ class ProfileInterface(QWidget, Ui_ProfileInterface):
         self.genderLabel.setText(self.profile.gender)
         self.ageLabel.setText(self.profile.birth)
 
+        # 显示累计信息
+        accumulated_data = self.user.activity_data.get_all_daily_total()
+        self.BodyLabel_5.setText(f"{accumulated_data['active_hours']/24:.2f}")  # 累计锻炼天数
+        self.BodyLabel_6.setText(f"{accumulated_data['distance']:.2f}")  # 累计距离
+        self.BodyLabel_8.setText(f"{accumulated_data['steps']:.2f}")  # 累计步数
+        self.BodyLabel_9.setText(f"{accumulated_data['active_energy_burned']:.2f}")  # 累计卡路里
 
     def on_edit(self):
         print("edit profile")
@@ -135,13 +141,14 @@ class ProfileInterface(QWidget, Ui_ProfileInterface):
     def update_user_info(self, user_id, user_name, user_height, user_weight, user_gender, user_birth):
         self.user = User(user_id, user_name, user_birth, user_height, user_weight)
 
+        self.user.profile.update_data_by_field("name", user_name)
         self.user.profile.update_data_by_field("gender", user_gender)
         self.user.profile.update_data_by_field("birth", user_birth)  # 修改这行
         self.user.profile.update_data_by_field("height", user_height)
         self.user.profile.update_data_by_field("weight", user_weight)
 
         self.nameLabel.setText(user_name)
-        self.UIDLabel.setText(user_id)
+        self.UIDLabel.setText(self.user.user_id)
         self.heightLabel.setText(user_height)
         self.weightLabel.setText(user_weight)
         self.genderLabel.setText(user_gender)

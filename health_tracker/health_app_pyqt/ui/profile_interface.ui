@@ -74,7 +74,7 @@
        </property>
        <property name="icon">
         <iconset>
-         <normaloff>../resource/images/profile/user.png</normaloff>../resource/images/profile/user.png</iconset>
+         <normaloff>health_tracker/health_app_pyqt/resource/images/profile/user.png</normaloff>health_tracker/health_app_pyqt/resource/images/profile/user.png</iconset>
        </property>
       </widget>
      </item>
