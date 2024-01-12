@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'd:\Study\University\Y2T1\OOP\Health-Tracker\health_tracker\health_app_pyqt\ui\group_interface.ui'
+# Form implementation generated from reading ui file 'group_interface.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -33,8 +33,24 @@ class Ui_GroupInterface(object):
         self.GitHubButton.setObjectName("GitHubButton")
         self.horizontalLayout.addWidget(self.GitHubButton)
         self.verticalLayout.addLayout(self.horizontalLayout)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout.addItem(spacerItem1)
+        self.stackedWidget = QtWidgets.QStackedWidget(GroupInterface)
+        self.stackedWidget.setAutoFillBackground(False)
+        self.stackedWidget.setObjectName("stackedWidget")
+        self.defaultPage = QtWidgets.QWidget()
+        self.defaultPage.setObjectName("defaultPage")
+        self.gridLayout = QtWidgets.QGridLayout(self.defaultPage)
+        self.gridLayout.setObjectName("gridLayout")
+        self.pushButton = QtWidgets.QPushButton(self.defaultPage)
+        self.pushButton.setObjectName("pushButton")
+        self.gridLayout.addWidget(self.pushButton, 0, 0, 1, 1)
+        self.pushButton_2 = QtWidgets.QPushButton(self.defaultPage)
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.gridLayout.addWidget(self.pushButton_2, 1, 0, 1, 1)
+        self.stackedWidget.addWidget(self.defaultPage)
+        self.groupListPage = QtWidgets.QWidget()
+        self.groupListPage.setObjectName("groupListPage")
+        self.stackedWidget.addWidget(self.groupListPage)
+        self.verticalLayout.addWidget(self.stackedWidget)
 
         self.retranslateUi(GroupInterface)
         QtCore.QMetaObject.connectSlotsByName(GroupInterface)
@@ -43,4 +59,6 @@ class Ui_GroupInterface(object):
         _translate = QtCore.QCoreApplication.translate
         GroupInterface.setWindowTitle(_translate("GroupInterface", "Form"))
         self.TitleLabel.setText(_translate("GroupInterface", "Group"))
+        self.pushButton.setText(_translate("GroupInterface", "Password to Join Group"))
+        self.pushButton_2.setText(_translate("GroupInterface", "Create Group"))
 from qfluentwidgets import TitleLabel, ToolButton
