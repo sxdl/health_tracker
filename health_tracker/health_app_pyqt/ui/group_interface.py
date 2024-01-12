@@ -2,7 +2,7 @@ import typing
 from PyQt5 import QtCore
 from PyQt5.QtCore import Qt, pyqtSignal, QUrl
 from PyQt5.QtGui import QFont, QIcon, QDesktopServices
-from PyQt5.QtWidgets import QWidget, QAction, QStackedWidget
+from PyQt5.QtWidgets import QWidget, QAction, QListWidgetItem, QPushButton
 
 from qfluentwidgets import FluentIcon as FIF, RoundMenu, toggleTheme
 from .group_interface_ui import Ui_GroupInterface
@@ -10,8 +10,6 @@ from .group_interface_ui import Ui_GroupInterface
 from ..config import *
 from ...tracker import User
 
-from .group_stack_default_page import GroupStackDefaultPage
-from .group_stack_group_list_page import GroupStackGroupListPage
 
 
 class GroupInterface(QWidget, Ui_GroupInterface):
@@ -27,20 +25,29 @@ class GroupInterface(QWidget, Ui_GroupInterface):
         self.GitHubButton.setToolTip("GitHub")
         self.GitHubButton.clicked.connect(lambda: QDesktopServices.openUrl(QUrl(GITHUB)))
 
-        # stacked pages
-        # self.defaultPage = GroupStackDefaultPage()
-        # self.groupListPage = GroupStackGroupListPage()
-        #
-        # self.stackedWidget = QStackedWidget()
-        # self.verticalLayout.addWidget(self.stackedWidget)
-        #
-        # self.stackedWidget.addWidget(self.defaultPage)
-        # self.stackedWidget.addWidget(self.groupListPage)
+        self.createButton.setIcon(FIF.ADD_TO)
+        self.createButton.setToolTip("Create Group")
 
+        self.announEditButton.setIcon(FIF.EDIT)
+        self.announEditButton.setToolTip("Edit Annnouncement")
+
+        self.qrcodeButton.setIcon(FIF.QRCODE)
+        self.qrcodeButton.setToolTip("Show QRCode")
+
+        groups = [
+            "👥 Group 1",
+            "👥 Group 2",
+            "👥 Group 3",
+            "👥 Group 4"
+        ]
+        for group in groups:
+            item = QListWidgetItem(group)
+            self.listWidget.addItem(item)
+        
+        self.listWidget.currentItemChanged.connect(self.on_current_item_changed)
+        self.listWidget.setCurrentRow(0)
         self.stackedWidget.setCurrentIndex(0)
 
-    def switch_2_default_page(self):
-        self.stackedWidget.setCurrentIndex(0)
-
-    def switch_2_group_list_page(self):
-        self.stackedWidget.setCurrentIndex(1)
+    def on_current_item_changed(self, current):
+        index = self.listWidget.row(current)
+        self.stackedWidget.setCurrentIndex(index)
