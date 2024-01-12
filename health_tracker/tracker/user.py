@@ -42,13 +42,14 @@ class User:
     def __init__(self, user_id: str, name: str, birth=None, height=None, weight=None):
         self.user_id = user_id
         self.name = name
-        self.birth = birth
-        self.height = height
-        self.weight = weight
+        # self.birth = birth
+        # self.height = height
+        # self.weight = weight
         self.profile = Profile(user_id)
         self.activity_data = ActivityDataStatistics(user_id)
         # self.health_data = HealthData(user_id, DEFAULT_HEALTH_DATA_TYPES)  # 这个对象应该是用不到，用activity_data
         self.age_group = None  # 可能用不到这个
+        self.groups = UserGroupData(user_id)
 
     def load_profile(self):
         """Load profile"""
@@ -58,33 +59,33 @@ class User:
         """获取用户的个人资料:gender, birth, height, weight"""
         return self.profile.get_namedtuple_data()
 
-    def get_birth(self):
-        """获取用户的出生日期"""
-        return self.birth
-
-    def set_birth(self, birth):
-        """设置用户的出生日期"""
-        self.birth = birth
-
-    def get_height(self):
-        """获取用户的身高"""
-        return self.height
-
-    def set_height(self, height):
-        """设置用户的身高"""
-        self.height = height
-
-    def get_weight(self):
-        """获取用户的体重"""
-        return self.weight
-
-    def set_weight(self, weight):
-        """设置用户的体重"""
-        self.weight = weight
-
-    def get_profile(self) -> namedtuple:
-        """获取用户的个人资料:gender, birth, height, weight"""
-        return self.profile.get_namedtuple_data()
+    # def get_birth(self):
+    #     """获取用户的出生日期"""
+    #     return self.birth
+    #
+    # def set_birth(self, birth):
+    #     """设置用户的出生日期"""
+    #     self.birth = birth
+    #
+    # def get_height(self):
+    #     """获取用户的身高"""
+    #     return self.height
+    #
+    # def set_height(self, height):
+    #     """设置用户的身高"""
+    #     self.height = height
+    #
+    # def get_weight(self):
+    #     """获取用户的体重"""
+    #     return self.weight
+    #
+    # def set_weight(self, weight):
+    #     """设置用户的体重"""
+    #     self.weight = weight
+    #
+    # def get_profile(self) -> namedtuple:
+    #     """获取用户的个人资料:gender, birth, height, weight"""
+    #     return self.profile.get_namedtuple_data()
 
     def add_2_group(self, group_id: str):
         """加入群组"""
