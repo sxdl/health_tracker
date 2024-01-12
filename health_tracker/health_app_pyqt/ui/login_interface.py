@@ -75,6 +75,11 @@ class LoginInterface(AcrylicWindow, Ui_LoginInterface):
 
         # 创建用户并启动应用程序
         user = User(user_id, user_name, user_birth, user_height, user_weight)
+
+        user.profile.update_data_by_field("gender", user_gender)
+        user.profile.update_data_by_field("birth", user_birth)  # 修改这行
+        user.profile.update_data_by_field("height", user_height)
+        user.profile.update_data_by_field("weight", user_weight)
         w = MainWindow(user)
         # 关闭登录界面
         self.close()

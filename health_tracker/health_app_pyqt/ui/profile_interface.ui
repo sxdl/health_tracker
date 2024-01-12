@@ -356,7 +356,7 @@
          </widget>
         </item>
         <item>
-         <widget class="BodyLabel" name="wLabel_3">
+         <widget class="BodyLabel" name="weightLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>

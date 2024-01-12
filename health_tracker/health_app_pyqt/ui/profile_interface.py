@@ -13,7 +13,7 @@ from ...tracker import User
 
 class CustomMessageBox(MessageBoxBase):
     """ Custom message box """
-    user_info_updated = pyqtSignal(User, str, str)
+    user_info_updated = pyqtSignal(str, str, str, str, str, str)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -90,8 +90,7 @@ class CustomMessageBox(MessageBoxBase):
         user_birth = self.birthdayCalendarPicker.getDate().toString("yyyy-MM-dd")
         user_id = "0"
 
-        updated_user = User(user_id, user_name, user_birth, user_height, user_weight)
-        self.user_info_updated.emit(updated_user, user_gender, user_birth)  # 发射信号
+        self.user_info_updated.emit(user_id, user_name, user_height, user_weight, user_gender, user_birth)  # 发射信号
 
 
 
@@ -133,20 +132,19 @@ class ProfileInterface(QWidget, Ui_ProfileInterface):
         msg.exec_()
     
     
-    def update_user_info(self, updated_user, updated_gender, updated_birth):
-        self.user = updated_user
+    def update_user_info(self, user_id, user_name, user_height, user_weight, user_gender, user_birth):
+        self.user = User(user_id, user_name, user_birth, user_height, user_weight)
 
-        self.user.profile.update_data_by_field("gender", updated_gender)
-        self.user.profile.update_data_by_field("birth", updated_birth)  # 修改这行
-        self.user.profile.update_data_by_field("height", self.user.height)
-        self.user.profile.update_data_by_field("weight", self.user.weight)
+        self.user.profile.update_data_by_field("gender", user_gender)
+        self.user.profile.update_data_by_field("birth", user_birth)  # 修改这行
+        self.user.profile.update_data_by_field("height", user_height)
+        self.user.profile.update_data_by_field("weight", user_weight)
 
         self.nameLabel.setText(self.user.name)
         self.UIDLabel.setText(self.user.user_id)
-        self.heightLabel.setText(self.user.height)
-        self.weightLabel.setText(self.user.weight)
-        self.genderLabel.setText(updated_gender)
-        self.ageLabel.setText(updated_birth)
-
+        self.heightLabel.setText(user_height)
+        self.weightLabel.setText(user_weight)
+        self.genderLabel.setText(user_gender)
+        self.ageLabel.setText(user_birth)
 
 
