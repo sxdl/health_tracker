@@ -3,6 +3,7 @@
 from abc import ABC, abstractmethod
 from collections import namedtuple, defaultdict
 from . data import *
+from . group import *
 
 __all__ = ["User"]
 
@@ -39,9 +40,9 @@ class User:
     如果本类中没有提供相关的功能函数，在这个类里新增功能函数，然后在别处调用。
     """
 
-    def __init__(self, user_id: str, name: str, birth=None, height=None, weight=None):
+    def __init__(self, user_id: str, name: str = None, birth=None, height=None, weight=None):
         self.user_id = user_id
-        self.name = name
+        # self.name = name
         # self.birth = birth
         # self.height = height
         # self.weight = weight
@@ -49,7 +50,7 @@ class User:
         self.activity_data = ActivityDataStatistics(user_id)
         # self.health_data = HealthData(user_id, DEFAULT_HEALTH_DATA_TYPES)  # 这个对象应该是用不到，用activity_data
         self.age_group = None  # 可能用不到这个
-        self.groups = UserGroupData(user_id)
+        self.groups = Group(user_id)
 
     def load_profile(self):
         """Load profile"""

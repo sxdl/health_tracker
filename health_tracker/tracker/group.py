@@ -9,7 +9,7 @@ __all__ = ["Group"]
 
 
 class Group:
-    def __init__(self, group_id: str, owner_id: str, group_name: str, file_path = None):
+    def __init__(self, group_id: str, owner_id: str = None, group_name: str = None, file_path=None):
         self.group_id = group_id            # 群组id
         self.name = group_name              # 群名称
         self.members = [owner_id]           # 成员列表

@@ -226,7 +226,7 @@ class Profile(BaseData):
     def __init__(self, user_id):
         self._datatype = DATA_TYPES.PROFILE.value
         self._user_id = user_id
-        self._FIELD_LIST = 'gender', 'birth', 'height', 'weight'
+        self._FIELD_LIST = 'name', 'gender', 'birth', 'height', 'weight'
         self._profile = namedtuple('Profile', self._FIELD_LIST)
         self._data_handler: UserSingleFieldFileHandler = user_file_handler_factory(self._user_id, self._datatype)
 
@@ -267,7 +267,7 @@ class Profile(BaseData):
         """
         self._data_handler.delete_file()
         for i in range(len(self._FIELD_LIST)):
-            self._data_handler.append_line('未知')
+            self._data_handler.append_line('Unknown')
 
     def check_data(self) -> bool:
         """
@@ -581,7 +581,7 @@ class ActivityDataFileHandler(UserMultiFieldFileHandler):
         获取历史数据总和
         :return:
         """
-        return sum([x.value for x in self.read_lines([x for x in range(self.get_file_length())])])
+        return sum([float(x[-1]) for x in self.read_lines([x for x in range(self.get_file_length())])])
 
 
 
@@ -856,7 +856,7 @@ class ActiveHours(AutoUpdateFromMultipleWays, BaseActivityData):
 
 
 class UserGroupData:
-    """用户group数据类"""
+    """（弃用）用户group数据类"""
 
     def __init__(self, user_id: str):
         self._user_id = user_id
