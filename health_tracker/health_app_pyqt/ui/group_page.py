@@ -60,6 +60,7 @@ class GroupPage(QWidget, Ui_GroupPage):
         """ edit announcement """
         self.messageBox = AnnouncementMessageBox(self)
         self.messageBox.exec_()
+        self.group.edit_announcement(self.announcementLabel_0.text())
 
 
 class AnnouncementMessageBox(MessageBoxBase):
