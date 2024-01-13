@@ -31,7 +31,7 @@ class SettingInterface(QWidget, Ui_SettingInterface):
         self.themeIcon.setIcon(FIF.CONSTRACT)
         self.themeIcon.setToolTip("Change Theme")
 
-        self.themeComboBox.addItems(["Light", "Dark", "Auto"])
+        self.themeComboBox.addItems(["Dark", "Light", "Auto"])
         # 实现下拉框选中一个选项后，自动设置对应的主题
         self.themeComboBox.currentIndexChanged.connect(lambda: setTheme(Theme(self.themeComboBox.currentText())))
 

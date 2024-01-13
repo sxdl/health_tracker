@@ -1,10 +1,10 @@
 import typing
 from PyQt5 import QtCore
-from PyQt5.QtCore import Qt, pyqtSignal, QUrl
+from PyQt5.QtCore import Qt, pyqtSignal, QUrl, QPoint
 from PyQt5.QtGui import QFont, QIcon, QDesktopServices
 from PyQt5.QtWidgets import QWidget, QAction, QListWidgetItem, QPushButton, QHBoxLayout, QMessageBox
 
-from qfluentwidgets import FluentIcon as FIF, RoundMenu, toggleTheme, MessageBoxBase, SubtitleLabel, LineEdit
+from qfluentwidgets import FluentIcon as FIF, RoundMenu, toggleTheme, MessageBoxBase, SubtitleLabel, LineEdit, InfoBarManager, InfoBar, InfoBarPosition
 from .group_interface_ui import Ui_GroupInterface
 from .group_page import GroupPage
 
@@ -13,6 +13,28 @@ from ...tracker import User
 from ...tracker.group import Group
 
 
+@InfoBarManager.register('Custom')
+class CustomInfoBarManager(InfoBarManager):
+    """ Custom info bar manager """
+
+    def _pos(self, infoBar: InfoBar, parentSize=None):
+        p = infoBar.parent()
+        parentSize = parentSize or p.size()
+
+        # the position of first info bar
+        x = (parentSize.width() - infoBar.width()) // 2
+        y = (parentSize.height() - infoBar.height()) // 2 + 200
+
+        # get the position of current info bar
+        index = self.infoBars[p].index(infoBar)
+        for bar in self.infoBars[p][0:index]:
+            y += (bar.height() + self.spacing)
+
+        return QPoint(x, y)
+
+    def _slideStartPos(self, infoBar: InfoBar):
+        pos = self._pos(infoBar)
+        return QPoint(pos.x(), pos.y() - 16)
 
 
 class CreateGroupMessageBox(MessageBoxBase):
@@ -115,7 +137,6 @@ class GroupInterface(QWidget, Ui_GroupInterface):
             group_page.nameLabel_0.setText(group.name)
             group_page.announcementLabel_0.setText(group.announcement)
             group_page.groupIDLabel_1.setText(group.group_id)
-            group_page.groupIDLabel_0.setText(group.group_id)
             self.stackedWidget.addWidget(group_page)  # 将 GroupPage 实例添加到 stackedWidget 中
 
         self.listWidget.currentItemChanged.connect(self.on_current_item_changed)
@@ -142,12 +163,24 @@ class GroupInterface(QWidget, Ui_GroupInterface):
             group_page = GroupPage(group, self)  # 创建一个新的 GroupPage 实例
             group_page.nameLabel_0.setText(self.messageBox.groupNameEdit.text())
             group_page.groupIDLabel_1.setText(group.group_id)
-            group_page.groupIDLabel_0.setText(group.group_id)
             self.stackedWidget.addWidget(group_page)  # 将 GroupPage 实例添加到 stackedWidget 中
             self.stackedWidget.setCurrentIndex(self.listWidget.count()) 
+            self.createSuccessInfoBar()
 
     def on_join_by_code(self):
         """ join group by code """
         self.messageBox = JoinByCodeMessageBox(self)
         self.messageBox.exec_()
 
+    def createSuccessInfoBar(self):
+        # convenient class mothod
+        InfoBar.success(
+            title='Creation Successful',
+            content=f"The group {self.messageBox.groupNameEdit.text()} has been created successfully.",
+            orient=Qt.Horizontal,
+            isClosable=True,
+            position=InfoBarPosition.TOP,
+            # position='Custom',   # NOTE: use custom info bar manager
+            duration=2000,
+            parent=self
+        )

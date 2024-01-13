@@ -84,7 +84,7 @@
        <number>15</number>
       </property>
       <item>
-       <widget class="IconWidget" name="deviceIcon1" native="true">
+       <widget class="IconWidget" name="deviceIcon1">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -97,9 +97,9 @@
           <height>60</height>
          </size>
         </property>
-        <property name="icon" stdset="0">
+        <property name="icon">
          <iconset>
-          <normaloff>health_tracker/health_app_pyqt/resource/images/icon/smartwatch-app.png</normaloff>health_tracker/health_app_pyqt/resource/images/icon/smartwatch-app.png</iconset>
+          <normaloff>../resource/images/icon/smartwatch-app.png</normaloff>../resource/images/icon/smartwatch-app.png</iconset>
         </property>
        </widget>
       </item>
@@ -159,7 +159,7 @@
        <number>15</number>
       </property>
       <item>
-       <widget class="IconWidget" name="deviceIcon2" native="true">
+       <widget class="IconWidget" name="deviceIcon2">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -172,9 +172,9 @@
           <height>60</height>
          </size>
         </property>
-        <property name="icon" stdset="0">
+        <property name="icon">
          <iconset>
-          <normaloff>health_tracker/health_app_pyqt/resource/images/icon/smart-band.png</normaloff>health_tracker/health_app_pyqt/resource/images/icon/smart-band.png</iconset>
+          <normaloff>../resource/images/icon/smart-band.png</normaloff>../resource/images/icon/smart-band.png</iconset>
         </property>
        </widget>
       </item>

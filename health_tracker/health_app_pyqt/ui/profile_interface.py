@@ -1,15 +1,38 @@
 # codeing = utf-8
 import typing
 from PyQt5 import QtCore
-from PyQt5.QtCore import Qt, pyqtSignal, QUrl
+from PyQt5.QtCore import Qt, pyqtSignal, QUrl, QPoint
 from PyQt5.QtGui import QFont, QIcon, QDesktopServices
 from PyQt5.QtWidgets import QWidget
 
-from qfluentwidgets import FluentIcon as FIF, toggleTheme, MessageBoxBase, SubtitleLabel, LineEdit, BodyLabel, ComboBox, CalendarPicker
+from qfluentwidgets import FluentIcon as FIF, toggleTheme, MessageBoxBase, SubtitleLabel, LineEdit, BodyLabel, ComboBox, CalendarPicker, InfoBarManager, InfoBar, InfoBarPosition
 from .profile_interface_ui import Ui_ProfileInterface
 
 from ..config import *
 from ...tracker import User
+
+@InfoBarManager.register('Custom')
+class CustomInfoBarManager(InfoBarManager):
+    """ Custom info bar manager """
+
+    def _pos(self, infoBar: InfoBar, parentSize=None):
+        p = infoBar.parent()
+        parentSize = parentSize or p.size()
+
+        # the position of first info bar
+        x = (parentSize.width() - infoBar.width()) // 2
+        y = (parentSize.height() - infoBar.height()) // 2 + 200
+
+        # get the position of current info bar
+        index = self.infoBars[p].index(infoBar)
+        for bar in self.infoBars[p][0:index]:
+            y += (bar.height() + self.spacing)
+
+        return QPoint(x, y)
+
+    def _slideStartPos(self, infoBar: InfoBar):
+        pos = self._pos(infoBar)
+        return QPoint(pos.x(), pos.y() - 16)
 
 
 class CustomMessageBox(MessageBoxBase):
@@ -69,7 +92,17 @@ class CustomMessageBox(MessageBoxBase):
         # set genderComboBox
         self.genderComboBox.setPlaceholderText("Select your gender")
         self.genderComboBox.addItems(["Male", "Female", "Other"])
-        self.genderComboBox.setCurrentIndex(-1)
+        # 设置genderComboBox的默认值为当前用户的性别
+        self.genderComboBox.setCurrentIndex(self.genderComboBox.findText(self.parent().genderLabel.text()))
+
+        # 各个输入框的默认值
+        self.nameEdit.setText(self.parent().nameLabel.text())
+        self.heightEdit.setText(self.parent().heightLabel.text())
+        self.weightEdit.setText(self.parent().weightLabel.text())
+
+        # set birthdayCalendarPicker
+        self.birthdayCalendarPicker.setDate(QtCore.QDate.fromString(self.parent().ageLabel.text(), "yyyy-MM-dd"))
+
 
         # change the text of button
         self.yesButton.setText('Save')
@@ -92,6 +125,7 @@ class CustomMessageBox(MessageBoxBase):
         user_id = "0"
 
         self.user_info_updated.emit(user_id, user_name, user_height, user_weight, user_gender, user_birth)  # 发射信号
+        self.parent().createSuccessInfoBar()
 
 
 
@@ -153,5 +187,17 @@ class ProfileInterface(QWidget, Ui_ProfileInterface):
         self.weightLabel.setText(user_weight)
         self.genderLabel.setText(user_gender)
         self.ageLabel.setText(user_birth)
+
+    def createSuccessInfoBar(self):
+        # convenient class mothod
+        InfoBar.success(
+            title='Profile Updated',
+            content='Your profile has been updated successfully.',
+            orient=Qt.Horizontal,
+            isClosable=True,
+            position=InfoBarPosition.TOP,
+            parent=self,
+            duration=2000
+        )
 
 

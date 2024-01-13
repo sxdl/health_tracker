@@ -35,18 +35,20 @@ class GroupPage(QWidget, Ui_GroupPage):
 
     def showQRCodeFlyout(self):
         view = FlyoutView(
-            title='杰洛·齐贝林',
-            content="触网而起的网球会落到哪一侧，谁也无法知晓。\n如果那种时刻到来，我希望「女神」是存在的。\n这样的话，不管网球落到哪一边，我都会坦然接受的吧。",
-            # image='health_tracker/health_app_pyqt/resource/images/icon\icon.png',
+            title=self.group.name + " QRCode",
+            content="Others can join this group by scanning this QRCode." ,
             image=self.group.save_qr_cord(),
             isClosable=True
             # image='resource/yiku.gif',
         )
 
         # add button to view
-        button = PushButton('Action')
+        button = PushButton('OK')
         button.setFixedWidth(120)
         view.addWidget(button, align=Qt.AlignRight)
+
+        # close view when button is clicked
+        button.clicked.connect(view.close)
 
         # adjust layout (optional)
         view.widgetLayout.insertSpacing(1, 5)
@@ -61,6 +63,7 @@ class GroupPage(QWidget, Ui_GroupPage):
         self.messageBox = AnnouncementMessageBox(self)
         self.messageBox.exec_()
         self.group.edit_announcement(self.announcementLabel_0.text())
+        
 
 
 class AnnouncementMessageBox(MessageBoxBase):
