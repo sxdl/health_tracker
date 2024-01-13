@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_DeviceInterface(object):
     def setupUi(self, DeviceInterface):
         DeviceInterface.setObjectName("DeviceInterface")
-        DeviceInterface.resize(1003, 727)
+        DeviceInterface.resize(1003, 462)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -59,7 +59,7 @@ class Ui_DeviceInterface(object):
         self.deviceIcon1.setMinimumSize(QtCore.QSize(60, 60))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("health_tracker/health_app_pyqt/resource/images/icon/smartwatch-app.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.deviceIcon1.setIcon(icon)
+        self.deviceIcon1.setProperty("icon", icon)
         self.deviceIcon1.setObjectName("deviceIcon1")
         self.horizontalLayout_2.addWidget(self.deviceIcon1)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
@@ -98,7 +98,7 @@ class Ui_DeviceInterface(object):
         self.deviceIcon2.setMinimumSize(QtCore.QSize(60, 60))
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("health_tracker/health_app_pyqt/resource/images/icon/smart-band.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.deviceIcon2.setIcon(icon1)
+        self.deviceIcon2.setProperty("icon", icon1)
         self.deviceIcon2.setObjectName("deviceIcon2")
         self.horizontalLayout_3.addWidget(self.deviceIcon2)
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
@@ -127,6 +127,10 @@ class Ui_DeviceInterface(object):
         self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.retranslateUi(DeviceInterface)
+        self.deviceButton1.clicked.connect(self.deviceCard1.hide) # type: ignore
+        self.deviceButton2.clicked.connect(self.deviceCard2.hide) # type: ignore
+        self.addDeviceButton.clicked.connect(self.deviceCard1.show) # type: ignore
+        self.addDeviceButton.clicked.connect(self.deviceCard2.show) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(DeviceInterface)
 
     def retranslateUi(self, DeviceInterface):
@@ -135,6 +139,8 @@ class Ui_DeviceInterface(object):
         self.TitleLabel.setText(_translate("DeviceInterface", "My Device"))
         self.deviceName1.setText(_translate("DeviceInterface", "Apple Watch Series 9"))
         self.deviceDescrp1.setText(_translate("DeviceInterface", "Smart Watch"))
+        self.deviceButton1.setText(_translate("DeviceInterface", "Remove"))
         self.deviceName2.setText(_translate("DeviceInterface", "Mi Band 7"))
         self.deviceDescrp2.setText(_translate("DeviceInterface", "Smart Band"))
+        self.deviceButton2.setText(_translate("DeviceInterface", "Remove"))
 from qfluentwidgets import BodyLabel, IconWidget, PrimaryDropDownToolButton, PrimaryToolButton, SimpleCardWidget, TitleLabel, ToolButton
