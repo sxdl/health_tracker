@@ -25,15 +25,15 @@ class DeviceInterface(QWidget, Ui_DeviceInterface):
         self.flights_climbed = self.latest_data["flights_climbed"]
         self.active_energy_burned = self.latest_data["active_energy_burned"]
 
-        # 设备卡片
-        self.menu = RoundMenu(parent=self)
-        self.menu.addAction(QAction(FIF.REMOVE.icon(), 'Remove'))
-        self.menu.addAction(QAction(FIF.SHARE.icon(), 'Share'))
-
-        self.deviceButton1.setIcon(FIF.MORE)
-        self.deviceButton2.setIcon(FIF.MORE)
-        self.deviceButton1.setMenu(self.menu)
-        self.deviceButton2.setMenu(self.menu)
+        # # 设备卡片
+        # self.menu = RoundMenu(parent=self)
+        # self.menu.addAction(QAction(FIF.REMOVE.icon(), 'Remove'))
+        # self.menu.addAction(QAction(FIF.SHARE.icon(), 'Share'))
+        #
+        # self.deviceButton1.setIcon(FIF.MORE)
+        # self.deviceButton2.setIcon(FIF.MORE)
+        # self.deviceButton1.setMenu(self.menu)
+        # self.deviceButton2.setMenu(self.menu)
 
         self.addDeviceButton.setIcon(FIF.ADD_TO)
 
