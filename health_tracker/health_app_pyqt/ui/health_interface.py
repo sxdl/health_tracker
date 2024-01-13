@@ -1,15 +1,39 @@
 # codeing = utf-8
 import typing
 from PyQt5 import QtCore
-from PyQt5.QtCore import Qt, pyqtSignal, QUrl
+from PyQt5.QtCore import Qt, pyqtSignal, QUrl, QPoint
 from PyQt5.QtGui import QFont, QIcon, QDesktopServices
 from PyQt5.QtWidgets import QWidget
 
-from qfluentwidgets import FluentIcon as FIF, toggleTheme, MessageBoxBase, SubtitleLabel, TextEdit, LineEdit
+from qfluentwidgets import FluentIcon as FIF, toggleTheme, MessageBoxBase, SubtitleLabel, TextEdit, LineEdit, InfoBarManager, InfoBar, InfoBarPosition
 from .health_interface_ui import Ui_HealthInterface
 
 from ..config import *
 from ...tracker import User
+
+@InfoBarManager.register('Custom')
+class CustomInfoBarManager(InfoBarManager):
+    """ Custom info bar manager """
+
+    def _pos(self, infoBar: InfoBar, parentSize=None):
+        p = infoBar.parent()
+        parentSize = parentSize or p.size()
+
+        # the position of first info bar
+        x = (parentSize.width() - infoBar.width()) // 2
+        y = (parentSize.height() - infoBar.height()) // 2 + 200
+
+        # get the position of current info bar
+        index = self.infoBars[p].index(infoBar)
+        for bar in self.infoBars[p][0:index]:
+            y += (bar.height() + self.spacing)
+
+        return QPoint(x, y)
+
+    def _slideStartPos(self, infoBar: InfoBar):
+        pos = self._pos(infoBar)
+        return QPoint(pos.x(), pos.y() - 16)
+
 
 class CaloriesTargetSettingMessageBox(MessageBoxBase):
     """ Custom message box for calories target setting """
@@ -42,6 +66,7 @@ class CaloriesTargetSettingMessageBox(MessageBoxBase):
         Save button click event
         """
         self.parent().caloriesTarget = int(self.caloriesEdit.text())
+        self.parent().createSuccessInfoBar()
 
 class StepsTargetSettingMessageBox(MessageBoxBase):
     """ Custom message box for steps target setting """
@@ -223,3 +248,17 @@ class HealthInterface(QWidget, Ui_HealthInterface):
         self.messageBox.exec_()
         self.timeProgressBar.setValue(min(int(self.active_hours / self.timeTarget * 100), 100))
         self.timeNum.setText(f"{int(self.active_hours)}")
+
+    def createSuccessInfoBar(self):
+        # convenient class mothod
+        InfoBar.success(
+            title='Target Setting Successful',
+            content='Your target has been set successfully.',
+            orient=Qt.Horizontal,
+            isClosable=True,
+            position=InfoBarPosition.TOP,
+            # position='Custom',   # NOTE: use custom info bar manager
+            duration=2000,
+            parent=self
+        )
+
