@@ -9,6 +9,7 @@ from .device_interface import DeviceInterface
 from .data_interface import DataInterface
 from .group_interface import GroupInterface
 from .profile_interface import ProfileInterface
+from .setting_interface import SettingInterface
 
 from ...tracker import User
 
@@ -39,6 +40,7 @@ class MainWindow(SplitFluentWindow):
         self.data_interface = DataInterface(self.user, self)
         self.group_interface = GroupInterface(self.user, self)
         self.profile_interface = ProfileInterface(self.user, self)
+        self.setting_interface = SettingInterface(self)
 
         
 
@@ -47,13 +49,13 @@ class MainWindow(SplitFluentWindow):
         self.addSubInterface(self.data_interface, FluentIcon.PIE_SINGLE,'Data Interface')
         self.addSubInterface(self.group_interface, FluentIcon.IOT,'Group Interface')
         self.addSubInterface(self.profile_interface, FluentIcon.PEOPLE,'Profile Interface', position=Qt.BottomDockWidgetArea)
-
+        self.addSubInterface(self.setting_interface, FluentIcon.SETTING,'Setting Interface', position=Qt.BottomDockWidgetArea)
 
         # 添加设置
-        self.navigationInterface.addItem(
-            routeKey='settings',
-            icon=FluentIcon.SETTING,
-            text='Settings',
-            position=Qt.BottomDockWidgetArea
-        )
+        # self.navigationInterface.addItem(
+        #     routeKey='settings',
+        #     icon=FluentIcon.SETTING,
+        #     text='Settings',
+        #     position=Qt.BottomDockWidgetArea
+        # )
 
