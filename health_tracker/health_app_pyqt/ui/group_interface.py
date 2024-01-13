@@ -2,46 +2,17 @@ import typing
 from PyQt5 import QtCore
 from PyQt5.QtCore import Qt, pyqtSignal, QUrl
 from PyQt5.QtGui import QFont, QIcon, QDesktopServices
-from PyQt5.QtWidgets import QWidget, QAction, QListWidgetItem, QPushButton
+from PyQt5.QtWidgets import QWidget, QAction, QListWidgetItem, QPushButton, QHBoxLayout, QMessageBox
 
-from qfluentwidgets import FluentIcon as FIF, RoundMenu, toggleTheme, MessageBoxBase, SubtitleLabel, LineEdit, BodyLabel, TextEdit, FlyoutView, PushButton, Flyout
+from qfluentwidgets import FluentIcon as FIF, RoundMenu, toggleTheme, MessageBoxBase, SubtitleLabel, LineEdit
 from .group_interface_ui import Ui_GroupInterface
+from .group_page import GroupPage
 
 from ..config import *
 from ...tracker import User
 
 
-class AnnouncementMessageBox(MessageBoxBase):
-    """ Custom message box """
 
-    def __init__(self, parent=None):
-        super().__init__(parent)
-
-        self.titleLabel = SubtitleLabel('Edit announcement', self)
-
-        # add widget to view layout
-        self.viewLayout.addWidget(self.titleLabel)
-        self.announEdit = TextEdit(self)
-        self.announEdit.setText(self.parent().announcementLabel.text())
-        self.announEdit.setPlaceholderText("")
-        self.announEdit.setProperty("transparent", True)
-        self.announEdit.setObjectName("nameEdit")
-        self.viewLayout.addWidget(self.announEdit)
-        
-        # change the text of button
-        self.yesButton.setText('Save')
-        self.cancelButton.setText('Cancel')
-
-        self.widget.setMinimumWidth(350)
-
-        # when save button is clicked
-        self.yesButton.clicked.connect(self.on_save)
-
-    def on_save(self):
-        """
-        save button click event
-        """
-        self.parent().announcementLabel.setText(self.announEdit.toPlainText())
 
 class CreateGroupMessageBox(MessageBoxBase):
     """ Custom message box """
@@ -74,9 +45,10 @@ class CreateGroupMessageBox(MessageBoxBase):
         """
         save button click event
         """
-        self.parent().listWidget.addItem(QListWidgetItem("👥" + self.groupNameEdit.text()))
-        self.parent().listWidget.setCurrentRow(-1)
-        self.parent().stackedWidget.setCurrentIndex(0)
+        self.parent().listWidget.addItem(QListWidgetItem("👥 " + self.groupNameEdit.text()))
+        # 设置当前行为新建的群组
+        self.parent().listWidget.setCurrentRow(self.parent().listWidget.count() - 1)
+
 
 class JoinByCodeMessageBox(MessageBoxBase):
     """ Custom message box """
@@ -117,6 +89,8 @@ class GroupInterface(QWidget, Ui_GroupInterface):
         super().__init__(parent=parent)
         self.setupUi(self)
 
+        self.user = user
+
         self.groupThemeButton.setIcon(FIF.CONSTRACT)
         self.groupThemeButton.setToolTip("Change Theme")
         self.groupThemeButton.clicked.connect(lambda: toggleTheme(True))
@@ -129,12 +103,7 @@ class GroupInterface(QWidget, Ui_GroupInterface):
         self.createButton.setToolTip("Create Group")
         self.createButton.clicked.connect(self.on_turn_to_create)
         
-        groups = [
-            "👥 Group 1",
-            "👥 Group 2",
-            "👥 Group 3",
-            "👥 Group 4"
-        ]
+        groups = []
         for group in groups:
             item = QListWidgetItem(group)
             self.listWidget.addItem(item)
@@ -143,39 +112,8 @@ class GroupInterface(QWidget, Ui_GroupInterface):
         self.listWidget.setCurrentRow(-1)
         self.stackedWidget.setCurrentIndex(0)
 
-        self.announEditButton.setIcon(FIF.EDIT)
-        self.announEditButton.setToolTip("Edit Annnouncement")
-        self.announEditButton.clicked.connect(self.on_announ_edit)
-
-        self.qrcodeButton.setIcon(FIF.QRCODE)
-        self.qrcodeButton.setToolTip("Show QRCode")
-        self.qrcodeButton.clicked.connect(self.showQRCodeFlyout)
-
         self.createGroupButton.clicked.connect(self.on_create_group)
         self.joinByCodeButton.clicked.connect(self.on_join_by_code)
-
-
-    def showQRCodeFlyout(self):
-        view = FlyoutView(
-            title='杰洛·齐贝林',
-            content="触网而起的网球会落到哪一侧，谁也无法知晓。\n如果那种时刻到来，我希望「女神」是存在的。\n这样的话，不管网球落到哪一边，我都会坦然接受的吧。",
-            image='health_tracker/health_app_pyqt/resource/images/icon\icon.png',
-            isClosable=True
-            # image='resource/yiku.gif',
-        )
-
-        # add button to view
-        button = PushButton('Action')
-        button.setFixedWidth(120)
-        view.addWidget(button, align=Qt.AlignRight)
-
-        # adjust layout (optional)
-        view.widgetLayout.insertSpacing(1, 5)
-        view.widgetLayout.addSpacing(5)
-
-        # show view
-        w = Flyout.make(view, self.qrcodeButton, self)
-        view.closed.connect(w.close)
 
     def on_current_item_changed(self, current):
         index = self.listWidget.row(current) + 1
@@ -186,17 +124,17 @@ class GroupInterface(QWidget, Ui_GroupInterface):
         self.listWidget.setCurrentRow(-1)
         self.stackedWidget.setCurrentIndex(0)
 
-    def on_announ_edit(self):
-        """ edit announcement """
-        self.messageBox = AnnouncementMessageBox(self)
-        self.messageBox.exec_()
-
     def on_create_group(self):
         """ create group """
         self.messageBox = CreateGroupMessageBox(self)
-        self.messageBox.exec_()
+        if self.messageBox.exec_() == QMessageBox.Accepted:
+            group_page = GroupPage(self.user, self)  # 创建一个新的 GroupPage 实例
+            group_page.nameLabel_0.setText(self.messageBox.groupNameEdit.text())
+            self.stackedWidget.addWidget(group_page)  # 将 GroupPage 实例添加到 stackedWidget 中
+            self.stackedWidget.setCurrentIndex(self.listWidget.count()) 
 
     def on_join_by_code(self):
         """ join group by code """
         self.messageBox = JoinByCodeMessageBox(self)
         self.messageBox.exec_()
+
