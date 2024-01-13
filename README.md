@@ -60,3 +60,6 @@ python main.py stimulator -d a    # generate all data for user 0 (default 0)
 ![img_6.png](docs/img_6.png)
 
 ![img_7.png](docs/img_7.png)
+
+## Credits
+
