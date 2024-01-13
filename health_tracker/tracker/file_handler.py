@@ -8,7 +8,13 @@ from abc import ABC, abstractmethod
 from .data import ACTIVITY_DATA_TYPES, STATIC_DATA_TYPES
 from .decorators import print_run_time
 
-__all__ = ["user_file_handler_factory", "UserMultiFieldFileHandler", "UserSingleFieldFileHandler", "GroupFileHandler"]  # 对外提供的接口类名
+__all__ = [
+    "user_file_handler_factory",
+    "UserMultiFieldFileHandler",
+    "UserSingleFieldFileHandler",
+    "GroupFileHandler",
+    "HTMLFileHandler"
+]
 
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
@@ -509,100 +515,64 @@ class GroupFileHandler:
         os.remove(self._filedir)
 
 
-# class DataFileHandler:
-#     """数据文件读写类"""
-#
-#
-#     @staticmethod
-#     def __change_the_form_of_data(data: list):
-#         data = [str(x) for x in data]
-#         d = ";".join(data)
-#         return d
-#
-#     @staticmethod
-#     def write_line(data: list, filepath: str):
-#         """
-#         传入一条信息，以列表的形式传入
-#         这个函数的作用就相当于append
-#         """
-#         data = DataFileHandler.__change_the_form_of_data(data)
-#         with open(filepath, 'a+') as file:
-#             file.write(data)
-#
-#     @staticmethod
-#     def read_line(filepath: str, pos: int):
-#         with open(filepath, 'r+') as file:
-#             file.seek(0)
-#             for _ in range(pos):
-#                 file.readline()
-#             data = file.readline()
-#             data = data.split(";")
-#         return data
-#
-#     @staticmethod
-#     def delete_line(filepath: str, pos: int):
-#         with fileinput.FileInput(filepath, inplace=True, backup='.bak') as file:
-#             for i, line in enumerate(file):
-#                 if i != pos:
-#                     print(line, end='')
-#
-#     @staticmethod
-#     def modify_line(filepath: str, pos: int, data: list):
-#         """
-#         只是在某一行更改一条信息
-#         """
-#         data = DataFileHandler.__change_the_form_of_data(data)
-#         with fileinput.FileInput(filepath, inplace=True, backup='.bak') as file:
-#             for i, line in enumerate(file):
-#                 if i != pos:
-#                     print(line, end='')
-#                 if i == pos:
-#                     print(data)
-#
-#     @staticmethod
-#     def find_pos(filepath:str, inf):
-#         """
-#         找到关于某个信息的位置
-#         """
-#         inf = str(inf)
-#         i = 1
-#         while i:
-#             data = DataFileHandler.read_line(filepath, i-1)
-#             if inf not in data:
-#                 i += 1
-#             elif not data:# 判断是否已经到达文件末尾
-#                 print("No such information")
-#                 return -1
-#             else:
-#                 return i-1
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""                  HTMLFileHandler用于HTML文件的读写                          """
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
+class HTMLFileHandler(RandomFileHandler):
+    """HTML文件读写类"""
 
-#
-# class UserFileHandler(DataFileHandler):
-#     @staticmethod
-#     def write_data(user_id: str, filename: str, data: str):
-#         filepath = f'local/{user_id}/{filename}.txt'
-#         DataFileHandler.write_line(data, filepath)
-#
-#     @staticmethod
-#     def read_data(user_id: str, filename: str, inf):
-#         filepath = f'local/{user_id}/{filename}.txt'
-#         pos = DataFileHandler.find_pos(filepath, inf)
-#         return DataFileHandler.read_line(filepath, pos)
-#
-#     @staticmethod
-#     def check_file(user_id: str, filename: str):
-#         filepath = f'local/{user_id}/{filename}.txt'
-#         try:
-#             with open(filepath, 'r') as _:
-#                 return True
-#         except FileNotFoundError:
-#             os.makedirs(os.path.dirname(filepath), exist_ok=True)
-#             return False
-#
-#     @staticmethod
-#     def modify_data(user_id: str, filename: str, inf, data: list):
-#         filepath = f'local/{user_id}/{filename}.txt'
-#         pos = DataFileHandler.find_pos(filepath, inf)
-#         return DataFileHandler.modify_line(filepath, pos, data)
+    def __init__(self, html_file_path: str):
+        """
+
+        :param html_file_path: 相对于项目根目录的路径，如：health_tracker/heath_app_pyqt/resource/html/xxx.html
+        """
+        self._filepath = html_file_path
+        self.check_file()
+
+    def check_file(self):
+        return RandomFileHandler.check_file(self._filepath)
+
+    def append_line(self, data: str):
+        RandomFileHandler.append_line(data, self._filepath)
+
+    def insert_line(self, data: str, pos: int):
+        RandomFileHandler.insert_line(data, self._filepath, pos)
+
+    def delete_line(self, pos: int):
+        RandomFileHandler.delete_line(self._filepath, pos)
+
+    def modify_line(self, pos: int, data: str):
+        with open(self._filepath, 'r', encoding='utf-8') as file:
+            lines = file.readlines()
+            lines[pos-1] = data + '\n'
+        with open(self._filepath, 'w', encoding='utf-8') as file:
+            file.writelines(lines)
+
+    def search_line(self, data: str) -> int:
+        return RandomFileHandler.search_line(self._filepath, data)
+
+    def read_line(self, pos: int) -> str:
+        return RandomFileHandler.read_line(self._filepath, pos)
+
+    def read_lines(self, line_numbers: list) -> list:
+        return RandomFileHandler.read_lines(self._filepath, line_numbers)
+
+    def get_file_length(self) -> int:
+        return RandomFileHandler.get_file_length(self._filepath)
+
+    def delete_file(self):
+        RandomFileHandler.delete_file(self._filepath)
+
+    def replace_line(self, pos: int, key: str, value: str):
+        """
+        替换指定位置的一行数据中的key为value
+        :param pos:
+        :param key:
+        :param value:
+        :return:
+        """
+        line = self.read_line(pos)
+        line = line.replace(key, value)
+        self.modify_line(pos, line)
