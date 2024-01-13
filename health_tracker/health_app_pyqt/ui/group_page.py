@@ -8,14 +8,16 @@ from qfluentwidgets import FluentIcon as FIF, RoundMenu, toggleTheme, FlyoutView
 from .group_page_ui import Ui_GroupPage
 from ..config import *
 from ...tracker import User
+from ...tracker.group import Group
+
 
 class GroupPage(QWidget, Ui_GroupPage):
-    def __init__(self, user: User, parent=None):
+    def __init__(self, group: Group, parent=None):
         """
         Initializes the GroupPage class.
 
         Args:
-            user (User): The user object.
+            group (Group): The group object.
             parent (QWidget, optional): The parent widget. Defaults to None.
         """
         super().__init__(parent=parent)
@@ -29,12 +31,14 @@ class GroupPage(QWidget, Ui_GroupPage):
         self.qrcodeButton_0.setToolTip("Show QRCode")
         self.qrcodeButton_0.clicked.connect(self.showQRCodeFlyout)
 
+        self.group = group
 
     def showQRCodeFlyout(self):
         view = FlyoutView(
             title='杰洛·齐贝林',
             content="触网而起的网球会落到哪一侧，谁也无法知晓。\n如果那种时刻到来，我希望「女神」是存在的。\n这样的话，不管网球落到哪一边，我都会坦然接受的吧。",
-            image='health_tracker/health_app_pyqt/resource/images/icon\icon.png',
+            # image='health_tracker/health_app_pyqt/resource/images/icon\icon.png',
+            image=self.group.save_qr_cord(),
             isClosable=True
             # image='resource/yiku.gif',
         )

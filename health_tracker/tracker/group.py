@@ -3,6 +3,7 @@
 import time
 import qrcode
 from .file_handler import GroupFileHandler
+import os
 
 
 __all__ = ["Group"]
@@ -24,16 +25,31 @@ class Group:
         )  # 这个变量是用来存储二维码的
         
         # self.administrator = [self.owner]   # 管理员名单
-        if file_path != None:
+        if file_path is not None:
             self.handler = GroupFileHandler(group_id)
 
-    
-    def generate_qr_cord(self, group_id: str):
-        self.QR_cord.add_data(group_id)
+        self.qr_path = f"health_tracker/health_app_pyqt/resource/images/icon/tempqrcode.png"
+        # self.save_qr_cord()
+        self.generate_qr_cord()
+
+    @staticmethod
+    def create_group(owner_id: str, group_name: str):
+        group_id = str(time.time_ns())
+        group = Group(group_id, owner_id, group_name)
+        return group
+
+    def generate_qr_cord(self):
+        self.QR_cord.add_data(self.group_id)
         self.QR_cord.make(fit=True)
         # 创建一个PIL图像对象
         img = self.QR_cord.make_image(fill_color="black", back_color="white")
         return img
+
+    def save_qr_cord(self):
+        self.QR_cord.make(fit=True)
+        img = self.QR_cord.make_image(fill_color="black", back_color="white")
+        img.save(self.qr_path)
+        return self.qr_path
     
     def check_members(self, uid: str):
         if uid in self.members:
