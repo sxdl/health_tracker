@@ -1,4 +1,19 @@
-# Health Tracker
+
+# <center> Health Tracker </center>
+<p align="center">
+ 
+
+  <a style="text-decoration:none">
+    <img src="https://img.shields.io/badge/License-未定-blue?color=#4ec820" alt="MIT"/>
+  </a>
+
+  <a style="text-decoration:none">
+    <img src="https://img.shields.io/github/stars/sxdl/catlog.svg?style=social" alt="GitHub stars"/>
+  </a>
+
+
+
+</p>
 
 ## Introduction
 
@@ -45,21 +60,46 @@ python main.py stimulator -d a    # generate all data for user 0 (default 0)
 
 ## Screenshots
 
-![img.png](docs/img.png)
+### Login Window
+<div align="center">
+    <img src="docs/img.png">
+</div>
 
-![img_1.png](docs/img_1.png)
+### Health Window
+<div align="center">
+    <img src="docs/img_1.png">
+</div>
 
-![img_2.png](docs/img_2.png)
+### Dark/Light Theme
+<div align="center">
+    <img src="docs/img_2.png">
+</div>
 
-![img_3.png](docs/img_3.png)
+### Device Window
+<div align="center">
+    <img src="docs/img_3.png">
+</div>
 
-![img_4.png](docs/img_4.png)
+### Group Window
+<div align="center">
+    <img src="docs/img_4.png">
+</div>
 
-![img_5.png](docs/img_5.png)
+<div align="center">
+    <img src="docs/img_6.png">
+</div>
 
-![img_6.png](docs/img_6.png)
+### Data Window
+<div align="center">
+    <img src="docs/img_5.png">
+</div>
 
-![img_7.png](docs/img_7.png)
+### Profile Window 
+
+<div align="center">
+    <img src="docs/img_7.png">
+</div>
 
 ## Credits
 
+- [PyQt-Fluent-Widgets](https://qfluentwidgets.com/): A set of widgets for PyQt5/PySide2 based on Microsoft's Fluent Design System.
