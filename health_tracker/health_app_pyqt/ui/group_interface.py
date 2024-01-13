@@ -10,6 +10,7 @@ from .group_page import GroupPage
 
 from ..config import *
 from ...tracker import User
+from ...tracker.group import Group
 
 
 
@@ -103,11 +104,20 @@ class GroupInterface(QWidget, Ui_GroupInterface):
         self.createButton.setToolTip("Create Group")
         self.createButton.clicked.connect(self.on_turn_to_create)
         
-        groups = []
-        for group in groups:
-            item = QListWidgetItem(group)
+        groups_id = Group.load_existing_groups()
+        for group_id in groups_id:
+            # item = QListWidgetItem(group)
+            group = Group(group_id)
+            item = QListWidgetItem("👥 " + group.name)
             self.listWidget.addItem(item)
-        
+
+            group_page = GroupPage(group, self)  # 创建一个新的 GroupPage 实例
+            group_page.nameLabel_0.setText(group.name)
+            group_page.announcementLabel_0.setText(group.announcement)
+            group_page.groupIDLabel_1.setText(group.group_id)
+            group_page.groupIDLabel_0.setText(group.group_id)
+            self.stackedWidget.addWidget(group_page)  # 将 GroupPage 实例添加到 stackedWidget 中
+
         self.listWidget.currentItemChanged.connect(self.on_current_item_changed)
         self.listWidget.setCurrentRow(-1)
         self.stackedWidget.setCurrentIndex(0)
@@ -128,8 +138,11 @@ class GroupInterface(QWidget, Ui_GroupInterface):
         """ create group """
         self.messageBox = CreateGroupMessageBox(self)
         if self.messageBox.exec_() == QMessageBox.Accepted:
-            group_page = GroupPage(self.user, self)  # 创建一个新的 GroupPage 实例
+            group = Group.create_group(self.user.user_id, self.messageBox.groupNameEdit.text())  # 创建Group对象
+            group_page = GroupPage(group, self)  # 创建一个新的 GroupPage 实例
             group_page.nameLabel_0.setText(self.messageBox.groupNameEdit.text())
+            group_page.groupIDLabel_1.setText(group.group_id)
+            group_page.groupIDLabel_0.setText(group.group_id)
             self.stackedWidget.addWidget(group_page)  # 将 GroupPage 实例添加到 stackedWidget 中
             self.stackedWidget.setCurrentIndex(self.listWidget.count()) 
 

@@ -10,6 +10,7 @@ from .data_interface_ui import Ui_DataInterface
 
 from ..config import *
 from ...tracker import User
+from ...tracker.file_handler import HTMLFileHandler
 
 
 class DataInterface(QWidget, Ui_DataInterface):
@@ -40,28 +41,72 @@ class DataInterface(QWidget, Ui_DataInterface):
             需要写JS或用其他接口方法把本地数据读入HTML进行渲染，
             且后续要仿照该示例添加其他图表
             """
+            self.HTML_CURRENT_DIR = "health_tracker/health_app_pyqt/resource/html"
+            last_week_data = user.activity_data.get_last_week_daily_total()
+
             # Calories
-            # TODO: 添加“累计”和“日均”label
+            self.caloriesHtmlFileName = "calories-daily-area-stack-gradient.html"
+            self.caloriesHtmlFileHandler = HTMLFileHandler(f"{self.HTML_CURRENT_DIR}/{self.caloriesHtmlFileName}")
+
+            calories_data = last_week_data["active_energy_burned"]
+            calories_run_data_str = f"    data: [{','.join([str(int(i*0.02)) for i in calories_data])}],"
+            calories_walk_data_str = f"    data: [{','.join([str(int(i*0.90)) for i in calories_data])}],"
+            calories_bike_data_str = f"    data: [{','.join([str(int(i*0.01)) for i in calories_data])}],"
+            calories_floor_data_str = f"    data: [{','.join([str(int(i*0.05)) for i in calories_data])}],"
+            calories_other_data_str = f"    data: [{','.join([str(int(i*0.02)) for i in calories_data])}],"
+
+            self.caloriesHtmlFileHandler.modify_line(108, calories_run_data_str)
+            self.caloriesHtmlFileHandler.modify_line(135, calories_walk_data_str)
+            self.caloriesHtmlFileHandler.modify_line(162, calories_bike_data_str)
+            self.caloriesHtmlFileHandler.modify_line(189, calories_floor_data_str)
+            self.caloriesHtmlFileHandler.modify_line(220, calories_other_data_str)
+
             self.webview = QWebEngineView()
-            self.webview.load(self.renderLocalHtmlURL("calories-daily-area-stack-gradient.html"))
+            self.webview.load(self.renderLocalHtmlURL(self.caloriesHtmlFileName))
             self.verticalLayout_1_1.addWidget(self.webview)
 
             # Floor
-            # TODO: 爬楼数据应该要改成柱状图，展示每日的数据；添加“总高度”和“平均高度”label
+            self.floorHtmlFileName = "floor-bar-stack-borderRadius.html"
+            self.floorHtmlFileHandler = HTMLFileHandler(f"{self.HTML_CURRENT_DIR}/{self.floorHtmlFileName}")
+
+            floor_data = last_week_data["flights_climbed"]
+            # 将floor_data的每一个元素转换成int，然后再拼接成如下形式：    data: [120, 200, 150, 80, 70, 110, 130],
+            floor_data_str = f"    data: [{','.join([str(int(i)) for i in floor_data])}],"
+            self.floorHtmlFileHandler.modify_line(45, floor_data_str)
+
             self.webview = QWebEngineView()
-            self.webview.load(self.renderLocalHtmlURL("floor-bar-stack-borderRadius.html"))
+            self.webview.load(self.renderLocalHtmlURL(self.floorHtmlFileName))
             self.verticalLayout_2_1.addWidget(self.webview)
 
             # Distance
-            # TODO: 添加“总距离”和“平均距离”label
+            self.distanceHtmlFileName = "distance-daily-area-stack-gradient.html"
+            self.distanceHtmlFileHandler = HTMLFileHandler(f"{self.HTML_CURRENT_DIR}/{self.distanceHtmlFileName}")
+
+            distance_data = last_week_data["distance"]
+            distance_run_data_str = f"    data: [{','.join([str(i*0.15) for i in distance_data])}],"
+            distance_walk_data_str = f"    data: [{','.join([str(i*0.60) for i in distance_data])}],"
+            distance_floor_data_str = f"    data: [{','.join([str(i*0.12) for i in distance_data])}],"
+            distance_other_data_str = f"    data: [{','.join([str(i*0.13) for i in distance_data])}],"
+
+            self.distanceHtmlFileHandler.modify_line(108, distance_run_data_str)
+            self.distanceHtmlFileHandler.modify_line(135, distance_walk_data_str)
+            self.distanceHtmlFileHandler.modify_line(162, distance_floor_data_str)
+            self.distanceHtmlFileHandler.modify_line(193, distance_other_data_str)
+
             self.webview = QWebEngineView()
-            self.webview.load(self.renderLocalHtmlURL("distance-daily-area-stack-gradient.html"))
+            self.webview.load(self.renderLocalHtmlURL(self.distanceHtmlFileName))
             self.verticalLayout_3_1.addWidget(self.webview)
 
             # Steps
-            # TODO: 步数数据应该要改成柱状图，展示每日的数据；添加“总步数”和“平均步数”label
+            self.stepHtmlFileName = "step-bar-stack-borderRadius.html"
+            self.stepHtmlFileHandler = HTMLFileHandler(f"{self.HTML_CURRENT_DIR}/{self.stepHtmlFileName}")
+
+            step_data = last_week_data["steps"]
+            step_data_str = f"    data: [{','.join([str(int(i)) for i in step_data])}],"
+            self.stepHtmlFileHandler.modify_line(45, step_data_str)
+
             self.webview = QWebEngineView()
-            self.webview.load(self.renderLocalHtmlURL("step-bar-stack-borderRadius.html"))
+            self.webview.load(self.renderLocalHtmlURL(self.stepHtmlFileName))
             self.verticalLayout_4_1.addWidget(self.webview)
 
             # 累计和日均label

@@ -42,35 +42,35 @@
 
     var series = [
   {
-    data: [120, 200, 150, 80, 70, 110, 130],
+    data: [23868,28804,23227,19947,24964,23191,24533],
     type: 'bar',
     stack: 'a',
     name: 'a'
-  },
-  {
-    data: [10, 46, 64, '-', 0, '-', 0],
-    type: 'bar',
-    stack: 'a',
-    name: 'b'
-  },
-  {
-    data: [30, '-', 0, 20, 10, '-', 0],
-    type: 'bar',
-    stack: 'a',
-    name: 'c'
-  },
-  {
-    data: [30, '-', 0, 20, 10, '-', 0],
-    type: 'bar',
-    stack: 'b',
-    name: 'd'
-  },
-  {
-    data: [10, 20, 150, 0, '-', 50, 10],
-    type: 'bar',
-    stack: 'b',
-    name: 'e'
   }
+  // {
+  //   data: [10, 46, 64, '-', 0, '-', 0],
+  //   type: 'bar',
+  //   stack: 'a',
+  //   name: 'b'
+  // },
+  // {
+  //   data: [30, '-', 0, 20, 10, '-', 0],
+  //   type: 'bar',
+  //   stack: 'a',
+  //   name: 'c'
+  // },
+  // {
+  //   data: [30, '-', 0, 20, 10, '-', 0],
+  //   type: 'bar',
+  //   stack: 'b',
+  //   name: 'd'
+  // },
+  // {
+  //   data: [10, 20, 150, 0, '-', 50, 10],
+  //   type: 'bar',
+  //   stack: 'b',
+  //   name: 'e'
+  // }
 ];
 const stackInfo = {};
 for (let i = 0; i < series[0].data.length; ++i) {
@@ -112,9 +112,9 @@ for (let i = 0; i < series.length; ++i) {
   }
 }
 option = {
-  legend: {
-  data: ['a', 'b', 'c', 'd', 'e']
-},
+//   legend: {
+//   data: ['a', 'b', 'c', 'd', 'e']
+// },
   xAxis: {
     type: 'category',
     data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']

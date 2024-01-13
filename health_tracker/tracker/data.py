@@ -216,10 +216,54 @@ class ActivityDataStatistics:
         :param end_date: 结束日期
         :return: {'steps', 'distance', 'flights_climbed', 'active_energy_burned, 'exercise_minutes', 'active_hours'}
         """
-        daily_range_total = defaultdict(int)
+        daily_range_total = defaultdict(float)
         for key, value in self.activity_datas.items():
             daily_range_total[key] = sum(float(x.value) for x in value.get_data_by_date_range(start_date, end_date))
         return daily_range_total
+
+    def get_daily_range_data(self, start_date, end_date):
+        """
+        获取指定日期范围内的数据，返回一个字典
+        :param start_date: 开始日期
+        :param end_date: 结束日期
+        :return: {'steps', 'distance', 'flights_climbed', 'active_energy_burned, 'exercise_minutes', 'active_hours'}
+        """
+        daily_range_data = defaultdict(list)
+        for key, value in self.activity_datas.items():
+            daily_range_data[key] = value.get_data_by_date_range(start_date, end_date)
+        return daily_range_data
+
+    def get_daily_range_daily_total(self, start_date, end_date):
+        """
+        获取指定日期范围内每日数据总和，返回一个字典
+        :param start_date: 开始日期
+        :param end_date: 结束日期
+        :return: {'steps', 'distance', 'flights_climbed', 'active_energy_burned, 'exercise_minutes', 'active_hours'}
+        """
+        daily_range_daily_total = defaultdict(list)
+        for key, value in self.activity_datas.items():
+            daily_range_daily_total[key] = []
+            for date in value.get_date_range(start_date, end_date):
+                daily_range_daily_total[key].append(value.get_daily_total(date))
+        return daily_range_daily_total
+
+    def get_last_week_data(self):
+        """
+        获取最近一周的数据，返回一个字典
+        :return: {'steps', 'distance', 'flights_climbed', 'active_energy_burned, 'exercise_minutes', 'active_hours'}
+        """
+        today = datetime.now().date()
+        last_week = today - timedelta(days=7)
+        return self.get_daily_range_data(last_week.strftime('%Y-%m-%d'), today.strftime('%Y-%m-%d'))
+
+    def get_last_week_daily_total(self):
+        """
+        获取最近一周的每日数据总和，返回一个字典
+        :return: {'steps', 'distance', 'flights_climbed', 'active_energy_burned, 'exercise_minutes', 'active_hours'}
+        """
+        today = datetime.now().date()
+        last_week = today - timedelta(days=7)
+        return self.get_daily_range_daily_total(last_week.strftime('%Y-%m-%d'), today.strftime('%Y-%m-%d'))
 
     def get_last_week_total(self):
         """
@@ -548,6 +592,22 @@ class ActivityDataFileHandler(UserMultiFieldFileHandler):
         if data is None:
             return None
         return self.read_line(-1).date
+
+    @staticmethod
+    def get_date_range(start_date: str, end_date: str) -> list:
+        """
+        获取指定日期范围内的所有日期
+        :param start_date:
+        :param end_date:
+        :return: 返回一个列表，列表中的每个元素是一个日期字符串
+        """
+        start_date_obj = datetime.strptime(start_date, '%Y-%m-%d')
+        end_date_obj = datetime.strptime(end_date, '%Y-%m-%d')
+        date_range = []
+        while start_date_obj < end_date_obj:
+            date_range.append(start_date_obj.strftime('%Y-%m-%d'))
+            start_date_obj += timedelta(days=1)
+        return date_range
 
     @print_run_time
     def get_latest_daily_total(self):

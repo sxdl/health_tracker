@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1003</width>
-    <height>727</height>
+    <height>462</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -84,7 +84,7 @@
        <number>15</number>
       </property>
       <item>
-       <widget class="IconWidget" name="deviceIcon1">
+       <widget class="IconWidget" name="deviceIcon1" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -97,7 +97,7 @@
           <height>60</height>
          </size>
         </property>
-        <property name="icon">
+        <property name="icon" stdset="0">
          <iconset>
           <normaloff>health_tracker/health_app_pyqt/resource/images/icon/smartwatch-app.png</normaloff>health_tracker/health_app_pyqt/resource/images/icon/smartwatch-app.png</iconset>
         </property>
@@ -125,7 +125,11 @@
        </layout>
       </item>
       <item>
-       <widget class="PrimaryDropDownToolButton" name="deviceButton1"/>
+       <widget class="PrimaryDropDownToolButton" name="deviceButton1">
+        <property name="text">
+         <string>Remove</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -155,7 +159,7 @@
        <number>15</number>
       </property>
       <item>
-       <widget class="IconWidget" name="deviceIcon2">
+       <widget class="IconWidget" name="deviceIcon2" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -168,7 +172,7 @@
           <height>60</height>
          </size>
         </property>
-        <property name="icon">
+        <property name="icon" stdset="0">
          <iconset>
           <normaloff>health_tracker/health_app_pyqt/resource/images/icon/smart-band.png</normaloff>health_tracker/health_app_pyqt/resource/images/icon/smart-band.png</iconset>
         </property>
@@ -196,7 +200,11 @@
        </layout>
       </item>
       <item>
-       <widget class="PrimaryDropDownToolButton" name="deviceButton2"/>
+       <widget class="PrimaryDropDownToolButton" name="deviceButton2">
+        <property name="text">
+         <string>Remove</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -275,5 +283,70 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>deviceButton1</sender>
+   <signal>clicked()</signal>
+   <receiver>deviceCard1</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>956</x>
+     <y>158</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>709</x>
+     <y>114</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>deviceButton2</sender>
+   <signal>clicked()</signal>
+   <receiver>deviceCard2</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>954</x>
+     <y>266</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>684</x>
+     <y>219</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>addDeviceButton</sender>
+   <signal>clicked()</signal>
+   <receiver>deviceCard1</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>505</x>
+     <y>409</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>495</x>
+     <y>205</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>addDeviceButton</sender>
+   <signal>clicked()</signal>
+   <receiver>deviceCard2</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>514</x>
+     <y>432</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>603</x>
+     <y>221</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

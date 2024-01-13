@@ -8,7 +8,13 @@ from abc import ABC, abstractmethod
 from .data import ACTIVITY_DATA_TYPES, STATIC_DATA_TYPES
 from .decorators import print_run_time
 
-__all__ = ["user_file_handler_factory", "UserMultiFieldFileHandler", "UserSingleFieldFileHandler", "GroupFileHandler"]  # 对外提供的接口类名
+__all__ = [
+    "user_file_handler_factory",
+    "UserMultiFieldFileHandler",
+    "UserSingleFieldFileHandler",
+    "GroupFileHandler",
+    "HTMLFileHandler"
+]
 
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
@@ -308,7 +314,7 @@ class BaseIdNameFileHandler(ABC):
     def __init__(self, data_id: str, data_type: str):
         self._data_id = data_id
         self._data_type = data_type
-        self._filepath = f'local/{data_id}/{data_type}.txt'
+        self.filepath = f'local/{data_id}/{data_type}.txt'
 
         # self.check_file()
 
@@ -325,34 +331,34 @@ class UserSingleFieldFileHandler(BaseIdNameFileHandler, RandomFileHandler):
         # # self.check_file()
 
     def check_file(self):
-        return RandomFileHandler.check_file(self._filepath)
+        return RandomFileHandler.check_file(self.filepath)
 
     def append_line(self, data: str):
-        RandomFileHandler.append_line(data, self._filepath)
+        RandomFileHandler.append_line(data, self.filepath)
 
     def insert_line(self, data: str, pos: int):
-        RandomFileHandler.insert_line(data, self._filepath, pos)
+        RandomFileHandler.insert_line(data, self.filepath, pos)
 
     def delete_line(self, pos: int):
-        RandomFileHandler.delete_line(self._filepath, pos)
+        RandomFileHandler.delete_line(self.filepath, pos)
 
     def modify_line(self, pos: int, data: str):
-        RandomFileHandler.modify_line(self._filepath, pos, data)
+        RandomFileHandler.modify_line(self.filepath, pos, data)
 
     def search_line(self, data: str) -> int:
-        return RandomFileHandler.search_line(self._filepath, data)
+        return RandomFileHandler.search_line(self.filepath, data)
 
     def read_line(self, pos: int) -> str:
-        return RandomFileHandler.read_line(self._filepath, pos)
+        return RandomFileHandler.read_line(self.filepath, pos)
 
     def read_lines(self, line_numbers: list) -> list:
-        return RandomFileHandler.read_lines(self._filepath, line_numbers)
+        return RandomFileHandler.read_lines(self.filepath, line_numbers)
 
     def get_file_length(self) -> int:
-        return RandomFileHandler.get_file_length(self._filepath)
+        return RandomFileHandler.get_file_length(self.filepath)
 
     def delete_file(self):
-        RandomFileHandler.delete_file(self._filepath)
+        RandomFileHandler.delete_file(self.filepath)
 
 
 class UserMultiFieldFileHandler(BaseIdNameFileHandler, MultiFieldDataFileHandler):
@@ -367,41 +373,41 @@ class UserMultiFieldFileHandler(BaseIdNameFileHandler, MultiFieldDataFileHandler
         # self.check_file()
 
     def check_file(self):
-        return RandomFileHandler.check_file(self._filepath)
+        return RandomFileHandler.check_file(self.filepath)
 
     def append_line(self, data: tuple):
-        MultiFieldDataFileHandler.append_line(data, self._filepath)
+        MultiFieldDataFileHandler.append_line(data, self.filepath)
 
     def insert_line(self, data: tuple, pos: int):
-        MultiFieldDataFileHandler.insert_line(data, self._filepath, pos)
+        MultiFieldDataFileHandler.insert_line(data, self.filepath, pos)
 
     def delete_line(self, pos: int):
-        MultiFieldDataFileHandler.delete_line(self._filepath, pos)
+        MultiFieldDataFileHandler.delete_line(self.filepath, pos)
 
     def modify_line(self, pos: int, data: tuple):
-        MultiFieldDataFileHandler.modify_line(self._filepath, pos, data)
+        MultiFieldDataFileHandler.modify_line(self.filepath, pos, data)
 
     def search_by_field(self, field: int, value) -> int:
-        return MultiFieldDataFileHandler.search_by_field(self._filepath, field, value)
+        return MultiFieldDataFileHandler.search_by_field(self.filepath, field, value)
 
     @print_run_time
     def search_by_field_all(self, field: int, value) -> [list, None]:
-        return MultiFieldDataFileHandler.search_by_field_all(self._filepath, field, value)
+        return MultiFieldDataFileHandler.search_by_field_all(self.filepath, field, value)
 
     def search_by_field_range(self, field: int, value_range: tuple) -> list:
-        return MultiFieldDataFileHandler.search_by_filed_range(self._filepath, field, value_range)
+        return MultiFieldDataFileHandler.search_by_filed_range(self.filepath, field, value_range)
 
     def read_line(self, pos: int) -> tuple:
-        return MultiFieldDataFileHandler.read_line(self._filepath, pos)
+        return MultiFieldDataFileHandler.read_line(self.filepath, pos)
 
     def read_lines(self, line_numbers: list) -> list:
-        return MultiFieldDataFileHandler.read_lines(self._filepath, line_numbers)
+        return MultiFieldDataFileHandler.read_lines(self.filepath, line_numbers)
 
     def get_file_length(self) -> int:
-        return RandomFileHandler.get_file_length(self._filepath)
+        return RandomFileHandler.get_file_length(self.filepath)
 
     def delete_file(self):
-        RandomFileHandler.delete_file(self._filepath)
+        RandomFileHandler.delete_file(self.filepath)
 
 
 def user_file_handler_factory(user_id: str, data_type: str):
@@ -435,6 +441,7 @@ class GroupMemberFileHandler(UserSingleFieldFileHandler):
 
     def __init__(self, group_id: str):
         super().__init__(group_id, 'members')
+        self.filepath = f'local/group/{group_id}/members.txt'
 
     def __getitem__(self, key):
         return self.read_line(key)
@@ -460,12 +467,14 @@ class GroupBaseDataFileHandler(UserSingleFieldFileHandler):
     """
     群组基础数据文件读写类，包括群组名、群主、创建时间、公告等
     可以通过类似字典的方式读写数据
+    ["group_name", "group_owner", "group_create_time", "group_announcement"]
     """
 
     def __init__(self, group_id: str):
         super().__init__(group_id, "base_data")
         self._fields = ["group_name", "group_owner", "group_create_time", "group_announcement"]
         self._lines = {x: i for i, x in enumerate(self._fields)}
+        self.filepath = f'local/group/{group_id}/base_data.txt'
 
     def __getitem__(self, key):
         pos = self._lines[key]
@@ -491,6 +500,21 @@ class GroupBaseDataFileHandler(UserSingleFieldFileHandler):
     def __str__(self):
         return str(self._fields)
 
+    def check_file(self):
+        """
+        检查文件以及路径是否存在,不存在则创建并写入默认数据
+        :return:
+        """
+        try:
+            with open(self.filepath, 'r', encoding='utf-8') as _:
+                return True
+        except FileNotFoundError:
+            os.makedirs(os.path.dirname(self.filepath), exist_ok=True)
+            with open(self.filepath, 'w') as _:
+                for i in range(len(self)):
+                    self.append_line("")
+                return False
+
 
 class GroupFileHandler:
     """群组文件读写类"""
@@ -509,100 +533,64 @@ class GroupFileHandler:
         os.remove(self._filedir)
 
 
-# class DataFileHandler:
-#     """数据文件读写类"""
-#
-#
-#     @staticmethod
-#     def __change_the_form_of_data(data: list):
-#         data = [str(x) for x in data]
-#         d = ";".join(data)
-#         return d
-#
-#     @staticmethod
-#     def write_line(data: list, filepath: str):
-#         """
-#         传入一条信息，以列表的形式传入
-#         这个函数的作用就相当于append
-#         """
-#         data = DataFileHandler.__change_the_form_of_data(data)
-#         with open(filepath, 'a+') as file:
-#             file.write(data)
-#
-#     @staticmethod
-#     def read_line(filepath: str, pos: int):
-#         with open(filepath, 'r+') as file:
-#             file.seek(0)
-#             for _ in range(pos):
-#                 file.readline()
-#             data = file.readline()
-#             data = data.split(";")
-#         return data
-#
-#     @staticmethod
-#     def delete_line(filepath: str, pos: int):
-#         with fileinput.FileInput(filepath, inplace=True, backup='.bak') as file:
-#             for i, line in enumerate(file):
-#                 if i != pos:
-#                     print(line, end='')
-#
-#     @staticmethod
-#     def modify_line(filepath: str, pos: int, data: list):
-#         """
-#         只是在某一行更改一条信息
-#         """
-#         data = DataFileHandler.__change_the_form_of_data(data)
-#         with fileinput.FileInput(filepath, inplace=True, backup='.bak') as file:
-#             for i, line in enumerate(file):
-#                 if i != pos:
-#                     print(line, end='')
-#                 if i == pos:
-#                     print(data)
-#
-#     @staticmethod
-#     def find_pos(filepath:str, inf):
-#         """
-#         找到关于某个信息的位置
-#         """
-#         inf = str(inf)
-#         i = 1
-#         while i:
-#             data = DataFileHandler.read_line(filepath, i-1)
-#             if inf not in data:
-#                 i += 1
-#             elif not data:# 判断是否已经到达文件末尾
-#                 print("No such information")
-#                 return -1
-#             else:
-#                 return i-1
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""                  HTMLFileHandler用于HTML文件的读写                          """
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
+class HTMLFileHandler(RandomFileHandler):
+    """HTML文件读写类"""
 
-#
-# class UserFileHandler(DataFileHandler):
-#     @staticmethod
-#     def write_data(user_id: str, filename: str, data: str):
-#         filepath = f'local/{user_id}/{filename}.txt'
-#         DataFileHandler.write_line(data, filepath)
-#
-#     @staticmethod
-#     def read_data(user_id: str, filename: str, inf):
-#         filepath = f'local/{user_id}/{filename}.txt'
-#         pos = DataFileHandler.find_pos(filepath, inf)
-#         return DataFileHandler.read_line(filepath, pos)
-#
-#     @staticmethod
-#     def check_file(user_id: str, filename: str):
-#         filepath = f'local/{user_id}/{filename}.txt'
-#         try:
-#             with open(filepath, 'r') as _:
-#                 return True
-#         except FileNotFoundError:
-#             os.makedirs(os.path.dirname(filepath), exist_ok=True)
-#             return False
-#
-#     @staticmethod
-#     def modify_data(user_id: str, filename: str, inf, data: list):
-#         filepath = f'local/{user_id}/{filename}.txt'
-#         pos = DataFileHandler.find_pos(filepath, inf)
-#         return DataFileHandler.modify_line(filepath, pos, data)
+    def __init__(self, html_file_path: str):
+        """
+
+        :param html_file_path: 相对于项目根目录的路径，如：health_tracker/heath_app_pyqt/resource/html/xxx.html
+        """
+        self._filepath = html_file_path
+        self.check_file()
+
+    def check_file(self):
+        return RandomFileHandler.check_file(self._filepath)
+
+    def append_line(self, data: str):
+        RandomFileHandler.append_line(data, self._filepath)
+
+    def insert_line(self, data: str, pos: int):
+        RandomFileHandler.insert_line(data, self._filepath, pos)
+
+    def delete_line(self, pos: int):
+        RandomFileHandler.delete_line(self._filepath, pos)
+
+    def modify_line(self, pos: int, data: str):
+        with open(self._filepath, 'r', encoding='utf-8') as file:
+            lines = file.readlines()
+            lines[pos-1] = data + '\n'
+        with open(self._filepath, 'w', encoding='utf-8') as file:
+            file.writelines(lines)
+
+    def search_line(self, data: str) -> int:
+        return RandomFileHandler.search_line(self._filepath, data)
+
+    def read_line(self, pos: int) -> str:
+        return RandomFileHandler.read_line(self._filepath, pos)
+
+    def read_lines(self, line_numbers: list) -> list:
+        return RandomFileHandler.read_lines(self._filepath, line_numbers)
+
+    def get_file_length(self) -> int:
+        return RandomFileHandler.get_file_length(self._filepath)
+
+    def delete_file(self):
+        RandomFileHandler.delete_file(self._filepath)
+
+    def replace_line(self, pos: int, key: str, value: str):
+        """
+        替换指定位置的一行数据中的key为value
+        :param pos:
+        :param key:
+        :param value:
+        :return:
+        """
+        line = self.read_line(pos)
+        line = line.replace(key, value)
+        self.modify_line(pos, line)

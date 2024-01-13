@@ -3,19 +3,26 @@
 import time
 import qrcode
 from .file_handler import GroupFileHandler
+import os
 
 
 __all__ = ["Group"]
 
 
 class Group:
-    def __init__(self, group_id: str, owner_id: str = None, group_name: str = None, file_path=None):
+    def __init__(self, group_id: str):
         self.group_id = group_id            # 群组id
-        self.name = group_name              # 群名称
-        self.members = [owner_id]           # 成员列表
-        self.announcement = ""              # 发布的通知,是一个对象
-        self.activities = []                # 发布的活动
-        self.owner = owner_id               # 群主
+        self.handler = GroupFileHandler(group_id)
+        self.base_info = self.handler.base_data_file_handler
+
+        self.name = self.base_info["group_name"]
+        self.owner = self.base_info["group_owner"]
+        self.create_time = self.base_info["group_create_time"]
+        self.announcement = self.base_info["group_announcement"]
+
+        # self.members = [owner_id]
+        self.activities = []
+
         self.QR_cord = qrcode.QRCode(       # 二维码
             version=1,  # 控制二维码的大小，范围为1到40
             error_correction=qrcode.constants.ERROR_CORRECT_L,  # 控制纠错水平，L表示低纠错水平
@@ -24,16 +31,41 @@ class Group:
         )  # 这个变量是用来存储二维码的
         
         # self.administrator = [self.owner]   # 管理员名单
-        if file_path != None:
-            self.handler = GroupFileHandler(group_id)
 
-    
-    def generate_qr_cord(self, group_id: str):
-        self.QR_cord.add_data(group_id)
+        self.qr_path = f"health_tracker/health_app_pyqt/resource/images/icon/tempqrcode.png"
+        # self.save_qr_cord()
+        self.generate_qr_cord()
+
+    @staticmethod
+    def create_group(owner_id: str, group_name: str):
+        group_id = str(time.time_ns())
+        group = Group(group_id)
+        handler = GroupFileHandler(group_id)
+        handler.base_data_file_handler["group_name"] = group_name
+        handler.base_data_file_handler["group_owner"] = owner_id
+        handler.base_data_file_handler["group_announcement"] = "The group owner is too lazy, didn't write anything"
+        handler.base_data_file_handler["group_create_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        return group
+
+    @staticmethod
+    def load_existing_groups() -> list:
+        """
+        加载已有的群组，返回一个群组id列表
+        """
+        return os.listdir("local/group")
+
+    def generate_qr_cord(self):
+        self.QR_cord.add_data(self.group_id)
         self.QR_cord.make(fit=True)
         # 创建一个PIL图像对象
         img = self.QR_cord.make_image(fill_color="black", back_color="white")
         return img
+
+    def save_qr_cord(self):
+        self.QR_cord.make(fit=True)
+        img = self.QR_cord.make_image(fill_color="black", back_color="white")
+        img.save(self.qr_path)
+        return self.qr_path
     
     def check_members(self, uid: str):
         if uid in self.members:
@@ -70,6 +102,11 @@ class Group:
         """
         message = Announcement(inf, uid)
         self.announcement = message
+        return True
+
+    def edit_announcement(self, content: str):
+        self.announcement = content
+        self.handler.base_data_file_handler["group_announcement"] = content
         return True
 
     def delete_announcement(self):

@@ -3,4 +3,6 @@ PyQt5~=5.15.9
 ttkbootstrap~=1.10.1
 PyQt-Fluent-Widgets
 pyqtwebengine~=5.15.6
-qrcode[pil]
+qrcode[pil]~=7.4.2
+Pillow~=10.0.1
+matplotlib~=3.7.3
