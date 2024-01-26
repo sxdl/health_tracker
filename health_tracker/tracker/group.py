@@ -52,6 +52,9 @@ class Group:
         """
         加载已有的群组，返回一个群组id列表
         """
+        # 检查是否有local/group文件夹，没有则创建
+        if not os.path.exists("local/group"):
+            os.mkdir("local/group")
         return os.listdir("local/group")
 
     def generate_qr_cord(self):

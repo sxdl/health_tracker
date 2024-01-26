@@ -4,7 +4,7 @@
  
 
   <a style="text-decoration:none">
-    <img src="https://img.shields.io/badge/License-未定-blue?color=#4ec820" alt="MIT"/>
+    <img src="https://img.shields.io/badge/License-GPL3.0-blue?color=#4ec820" alt="GPL-3.0"/>
   </a>
 
   <a style="text-decoration:none">
@@ -38,6 +38,8 @@ pip install -r requirements.txt
 ```
 
 ## Quick Start
+
+If you first clone the repository, you need to run `python main.py stimulator -d a 0` to generate data for user 0.
 
 To simply run the program, execute `python main.py run -f pyQt`.
 
