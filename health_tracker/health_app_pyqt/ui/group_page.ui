@@ -91,7 +91,7 @@
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../resource/images/icon/step.png</normaloff>../resource/images/icon/step.png</iconset>
+                <normaloff>health_tracker/health_app_pyqt/resource/images/icon/step.png</normaloff>health_tracker/health_app_pyqt/resource/images/icon/step.png</iconset>
               </property>
              </widget>
             </item>
@@ -148,7 +148,7 @@
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../resource/images/icon/chronometer.png</normaloff>../resource/images/icon/chronometer.png</iconset>
+                <normaloff>health_tracker/health_app_pyqt/resource/images/icon/chronometer.png</normaloff>health_tracker/health_app_pyqt/resource/images/icon/chronometer.png</iconset>
               </property>
              </widget>
             </item>
@@ -205,7 +205,7 @@
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../resource/images/icon/calories.png</normaloff>../resource/images/icon/calories.png</iconset>
+                <normaloff>health_tracker/health_app_pyqt/resource/images/icon/calories.png</normaloff>health_tracker/health_app_pyqt/resource/images/icon/calories.png</iconset>
               </property>
              </widget>
             </item>
@@ -302,7 +302,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>../resource/images/profile/user.png</normaloff>../resource/images/profile/user.png</iconset>
+              <normaloff>health_tracker/health_app_pyqt/resource/images/profile/user.png</normaloff>health_tracker/health_app_pyqt/resource/images/profile/user.png</iconset>
             </property>
            </widget>
           </item>

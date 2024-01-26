@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'd:\Study\University\Y2T1\OOP\Health-Tracker\health_tracker\health_app_pyqt\ui\group_page.ui'
+# Form implementation generated from reading ui file 'group_page.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -60,7 +60,7 @@ class Ui_GroupPage(object):
         self.IconWidget_3.setSizePolicy(sizePolicy)
         self.IconWidget_3.setMinimumSize(QtCore.QSize(80, 80))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("d:\\Study\\University\\Y2T1\\OOP\\Health-Tracker\\health_tracker\\health_app_pyqt\\ui\\../resource/images/icon/step.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("health_tracker/health_app_pyqt/resource/images/icon/step.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.IconWidget_3.setIcon(icon)
         self.IconWidget_3.setObjectName("IconWidget_3")
         self.horizontalLayout_21.addWidget(self.IconWidget_3)
@@ -89,7 +89,7 @@ class Ui_GroupPage(object):
         self.IconWidget_10.setSizePolicy(sizePolicy)
         self.IconWidget_10.setMinimumSize(QtCore.QSize(80, 80))
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("d:\\Study\\University\\Y2T1\\OOP\\Health-Tracker\\health_tracker\\health_app_pyqt\\ui\\../resource/images/icon/chronometer.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("health_tracker/health_app_pyqt/resource/images/icon/chronometer.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.IconWidget_10.setIcon(icon1)
         self.IconWidget_10.setObjectName("IconWidget_10")
         self.horizontalLayout_22.addWidget(self.IconWidget_10)
@@ -118,7 +118,7 @@ class Ui_GroupPage(object):
         self.IconWidget_11.setSizePolicy(sizePolicy)
         self.IconWidget_11.setMinimumSize(QtCore.QSize(80, 80))
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("d:\\Study\\University\\Y2T1\\OOP\\Health-Tracker\\health_tracker\\health_app_pyqt\\ui\\../resource/images/icon/calories.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap("health_tracker/health_app_pyqt/resource/images/icon/calories.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.IconWidget_11.setIcon(icon2)
         self.IconWidget_11.setObjectName("IconWidget_11")
         self.horizontalLayout_23.addWidget(self.IconWidget_11)
@@ -160,7 +160,7 @@ class Ui_GroupPage(object):
         self.IconWidget_12.setSizePolicy(sizePolicy)
         self.IconWidget_12.setMinimumSize(QtCore.QSize(30, 30))
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("d:\\Study\\University\\Y2T1\\OOP\\Health-Tracker\\health_tracker\\health_app_pyqt\\ui\\../resource/images/profile/user.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap("health_tracker/health_app_pyqt/resource/images/profile/user.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.IconWidget_12.setIcon(icon3)
         self.IconWidget_12.setObjectName("IconWidget_12")
         self.verticalLayout_26.addWidget(self.IconWidget_12)
